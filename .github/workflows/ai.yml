@@ -1,0 +1,148 @@
+name: AI validation and builds
+
+on:
+  push:
+    branches: [ai]
+  pull_request:
+    branches: [ai]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CHANNEL: prod
+  FLUTTER_VERSION: '3.38.5'
+  CORE_VERSION: '5.5.5'
+  CORE_LINUX_SHA256: 9b522cb1b5e076d2fb41b595c5e10a10c46eb0adc2796cea81f40fa9f757e2a9
+  CORE_ANDROID_SHA256: d428adaf1ebe94046cdf3e32354f5ef84f9c3019432205ccf2a84f10a5a03dd0
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  checks:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Install regression test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libglib2.0-bin
+          python3 -m pip install PyYAML==6.0.3
+      - name: Packaging and CI regression tests
+        run: |
+          python3 -m unittest discover -s test/packaging -p 'test_*.py' -v
+          python3 -m unittest discover -s test/ci -p 'test_*.py' -v
+      - uses: subosito/flutter-action@v2.21.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - name: Prepare generated sources
+        run: make common-prepare
+      - name: Analyze and test
+        run: |
+          flutter analyze --no-fatal-infos --no-fatal-warnings
+          flutter test
+
+  build:
+    needs: [checks]
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            os: ubuntu-22.04
+          - platform: android
+            os: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: subosito/flutter-action@v2.21.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - uses: actions/setup-java@v4
+        if: matrix.platform == 'android'
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        if: matrix.platform == 'android'
+      - name: Install Android toolchain
+        if: matrix.platform == 'android'
+        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'ndk;28.2.13676358'
+      - name: Install Linux packaging tools
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          packages=$(sed 's/#.*//' linux_deps.list | xargs)
+          sudo apt-get install -y $packages libfuse2
+          curl --fail --location --output "$RUNNER_TEMP/appimagetool" \
+            https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage
+          printf '%s  %s\n' ed4ce84f0d9caff66f50bcca6ff6f35aae54ce8135408b3fa33abfc3cb384eb0 "$RUNNER_TEMP/appimagetool" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/appimagetool"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+          dart pub global activate fastforge 0.6.12
+          echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
+      - name: Download and verify pinned core libraries
+        env:
+          BUILD_PLATFORM: ${{ matrix.platform }}
+        run: |
+          test "$(cat dependencies.properties)" = "core.version=$CORE_VERSION"
+          if [ "$BUILD_PLATFORM" = linux ]; then
+            asset=hiddify-lib-linux-amd64.tar.gz
+            digest=$CORE_LINUX_SHA256
+            destination=hiddify-core/bin
+          else
+            asset=hiddify-lib-android.tar.gz
+            digest=$CORE_ANDROID_SHA256
+            destination=android/app/libs
+          fi
+          archive="$RUNNER_TEMP/$asset"
+          curl --fail --location --output "$archive" "https://github.com/hiddify/hiddify-core/releases/download/v$CORE_VERSION/$asset"
+          printf '%s  %s\n' "$digest" "$archive" | sha256sum --check
+          mkdir -p "$destination"
+          tar xzf "$archive" -C "$destination"
+      - name: Prepare generated sources
+        run: make common-prepare
+      - name: Build AppImage
+        if: matrix.platform == 'linux'
+        env:
+          APPIMAGE_EXTRACT_AND_RUN: '1'
+        run: make linux-appimage-release
+      - name: Build Android APK
+        if: matrix.platform == 'android'
+        # Without a private keystore this is signed with the build's debug key.
+        run: flutter build apk --release --target lib/main_prod.dart --target-platform android-arm64
+      - name: Collect artifacts and checksums
+        env:
+          BUILD_PLATFORM: ${{ matrix.platform }}
+        run: |
+          mkdir artifacts
+          if [ "$BUILD_PLATFORM" = linux ]; then
+            cp dist/*/*.AppImage artifacts/
+            cp dist/*/*.tar.gz artifacts/
+          else
+            cp build/app/outputs/flutter-apk/*.apk artifacts/
+          fi
+          printf '%s\n' "$GITHUB_SHA" > artifacts/COMMIT
+          (cd artifacts && sha256sum -- * > SHA256SUMS)
+      - name: Upload ai artifacts
+        if: github.ref == 'refs/heads/ai'
+        uses: actions/upload-artifact@v6
+        with:
+          name: hiddify-ai-${{ matrix.platform }}-${{ github.sha }}
+          path: artifacts/
+          if-no-files-found: error
+          retention-days: 14

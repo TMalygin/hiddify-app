@@ -1,5 +1,27 @@
 # Agent guide: pull requests in hiddify-app
 
+## Fork integration workflow (`ai`)
+
+For this fork, integration and build work targets `TMalygin/hiddify-app:ai`.
+These rules override the upstream PR destination and base-branch rules below:
+
+- Start each issue in its own `codex/issue-<number>-<summary>` branch and worktree
+  from the latest `origin/ai`. Keep unrelated fixes in separate PRs.
+- Write and commit regression tests before changing the implementation. Run them
+  against the original code and record the failing assertions and nonzero exit.
+- Freeze the tests: after implementation changes begin, do not modify those tests
+  to make the fix pass. Record the test-file SHA-256 before and after, and require
+  the same tests to pass. Fix the implementation if a regression test still fails.
+- Review the diff, run applicable existing checks, and include the red/green results
+  and test commit/hash in the PR description. Be explicit about untested platforms.
+- Create each PR **inside this fork**, base `ai`; merge only after its required
+  validation passes. Preserve the test-only commit and fix commit with a merge commit.
+- Build distributable artifacts from `ai`. PR builds validate the candidate;
+  artifact upload is limited to `ai` and includes the source commit and checksums.
+- Keep the core-failure, generated-file, credentials and UI-video rules below.
+
+## Upstream contributions (only when explicitly requested)
+
 PRs go to `hiddify/hiddify-app`, base `main`, from a branch pushed to the fork 
 Never open a PR inside the fork.
 
