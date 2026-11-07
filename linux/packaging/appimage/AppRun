@@ -94,7 +94,16 @@ OPTIND=1
 # Resetting OPTIND is necessary if getopts was used previously in the script.
 # It is a good idea to make OPTIND local if you process options in a function.
 
-# Filter out invalid environment arguments like %u before processing
+# CLI arguments are literal values, including desktop field-code strings.
+if [[ "${1-}" == "HiddifyCli" ]]; then
+    shift
+    if [[ "${1-}" == "--" ]]; then
+        shift
+    fi
+    exec ./HiddifyCli "$@"
+fi
+
+# Filter out invalid environment arguments like %u before processing GUI links
 CLEANED_ARGS=()
 for arg in "$@"; do
     case "$arg" in
@@ -112,10 +121,6 @@ else
 
 # Processing arguments
     case $1 in
-        HiddifyCli)  
-            exec ./HiddifyCli ${@:3}
-            exit 0
-            ;;
         h)
             show_help
             exit 0
