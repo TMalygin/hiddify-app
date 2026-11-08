@@ -82,6 +82,10 @@ jobs:
           java-version: '17'
       - uses: android-actions/setup-android@v3
         if: matrix.platform == 'android'
+        with:
+          # The action defaults to the removed legacy SDK package "tools".
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
       - name: Install Android toolchain
         if: matrix.platform == 'android'
         run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'ndk;28.2.13676358'
