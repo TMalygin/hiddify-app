@@ -79,7 +79,7 @@ jobs:
         if: matrix.platform == 'android'
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '21'
       - uses: android-actions/setup-android@v3
         if: matrix.platform == 'android'
         with:
@@ -132,6 +132,10 @@ jobs:
         if: matrix.platform == 'android'
         # Without a private keystore this is signed with the build's debug key.
         run: flutter build apk --release --target lib/main_prod.dart --target-platform android-arm64
+      - name: Android native regression tests (API 36)
+        if: matrix.platform == 'android'
+        working-directory: android
+        run: ./gradlew :app:testDebugUnitTest -Ptarget=lib/main_prod.dart --no-daemon
       - name: Collect artifacts and checksums
         env:
           BUILD_PLATFORM: ${{ matrix.platform }}
