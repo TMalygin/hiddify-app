@@ -38,7 +38,7 @@ class CoreSourceTest(unittest.TestCase):
         self.git("add", ".")
         self.git("commit", "-m", "fixture")
         self.commit = self.git("rev-parse", "HEAD").strip()
-        self.manifest = {"repository": self.core.as_uri(), "branch": "ai", "commit": self.commit}
+        self.manifest = {"repository": self.core.as_uri(), "branch": "ai", "commit": self.commit, "minimum_commit": self.commit}
         self.bin = self.root / "bin"
         self.bin.mkdir()
         (self.bin / "go").write_text("#!/bin/sh\nexit 0\n")
@@ -61,8 +61,10 @@ class CoreSourceTest(unittest.TestCase):
         path = ROOT / "core-source.json"
         self.assertTrue(path.is_file(), "ai builds still use upstream core without the authentication fix")
         manifest = json.loads(path.read_text())
-        self.assertEqual(manifest, {"repository": "https://github.com/TMalygin/hiddify-core.git",
-                                    "branch": "ai", "commit": PATCHED_CORE})
+        self.assertEqual(manifest["repository"], "https://github.com/TMalygin/hiddify-core.git")
+        self.assertEqual(manifest["branch"], "ai")
+        self.assertEqual(manifest["minimum_commit"], PATCHED_CORE)
+        self.assertRegex(manifest["commit"], r"^[0-9a-f]{40}$")
         workflow = yaml.load((ROOT / ".github/workflows/ai.yml").read_text(), Loader=yaml.BaseLoader)
         commands = "\n".join(s.get("run", "") for s in workflow["jobs"]["build"]["steps"])
         self.assertIn("python3 scripts/build_ai_core.py", commands)
@@ -94,6 +96,16 @@ class CoreSourceTest(unittest.TestCase):
         result = self.build()
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("does not belong to ai", result.stdout)
+        self.assertFalse((self.workspace / "hiddify-core/bin").exists())
+        self.assertFalse((self.workspace / "build/ai-core/CORE_SOURCE.json").exists())
+
+    def test_core_older_than_security_baseline_is_rejected(self):
+        (self.core / "payload").write_bytes(b"security fix\n")
+        self.git("commit", "-am", "security baseline")
+        self.manifest["minimum_commit"] = self.git("rev-parse", "HEAD").strip()
+        result = self.build()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("security baseline", result.stdout)
         self.assertFalse((self.workspace / "hiddify-core/bin").exists())
         self.assertFalse((self.workspace / "build/ai-core/CORE_SOURCE.json").exists())
 
