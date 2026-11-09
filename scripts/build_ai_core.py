@@ -17,7 +17,8 @@ def build(platform):
         raise ValueError("core source must pin a full commit from ai")
 
     output = workspace / "build/ai-core"
-    source = output / "source"
+    # npm's existing lockfile derives its project name from this directory.
+    source = output / "hiddify-core"
     source.mkdir(parents=True, exist_ok=False)
     environment = {**os.environ, "HIDDIFY_BUILD_ID": commit}
 
@@ -35,7 +36,9 @@ def build(platform):
     run("git", "checkout", "--detach", commit)
     if run("git", "rev-parse", "HEAD", capture=True).strip() != commit:
         raise ValueError("core checkout does not match the source pin")
-    run("git", "submodule", "update", "--init", "--recursive")
+    run("git", "-c", "url.https://github.com/.insteadOf=git@github.com:",
+        "submodule", "update", "--init", "--recursive")
+    (source / "bin").mkdir(exist_ok=True)
 
     if platform == "linux":
         run("make", "cronet-amd64")
