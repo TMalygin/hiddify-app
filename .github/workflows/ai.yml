@@ -145,7 +145,7 @@ jobs:
             cp dist/*/*.AppImage artifacts/
             cp dist/*/*.tar.gz artifacts/
           else
-            cp build/app/outputs/flutter-apk/*.apk artifacts/
+            python3 scripts/collect_android_artifact.py
           fi
           printf '%s\n' "$GITHUB_SHA" > artifacts/COMMIT
           (cd artifacts && sha256sum -- * > SHA256SUMS)
