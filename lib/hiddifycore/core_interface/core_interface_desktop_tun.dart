@@ -306,6 +306,13 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
   Future<bool> stop() async {
     _status.add(const CoreStatus.stopping());
     final wasAdminBg = _usingAdminBg;
+    if (wasAdminBg) {
+      await _runCli(['admin_bgservice', 'disconnect']);
+    }
+    // Keep the active client and ownership when stopping fails. An error or
+    // timeout must reach the caller instead of being reported as disconnected.
+    _checkResponse(await fgClient.stop(Empty()).timeout(const Duration(seconds: 5)), allowStopped: true);
+
     final old = _serviceChannel;
     _serviceChannel = null;
     _usingAdminBg = false;
@@ -320,19 +327,6 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
           loggy.warning('service channel shutdown failed: $error');
         }
       }());
-    }
-    if (wasAdminBg) {
-      try {
-        await _runCli(['admin_bgservice', 'disconnect']);
-      } catch (error) {
-        loggy.warning('stopping the VPN service failed: $error');
-      }
-    }
-    try {
-      // Bounded: a stalled channel must fail the stop, not leave the next connect stuck on connecting.
-      _checkResponse(await fgClient.stop(Empty()).timeout(const Duration(seconds: 5)), allowStopped: true);
-    } catch (error) {
-      loggy.warning('stopping the in-process core failed: $error');
     }
     _status.add(const CoreStatus.stopped());
     return true;
