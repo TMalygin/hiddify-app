@@ -132,6 +132,10 @@ android {
         aidl true
     }
 
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+
     packaging {
         jniLibs {
             // store native libs (mainly the Go core) compressed in the APK; Android extracts them
@@ -153,6 +157,8 @@ flutter {
 }
 
 dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.16.1'
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     implementation 'com.google.code.gson:gson:2.11.0'
