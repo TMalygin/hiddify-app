@@ -49,7 +49,6 @@ abstract class ConfigOptions {
     mapFrom: Region.values.byName,
     mapTo: (value) => value.name,
   );
-  static final useXrayCoreWhenPossible = PreferencesNotifier.create<bool, bool>("use-xray-core-when-possible", false);
   static final useSystemTlsEngine = PreferencesNotifier.create<bool, bool>("use-system-tls-engine", true);
   // static final blockAds = PreferencesNotifier.create<bool, bool>("block-ads", false);
   static final logLevel = PreferencesNotifier.create<LogLevel, String>(
@@ -476,7 +475,6 @@ abstract class ConfigOptions {
     "balancer-strategy": balancerStrategy,
     "default-proxy": defaultProxy,
     // "block-ads": blockAds,
-    "use-xray-core-when-possible": useXrayCoreWhenPossible,
     "use-system-tls-engine": useSystemTlsEngine,
     "service-mode": serviceMode,
     "log-level": logLevel,
@@ -608,7 +606,6 @@ abstract class ConfigOptions {
       balancerStrategy: ref.watch(balancerStrategy),
       defaultProxy: ref.watch(defaultProxy),
       // blockAds: ref.watch(blockAds),
-      useXrayCoreWhenPossible: false, // the option is off and hidden; a stored true is ignored
       useSystemTlsEngine: ref.watch(useSystemTlsEngine),
       executeConfigAsIs: false,
       logLevel: ref.watch(logLevel),
@@ -633,7 +630,8 @@ abstract class ConfigOptions {
       urlTestInterval: ref.watch(urlTestInterval),
       enableClashApi: ref.watch(enableClashApi),
       clashApiPort: ref.watch(clashApiPort),
-      enableTun: mode == ServiceMode.tun,
+      enableTun: mode == ServiceMode.tun || mode == ServiceMode.router,
+      routerMode: mode == ServiceMode.router,
       // enableTunService: mode == false, //ServiceMode.tunService,
       setSystemProxy: mode == ServiceMode.systemProxy,
       // bypassLan: ref.watch(bypassLan),

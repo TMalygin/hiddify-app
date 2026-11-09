@@ -49,6 +49,8 @@ class ProfileParser with InfraLogger {
     'chain-status',
     'extra-security',
     'keep-top',
+    'keep-top-quick',
+    'keep-top-countries',
     'keep-tags',
   ];
   static const allowedProfileHeaders = [
@@ -160,18 +162,12 @@ class ProfileParser with InfraLogger {
     // if (url.startsWith("http://"))
     //   throw const ProfileFailure.invalidUrl('HTTP is not supported. Please use HTTPS for secure connection.');
 
-    final rs = await _httpClient
-        .download(
-          url.trim(),
-          tempFilePath,
-          cancelToken: cancelToken,
-        )
-        .catchError((err) {
-          if (CancelToken.isCancel(err as DioException)) {
-            throw const ProfileFailure.cancelByUser('HTTP request for getting profile content canceled by user.');
-          }
-          throw err;
-        });
+    final rs = await _httpClient.download(url.trim(), tempFilePath, cancelToken: cancelToken).catchError((err) {
+      if (CancelToken.isCancel(err as DioException)) {
+        throw const ProfileFailure.cancelByUser('HTTP request for getting profile content canceled by user.');
+      }
+      throw err;
+    });
     // fixing headers before return
     return rs.headers.map.map((key, value) {
       if (value.length == 1) return MapEntry(key, value.first);
@@ -296,8 +292,9 @@ class ProfileParser with InfraLogger {
   /// Tolerant of real-world noise: a segment without a `key=value` pair (a
   /// stray `;;`, a trailing `;`, or a malformed token) is skipped instead of
   /// throwing and failing the whole profile parse. Values may be decimals and
-  /// are truncated to int. `upload` and `download` are required; a missing or
-  /// `0` `total`/`expire` is treated as "unlimited".
+  /// are truncated to int. `upload` and `download` are required; a missing,
+  /// `0` or unreadable `total`/`expire` is treated as "unlimited", and so is an
+  /// `expire` past [infiniteTimeThreshold].
   static SubscriptionInfo? _parseSubscriptionInfo(String subInfoStr) {
     final map = <String, int?>{};
     for (final segment in subInfoStr.split(';')) {
@@ -305,11 +302,14 @@ class ProfileParser with InfraLogger {
       if (parts.length < 2) continue;
       final key = parts.first.trim();
       if (key.isEmpty) continue;
-      map[key] = num.tryParse(parts[1].trim())?.toInt();
+      // NaN, infinity and negatives count as unreadable: toInt() throws on the first two.
+      final value = num.tryParse(parts[1].trim());
+      map[key] = (value == null || !value.isFinite || value < 0) ? null : value.toInt();
     }
     if (map case {"upload": final upload?, "download": final download?, "total": final total, "expire": var expire}) {
       final total1 = (total == null || total == 0) ? infiniteTrafficThreshold + 1 : total;
-      expire = (expire == null || expire == 0) ? infiniteTimeThreshold : expire;
+      // An expiry past the threshold is no expiry; it may also be beyond what DateTime holds.
+      expire = (expire == null || expire == 0 || expire > infiniteTimeThreshold) ? infiniteTimeThreshold : expire;
       return SubscriptionInfo(
         upload: upload,
         download: download,
@@ -449,6 +449,10 @@ class ProfileParser with InfraLogger {
     if (content.contains("[Interface]")) {
       return ProxyType.wireguard.label;
     }
+    // a .ovpn file: its certificate inline, and the server it connects to
+    if (content.contains('<ca>') && RegExp(r'^\s*remote\s', multiLine: true).hasMatch(content)) {
+      return 'OpenVPN';
+    }
     final lines = content.split('\n');
     String? name;
     for (final line in lines) {
@@ -470,6 +474,7 @@ class ProfileParser with InfraLogger {
         'shadowtls' => fragment ?? ProxyType.shadowtls.label,
         'mieru' => fragment ?? ProxyType.mieru.label,
         'warp' => fragment ?? ProxyType.warp.label,
+        'ovpn' => fragment ?? 'OpenVPN',
         // any other link (psiphon://, anytls://, naive+https://, ...): its name, else its scheme
         final scheme when scheme.isNotEmpty && line.trimLeft().startsWith('$scheme://') =>
           fragment ?? _schemeLabel(scheme),
@@ -550,6 +555,9 @@ class ProfileParser with InfraLogger {
     final fragmentInput = headers.remove('fragment')?.toString();
     final extraSecurityInput = headers.remove('extra-security')?.toString();
     final keepTopInput = headers.remove('keep-top')?.toString();
+    // the user's choices only, never a subscription's
+    headers.remove('keep-top-quick');
+    headers.remove('keep-top-countries');
 
     // extra-security: exactly one documented mode. The app's own setting takes
     // precedence over the subscription; an unrecognised value is ignored.
@@ -572,6 +580,14 @@ class ProfileParser with InfraLogger {
     // keep-top: the user's choice, else the subscription's; -1 (or none) runs every proxy
     if (userOverride?.keepTop ?? keepTopHeader(keepTopInput) case final keepTop?) {
       headers['keep-top'] = keepTop;
+    }
+    // keep-top-quick: picks the fastest without testing every proxy, unless the user turned it off
+    if (userOverride?.keepTopQuick ?? true) {
+      headers['keep-top-quick'] = true;
+    }
+    // keep-top-countries: only proxies of these countries are kept
+    if (userOverride?.keepTopCountries case final countries? when countries.isNotEmpty) {
+      headers['keep-top-countries'] = countries;
     }
     // keep-tags: the proxies the user chose run, and only them, while any is still in the profile
     if (userOverride?.keepTags case final tags? when tags.isNotEmpty) {

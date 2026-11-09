@@ -19,7 +19,6 @@ class SingboxConfigOption with _$SingboxConfigOption {
     required BalancerStrategy balancerStrategy,
     @Default(DefaultProxy.balance) DefaultProxy defaultProxy,
     // required bool blockAds,
-    required bool useXrayCoreWhenPossible,
     @Default(true) bool useSystemTlsEngine,
     required bool executeConfigAsIs,
     required LogLevel logLevel,
@@ -49,12 +48,21 @@ class SingboxConfigOption with _$SingboxConfigOption {
     /// for all of them.
     @Default(-1) int keepTop,
 
+    /// Whether keep top may pick before every proxy is tested (`keep-top-quick`).
+    @Default(false) bool keepTopQuick,
+
+    /// The countries keep top keeps proxies of (`keep-top-countries`); empty for any.
+    @Default(<String>[]) List<String> keepTopCountries,
+
     /// The profile's proxies the user chose to run, and only them (`keep-tags`).
     @Default(<String>[]) List<String> keepTags,
     @IntervalInSecondsConverter() required Duration urlTestInterval,
     required bool enableClashApi,
     required int clashApiPort,
     required bool enableTun,
+
+    /// Router mode (`router-mode`): the TUN, for the whole network this Linux device routes.
+    @Default(false) bool routerMode,
     // required bool enableTunService,
     required bool setSystemProxy,
     // required bool bypassLan,

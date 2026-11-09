@@ -41,13 +41,17 @@ ASSET_CATALOG: list[tuple[str, str, str]] = [
     ("Windows", "Hiddify-Windows-Portable-x64.zip", "Portable x64"),
     ("macOS (v10.15+)", "Hiddify-MacOS.dmg", "DMG Universal"),
     ("macOS (v10.15+)", "Hiddify-MacOS-Installer.pkg", "PKG Universal"),
-    ("macOS (v10.15+)", "Hiddify-MacOS-AppStore.dmg", "App Store DMG Universal"),
-    ("macOS (v10.15+)", "Hiddify-MacOS-AppStore.pkg", "App Store PKG Universal"),
     ("iOS", "Hiddify-iOS.ipa", "IPA iOS"),
     ("Linux", "Hiddify-Linux-x64-AppImage.AppImage", "AppImage x64"),
     ("Linux", "Hiddify-Linux-x64-AppImage.tar.gz", "AppImage x64 (tar.gz)"),
     ("Linux", "Hiddify-Debian-x64.deb", "DebPackage x64"),
     ("Linux", "Hiddify-rpm-x64.rpm", "RpmPackage x64"),
+    ("Linux", "Hiddify-Linux-x64.tar.gz", "All-in-one x64 (install.sh)"),
+    ("Linux", "Hiddify-Linux-arm64-AppImage.AppImage", "AppImage ARM64"),
+    ("Linux", "Hiddify-Linux-arm64-AppImage.tar.gz", "AppImage ARM64 (tar.gz)"),
+    ("Linux", "Hiddify-Linux-arm64.tar.gz", "All-in-one ARM64 (install.sh)"),
+    ("Linux", "Hiddify-Debian-arm64.deb", "DebPackage ARM64"),
+    ("Linux", "Hiddify-rpm-arm64.rpm", "RpmPackage ARM64"),
 ]
 
 # Not sent to VirusTotal: it rejects the IPA upload (HTTP 409), and an iOS app cannot

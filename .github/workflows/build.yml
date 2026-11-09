@@ -22,7 +22,7 @@ env:
   TARGET_NAME_gz: "Hiddify-Linux-x64-AppImage.tar"
   TARGET_NAME_AppImage: "Hiddify-Linux-x64-AppImage"
   TARGET_NAME_deb: "Hiddify-Debian-x64"
-  # TARGET_NAME_rpm: "Hiddify-rpm-x64"
+  TARGET_NAME_rpm: "Hiddify-rpm-x64"
   TARGET_NAME_apk: "Hiddify-Android"
   TARGET_NAME_aab: "Hiddify-Android"
   TARGET_NAME_exe: "Hiddify-Windows-Setup-x64"
@@ -86,9 +86,11 @@ jobs:
           - { platform: android-apk,       os: ubuntu-latest,  targets: apk }
           - { platform: android-aab,       os: ubuntu-latest,  targets: aab }
           - { platform: windows,          os: windows-latest, aarch: amd64,     targets: "exe,msix,zip" }
-          - { platform: linux,            os: ubuntu-22.04,   aarch: amd64,     targets: "deb,gz,AppImage" }
+          - { platform: linux,            os: ubuntu-22.04,   aarch: amd64,     targets: "deb,rpm,gz,AppImage" }
+          # Native arm64 runner (same Ubuntu, so the same glibc baseline as x64). Its files are
+          # named like the x64 ones with x64 -> arm64 (see "Copy to out unix").
+          - { platform: linux-arm64,      os: ubuntu-22.04-arm, aarch: arm64,   targets: "deb,rpm,gz,AppImage" }
           # - { platform: linux-amd64,      os: ubuntu-22.04,   aarch: amd64,     targets: "deb,gz" }
-          # - { platform: linux-arm64,      os: ubuntu-24.04-arm, aarch: arm64,   targets: "deb,gz" }
           # - { platform: linux-amd64-musl, os: ubuntu-22.04,   aarch: amd64,     targets: "deb,gz" }
           # - { platform: linux-arm64-musl, os: ubuntu-24.04-arm, aarch: arm64,   targets: "deb,gz" }
           - { platform: macos,            os: macos-26,       aarch: universal, targets: "dmg,pkg" }
@@ -140,7 +142,10 @@ jobs:
       #     channel: 'stable'
       #     flutter-version: ${{ env.FLUTTER_VERSION }}
 
+      # Flutter publishes no Linux arm64 SDK archive, so arm64 uses the SDK git checkout that
+      # `make linux-arm64-install-deps` makes in ~/develop/flutter (put on PATH in "Setup dependencies").
       - name: Setup Flutter
+        if: matrix.platform != 'linux-arm64'
         uses: subosito/flutter-action@v2.21.0 #issue with 2.13
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
@@ -236,8 +241,14 @@ jobs:
                   
       - name: Setup dependencies
         run: |
-          make ${{ matrix.platform }}-install-deps  
+          make ${{ matrix.platform }}-install-deps
           echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      - name: Add arm64 Flutter to PATH
+        if: matrix.platform == 'linux-arm64'
+        run: |
+          echo "$HOME/develop/flutter/bin" >> $GITHUB_PATH
+          "$HOME/develop/flutter/bin/flutter" --version
 
       - name: Setup Android Signing Properties
         if: ${{ inputs.upload-artifact && startsWith(matrix.platform,'android') }}
@@ -503,11 +514,13 @@ jobs:
           for EXT in $(echo ${{ matrix.targets }} | tr ',' '\n'); do
             KEY=TARGET_NAME_${EXT}
             FILENAME=${!KEY}
+            # arm64 Linux: Hiddify-Debian-x64 -> Hiddify-Debian-arm64, Hiddify-Linux-x64-AppImage -> ...-arm64-...
+            [[ "${{ matrix.aarch }}" == "arm64" ]] && FILENAME=${FILENAME//x64/arm64}
             echo "For $EXT ($KEY) filename is ${FILENAME}"
             mv dist/*/*.$EXT tmp_out/${FILENAME}.$EXT
             ls tmp_out
             [[ "$EXT" != "gz" ]] && chmod +x tmp_out/${FILENAME}.$EXT || echo "Skipping chmod for gz"
-            if [ "${{matrix.platform}}" == "linux" ];then
+            if [[ "${{matrix.platform}}" == linux* ]];then
               cp ./.github/help/linux/* tmp_out/
             else
               cp ./.github/help/mac-windows/* tmp_out/
@@ -553,12 +566,38 @@ jobs:
         run: |
           rm -f ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision || true
           rm -rf ~/Library/Developer/Xcode/UserData/Provisioning\ Profiles || true
+  # One Linux download per CPU: Hiddify-Linux-x64.tar.gz and Hiddify-Linux-arm64.tar.gz, each with
+  # that CPU's deb, rpm and AppImage and an install.sh that picks the system's package format
+  # (.github/scripts/make_linux_bundle.sh).
+  linux-bundle:
+    if: ${{ !cancelled() && inputs.upload-artifact }}
+    needs: [build]
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+      - name: Download the Linux builds
+        uses: actions/download-artifact@v7
+        with:
+          pattern: "linux*"
+          merge-multiple: true
+          path: ./linux-builds/
+      - name: Pack Hiddify-Linux-x64.tar.gz and Hiddify-Linux-arm64.tar.gz
+        run: bash .github/scripts/make_linux_bundle.sh ./linux-builds ./out
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: linux-bundle
+          path: ./out
+          retention-days: 1
+
   update-draft:
     # Always refresh the moving `draft` tag/release to this build's commit and assets.
     # On versioned tags this runs after upload-release so the two softprops jobs
     # never create releases / upload assets with the same token concurrently.
     if: ${{ !cancelled() && inputs.upload-artifact && needs.build.result == 'success' && (needs.upload-release.result == 'success' || needs.upload-release.result == 'skipped') }}
-    needs: [build, upload-release]
+    needs: [build, linux-bundle, upload-release]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -574,6 +613,10 @@ jobs:
           merge-multiple: true
           pattern: "*"
           path: ./out/
+
+      # The App Store build goes to TestFlight only: a user cannot install it from a download
+      - name: Leave out the Mac App Store build
+        run: rm -fv out/Hiddify-MacOS-AppStore.*
 
       - name: Display Files Structure
         run: ls -R
@@ -626,7 +669,7 @@ jobs:
 
   upload-release:
     if: ${{ inputs.upload-artifact && inputs.tag-name != 'draft' }}
-    needs: [build]
+    needs: [build, linux-bundle]
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -645,6 +688,8 @@ jobs:
           ls -R ./.github/
           ls -R ./.git/
           mv out/hiddify-android-market.aab  hiddify-android-market.aab
+          # The App Store build goes to TestFlight only: a user cannot install it from a download
+          rm -fv out/Hiddify-MacOS-AppStore.*
           # The MSIX ships CI-signed; windows-store-sync.yml replaces it with the
           # Store-signed copy once the version uploaded in Partner Center is live.
 
