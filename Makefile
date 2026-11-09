@@ -61,6 +61,7 @@ else
 	TARGET=lib/main.dart
 endif
 
+UPDATE_REPOSITORY ?= hiddify/hiddify-app
 BUILD_ARGS=--dart-define sentry_dsn=$(SENTRY_DSN)
 DISTRIBUTOR_ARGS=--skip-clean --build-target $(TARGET) --build-dart-define sentry_dsn=$(SENTRY_DSN)
 
@@ -397,7 +398,8 @@ linux-appimage-release:
 	--targets appimage \
 	--skip-clean \
 	--build-target=$(TARGET) \
-	--build-dart-define=sentry_dsn=$(SENTRY_DSN)
+	--build-dart-define=sentry_dsn=$(SENTRY_DSN) \
+	--build-dart-define=update_repository=$(UPDATE_REPOSITORY)
 	bash linux/packaging/appimage/repackage.sh dist
 
 DOCKER_IMAGE_NAME := hiddify-linux-builder
