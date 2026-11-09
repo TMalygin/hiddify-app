@@ -53,7 +53,7 @@ def build(platform):
             "./v2/...", env=native_environment)
         # Keep the committed module lock unchanged; prepare runs go mod tidy
         # for every OS, including platforms that this job does not build.
-        run("make", "--assume-old=prepare", "linux-amd64")
+        run("make", "--assume-old=prepare", "MAKE=make --assume-old=prepare", "linux-amd64")
         files = [("bin/HiddifyCli", "hiddify-core/bin/HiddifyCli"),
                  ("bin/lib/hiddify-core.so", "hiddify-core/bin/lib/hiddify-core.so")]
     else:
