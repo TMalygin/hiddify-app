@@ -160,18 +160,12 @@ class ProfileParser with InfraLogger {
     // if (url.startsWith("http://"))
     //   throw const ProfileFailure.invalidUrl('HTTP is not supported. Please use HTTPS for secure connection.');
 
-    final rs = await _httpClient
-        .download(
-          url.trim(),
-          tempFilePath,
-          cancelToken: cancelToken,
-        )
-        .catchError((err) {
-          if (CancelToken.isCancel(err as DioException)) {
-            throw const ProfileFailure.cancelByUser('HTTP request for getting profile content canceled by user.');
-          }
-          throw err;
-        });
+    final rs = await _httpClient.download(url.trim(), tempFilePath, cancelToken: cancelToken).catchError((err) {
+      if (CancelToken.isCancel(err as DioException)) {
+        throw const ProfileFailure.cancelByUser('HTTP request for getting profile content canceled by user.');
+      }
+      throw err;
+    });
     // fixing headers before return
     return rs.headers.map.map((key, value) {
       if (value.length == 1) return MapEntry(key, value.first);
@@ -304,12 +298,17 @@ class ProfileParser with InfraLogger {
       final parts = segment.split('=');
       if (parts.length < 2) continue;
       final key = parts.first.trim();
-      if (key.isEmpty) continue;
-      map[key] = num.tryParse(parts[1].trim())?.toInt();
+      if (!const {'upload', 'download', 'total', 'expire'}.contains(key)) continue;
+      final value = num.tryParse(parts[1].trim());
+      // Validate before truncation: NaN/infinity throw, and a negative fraction
+      // must not become a valid zero counter.
+      map[key] = value != null && value.isFinite && value >= 0 ? value.toInt() : null;
     }
     if (map case {"upload": final upload?, "download": final download?, "total": final total, "expire": var expire}) {
       final total1 = (total == null || total == 0) ? infiniteTrafficThreshold + 1 : total;
-      expire = (expire == null || expire == 0) ? infiniteTimeThreshold : expire;
+      // DateTime supports at most 100,000,000 days from the epoch. Check
+      // seconds before multiplication to avoid both range errors and overflow.
+      expire = (expire == null || expire == 0 || expire > 8_640_000_000_000) ? infiniteTimeThreshold : expire;
       return SubscriptionInfo(
         upload: upload,
         download: download,
