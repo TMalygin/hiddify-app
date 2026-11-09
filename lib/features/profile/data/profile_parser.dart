@@ -294,22 +294,24 @@ class ProfileParser with InfraLogger {
   /// throwing and failing the whole profile parse. Values may be decimals and
   /// are truncated to int. `upload` and `download` are required; a missing,
   /// `0` or unreadable `total`/`expire` is treated as "unlimited", and so is an
-  /// `expire` past [infiniteTimeThreshold].
+  /// `expire` outside DateTime's supported range.
   static SubscriptionInfo? _parseSubscriptionInfo(String subInfoStr) {
     final map = <String, int?>{};
     for (final segment in subInfoStr.split(';')) {
       final parts = segment.split('=');
       if (parts.length < 2) continue;
       final key = parts.first.trim();
-      if (key.isEmpty) continue;
-      // NaN, infinity and negatives count as unreadable: toInt() throws on the first two.
+      if (!const {'upload', 'download', 'total', 'expire'}.contains(key)) continue;
       final value = num.tryParse(parts[1].trim());
-      map[key] = (value == null || !value.isFinite || value < 0) ? null : value.toInt();
+      // Validate before truncation: NaN/infinity throw, and a negative fraction
+      // must not become a valid zero counter.
+      map[key] = value != null && value.isFinite && value >= 0 ? value.toInt() : null;
     }
     if (map case {"upload": final upload?, "download": final download?, "total": final total, "expire": var expire}) {
       final total1 = (total == null || total == 0) ? infiniteTrafficThreshold + 1 : total;
-      // An expiry past the threshold is no expiry; it may also be beyond what DateTime holds.
-      expire = (expire == null || expire == 0 || expire > infiniteTimeThreshold) ? infiniteTimeThreshold : expire;
+      // DateTime supports at most 100,000,000 days from the epoch. Check
+      // seconds before multiplication to avoid both range errors and overflow.
+      expire = (expire == null || expire == 0 || expire > 8_640_000_000_000) ? infiniteTimeThreshold : expire;
       return SubscriptionInfo(
         upload: upload,
         download: download,
