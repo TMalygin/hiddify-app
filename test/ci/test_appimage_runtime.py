@@ -14,8 +14,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 TOOL_URL = "https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage"
 TOOL_SHA = "ed4ce84f0d9caff66f50bcca6ff6f35aae54ce8135408b3fa33abfc3cb384eb0"
-RUNTIME_URL = "https://github.com/AppImage/type2-runtime/releases/download/20251108/runtime-x86_64"
-RUNTIME_SHA = "2fca8b443c92510f1483a883f60061ad09b46b978b2631c807cd873a47ec260d"
+RUNTIME_URL = "https://api.github.com/repos/AppImage/type2-runtime/releases/assets/657374641"
+RUNTIME_SHA = "617aa77314d57c8b8e4fae9c3f0b35af7b30d5529cb69e98f64f92510ed98a46"
 RUNTIME = b"fixture runtime, no network\n"
 TOOL = b'''#!/usr/bin/env python3
 import json, os, sys
@@ -51,7 +51,7 @@ args = sys.argv[1:]
 url = args[-1]
 with open(os.environ['DOWNLOAD_RECORD'], 'a') as out:
     out.write(json.dumps(url) + '\\n')
-is_runtime = url.endswith('/runtime-x86_64')
+is_runtime = url == os.environ['RUNTIME_URL']
 if is_runtime and os.environ.get('FAIL_RUNTIME'):
     sys.exit(22)
 payload = bytes.fromhex(os.environ['RUNTIME_HEX' if is_runtime else 'TOOL_HEX'])
@@ -62,7 +62,7 @@ Path(args[args.index('--output') + 1]).write_bytes(payload)
         self.env = {**os.environ, "PATH": f"{self.bin}:{os.environ['PATH']}",
                     "RUNNER_TEMP": str(self.root), "GITHUB_PATH": str(self.path_file),
                     "DOWNLOAD_RECORD": str(self.download_record), "TOOL_RECORD": str(self.tool_record),
-                    "TOOL_HEX": TOOL.hex(), "RUNTIME_HEX": RUNTIME.hex()}
+                    "TOOL_HEX": TOOL.hex(), "RUNTIME_HEX": RUNTIME.hex(), "RUNTIME_URL": RUNTIME_URL}
 
     @staticmethod
     def executable(path, contents):
