@@ -13,7 +13,8 @@ def build(platform):
     workspace = Path.cwd()
     manifest = json.loads((workspace / "core-source.json").read_text())
     commit = manifest["commit"]
-    if manifest["branch"] != "ai" or not re.fullmatch(r"[0-9a-f]{40}", commit):
+    minimum = manifest["minimum_commit"]
+    if manifest["branch"] != "ai" or not all(re.fullmatch(r"[0-9a-f]{40}", sha) for sha in (commit, minimum)):
         raise ValueError("core source must pin a full commit from ai")
 
     output = workspace / "build/ai-core"
@@ -33,6 +34,10 @@ def build(platform):
         run("git", "merge-base", "--is-ancestor", commit, "FETCH_HEAD")
     except subprocess.CalledProcessError as error:
         raise ValueError(f"Pinned core {commit} does not belong to ai") from error
+    try:
+        run("git", "merge-base", "--is-ancestor", minimum, commit)
+    except subprocess.CalledProcessError as error:
+        raise ValueError(f"Pinned core {commit} does not include the security baseline {minimum}") from error
     run("git", "checkout", "--detach", commit)
     if run("git", "rev-parse", "HEAD", capture=True).strip() != commit:
         raise ValueError("core checkout does not match the source pin")

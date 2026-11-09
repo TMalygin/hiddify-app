@@ -114,6 +114,18 @@ jobs:
           python3 scripts/build_ai_core.py "$BUILD_PLATFORM"
           mkdir -p artifacts
           cp build/ai-core/CORE_SOURCE.json artifacts/
+      - name: Verify Linux CLI loading outside the bundle
+        if: matrix.platform == 'linux'
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          source = json.loads(Path('build/ai-core/CORE_SOURCE.json').read_text())
+          cli = Path('hiddify-core/bin/HiddifyCli').resolve()
+          result = subprocess.run([str(cli), 'admin_bgservice', 'build-id'],
+                                  cwd=os.environ['RUNNER_TEMP'], capture_output=True, text=True, check=True)
+          assert result.stdout.strip() == source['commit'], result.stdout
+          PY
       - name: Prepare generated sources
         run: make common-prepare
       - name: Build AppImage
