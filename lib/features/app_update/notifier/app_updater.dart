@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:hiddify/core/app_info/app_info_provider.dart';
 import 'package:hiddify/core/http_client/http_client_provider.dart';
+import 'package:hiddify/features/app_update/data/appimage_installer.dart';
 import 'package:hiddify/features/app_update/model/install_kind.dart';
 import 'package:hiddify/features/app_update/model/remote_version_entity.dart';
 import 'package:hiddify/features/window/notifier/window_notifier.dart';
@@ -137,12 +138,8 @@ class AppUpdater extends _$AppUpdater with AppLogger {
         await _quit();
       case InstallKind.linuxAppImage:
         final running = Platform.environment['APPIMAGE']!;
-        // next to the running AppImage, so taking its place is a rename on one file system
-        final next = File('$running.new');
-        await file.copy(next.path);
-        await Process.run('chmod', ['755', next.path]);
-        await next.rename(running);
-        await Process.start(running, const [], mode: ProcessStartMode.detached);
+        final previous = await installAppImage(file, running);
+        loggy.info('Previous AppImage retained for recovery at ${previous.path}');
         await _quit();
       case InstallKind.linuxDeb:
         await Process.start('xdg-open', [file.path], mode: ProcessStartMode.detached);
