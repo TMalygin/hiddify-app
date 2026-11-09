@@ -294,17 +294,11 @@ class HiddifyCoreService with InfraLogger {
       if (core.managesLifecycle || core.managedStatus != null) {
         try {
           // Bound like _stopAndWait: a hung VPN channel must not leave Disconnecting forever.
-          await core.stop().timeout(
-            const Duration(seconds: 12),
-            onTimeout: () {
-              loggy.warning("managed core stop timed out after 12s");
-              return false;
-            },
-          );
+          final stopped = await core.stop().timeout(const Duration(seconds: 12));
+          if (!stopped) return left("The core did not confirm that it stopped.");
           statusController.add(currentState = const CoreStatus.stopped());
           return right(unit);
         } catch (error) {
-          statusController.add(currentState = const CoreStatus.stopped());
           return left(error.toString());
         }
       }
