@@ -17,9 +17,7 @@ concurrency:
 env:
   CHANNEL: prod
   FLUTTER_VERSION: '3.38.5'
-  CORE_VERSION: '5.5.5'
-  CORE_LINUX_SHA256: 9b522cb1b5e076d2fb41b595c5e10a10c46eb0adc2796cea81f40fa9f757e2a9
-  CORE_ANDROID_SHA256: d428adaf1ebe94046cdf3e32354f5ef84f9c3019432205ccf2a84f10a5a03dd0
+  GOMAXPROCS: '4'
   PYTHONDONTWRITEBYTECODE: '1'
 
 jobs:
@@ -56,7 +54,7 @@ jobs:
 
   build:
     needs: [checks]
-    timeout-minutes: 60
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
@@ -70,6 +68,10 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27.3'
+          cache: false
       - uses: subosito/flutter-action@v2.21.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
@@ -102,25 +104,16 @@ jobs:
           echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
           dart pub global activate fastforge 0.6.12
           echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
-      - name: Download and verify pinned core libraries
+      - name: Build and verify pinned fork core
         env:
           BUILD_PLATFORM: ${{ matrix.platform }}
         run: |
-          test "$(cat dependencies.properties)" = "core.version=$CORE_VERSION"
-          if [ "$BUILD_PLATFORM" = linux ]; then
-            asset=hiddify-lib-linux-amd64.tar.gz
-            digest=$CORE_LINUX_SHA256
-            destination=hiddify-core/bin
-          else
-            asset=hiddify-lib-android.tar.gz
-            digest=$CORE_ANDROID_SHA256
-            destination=android/app/libs
+          if [ "$BUILD_PLATFORM" = android ]; then
+            export ANDROID_NDK_HOME="$ANDROID_HOME/ndk/28.2.13676358"
           fi
-          archive="$RUNNER_TEMP/$asset"
-          curl --fail --location --output "$archive" "https://github.com/hiddify/hiddify-core/releases/download/v$CORE_VERSION/$asset"
-          printf '%s  %s\n' "$digest" "$archive" | sha256sum --check
-          mkdir -p "$destination"
-          tar xzf "$archive" -C "$destination"
+          python3 scripts/build_ai_core.py "$BUILD_PLATFORM"
+          mkdir -p artifacts
+          cp build/ai-core/CORE_SOURCE.json artifacts/
       - name: Prepare generated sources
         run: make common-prepare
       - name: Build AppImage
@@ -140,7 +133,7 @@ jobs:
         env:
           BUILD_PLATFORM: ${{ matrix.platform }}
         run: |
-          mkdir artifacts
+          mkdir -p artifacts
           if [ "$BUILD_PLATFORM" = linux ]; then
             cp dist/*/*.AppImage artifacts/
             cp dist/*/*.tar.gz artifacts/
