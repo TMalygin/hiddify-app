@@ -6,8 +6,11 @@ abstract class Constants {
   static const appName = "Hiddify";
   static const githubUrl = "https://github.com/hiddify/hiddify-next";
   static const licenseUrl = "https://github.com/hiddify/hiddify-next?tab=License-1-ov-file#readme";
-  static const githubReleasesApiUrl = "https://api.github.com/repos/hiddify/hiddify-app/releases";
-  static const githubLatestReleaseUrl = "https://github.com/hiddify/hiddify-app/releases/latest";
+  // Fork builds select their distribution channel at compile time. Never fall
+  // back to upstream: that would replace fixes specific to the fork.
+  static const _updateRepository = String.fromEnvironment("update_repository", defaultValue: "hiddify/hiddify-app");
+  static const githubReleasesApiUrl = "https://api.github.com/repos/$_updateRepository/releases";
+  static const githubLatestReleaseUrl = "https://github.com/$_updateRepository/releases/latest";
   static const telegramChannelUrl = "https://t.me/hiddify";
   static const privacyPolicyUrl = "https://hiddify.com/privacy-policy/";
   static const termsAndConditionsUrl = "https://hiddify.com/terms/";

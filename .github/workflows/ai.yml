@@ -16,6 +16,7 @@ concurrency:
 
 env:
   CHANNEL: prod
+  UPDATE_REPOSITORY: TMalygin/hiddify-app
   FLUTTER_VERSION: '3.38.5'
   GOMAXPROCS: '4'
   PYTHONDONTWRITEBYTECODE: '1'
@@ -51,6 +52,9 @@ jobs:
           python3 -c 'import sqlite3; print("Runner SQLite:", sqlite3.sqlite_version)'
           flutter analyze --no-fatal-infos --no-fatal-warnings
           flutter test
+          flutter test test/features/app_update/update_channel_test.dart \
+            --dart-define=expect_fork_updates=true \
+            --dart-define=update_repository=TMalygin/hiddify-app
 
   build:
     needs: [checks]
@@ -136,7 +140,7 @@ jobs:
       - name: Build Android APK
         if: matrix.platform == 'android'
         # Without a private keystore this is signed with the build's debug key.
-        run: flutter build apk --release --target lib/main_prod.dart --target-platform android-arm64
+        run: flutter build apk --release --target lib/main_prod.dart --target-platform android-arm64 --dart-define=update_repository="$UPDATE_REPOSITORY"
       - name: Android native regression tests (API 36)
         if: matrix.platform == 'android'
         working-directory: android
