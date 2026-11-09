@@ -77,7 +77,7 @@ void main() {
         respond(() => Completer<CoreInfoResponse>().future);
         Object? error;
         bool? result;
-        core.stop().then((value) => result = value, onError: (Object e) => error = e);
+        core.stop().then<void>((value) { result = value; }, onError: (Object e) { error = e; });
         clock.elapse(const Duration(seconds: 6));
         expect(error, isA<TimeoutException>());
         expect(result, isNull);
