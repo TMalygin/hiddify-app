@@ -346,7 +346,7 @@ windows-msix-release:
 	  --build-dart-define=sentry_dsn=$(SENTRY_DSN) \
 	  $(WINDOWS_PACKAGE_HOOK)
 
-linux-release: linux-deb-release linux-appimage-release
+linux-release: linux-deb-release linux-rpm-release linux-appimage-release
 
 linux-amd64-release: linux-release
 linux-arm64-release: linux-release
@@ -358,6 +358,21 @@ linux-deb-release:
 	fastforge package \
 	--platform linux \
 	--targets deb \
+	--skip-clean \
+	--build-target=$(TARGET) \
+	--build-dart-define=sentry_dsn=$(SENTRY_DSN)
+
+# Fedora, RHEL, openSUSE. The bundle's libsentry links the build host's (Ubuntu's) libcurl, whose
+# symbols carry the CURL_OPENSSL_4 version that Fedora's libcurl lacks: rpmbuild would require it
+# and dnf refuse the package, though the library loads without it. So that requirement is left out
+# (rpmbuild reads ~/.rpmmacros). fastforge's spec needs rpm < 4.20 (ubuntu-22.04 has 4.17): newer
+# rpm runs %install from BUILD/<name>-build, where the spec's relative paths are not found.
+linux-rpm-release:
+	grep -qs 'CURL_OPENSSL_4' ~/.rpmmacros || \
+	  printf '%s\n' '%__requires_exclude ^libcurl\\.so\\.4\\(CURL_OPENSSL_4\\)' >> ~/.rpmmacros
+	fastforge package \
+	--platform linux \
+	--targets rpm \
 	--skip-clean \
 	--build-target=$(TARGET) \
 	--build-dart-define=sentry_dsn=$(SENTRY_DSN)
@@ -419,6 +434,8 @@ DOCKER_CMD := \
 	tar -cf - --exclude='build' --exclude='.dart_tool' --exclude='dist' --exclude='dist_docker' --exclude='android' --exclude='windows' --exclude='ios' --exclude='macos' --exclude='.git' -C /host . | tar -xf - -C /app; \
 	cd /app; \
 	make linux-flutter-sync; \
+	echo '** Re-activating fastforge for the synced Dart SDK...'; \
+	dart pub global activate fastforge > /dev/null; \
 	make linux-prepare; \
 	echo '** Building Release (linux-release)...'; \
 	make linux-release; \
@@ -466,47 +483,53 @@ ios-simulator-validate:
 
 android-libs:
 	$(MKDIR) $(ANDROID_OUT) || echo Folder already exists. Skipping...
-	curl -L $(CORE_URL)/$(CORE_NAME)-android.tar.gz | tar xz -C $(ANDROID_OUT)/
+	curl -fL --retry 5 --retry-delay 5 --retry-all-errors $(CORE_URL)/$(CORE_NAME)-android.tar.gz | tar xz -C $(ANDROID_OUT)/
 
 android-apk-libs: android-libs
 android-aab-libs: android-libs
 
 windows-libs:
 	$(MKDIR) $(DESKTOP_OUT) || echo Folder already exists. Skipping...
-	curl -L $(CORE_URL)/$(CORE_NAME)-windows-amd64.tar.gz | tar xz -C $(DESKTOP_OUT)/
+	curl -fL --retry 5 --retry-delay 5 --retry-all-errors $(CORE_URL)/$(CORE_NAME)-windows-amd64.tar.gz | tar xz -C $(DESKTOP_OUT)/
 	ls $(DESKTOP_OUT) || dir $(DESKTOP_OUT)/
 	
 
 linux-amd64-libs:
 	mkdir -p $(DESKTOP_OUT)
-	curl -L $(CORE_URL)/$(CORE_NAME)-linux-amd64.tar.gz | tar xz -C $(DESKTOP_OUT)/
+	curl -fL --retry 5 --retry-delay 5 --retry-all-errors $(CORE_URL)/$(CORE_NAME)-linux-amd64.tar.gz | tar xz -C $(DESKTOP_OUT)/
 
 linux-arm64-libs:
 	mkdir -p $(DESKTOP_OUT)
-	curl -L $(CORE_URL)/$(CORE_NAME)-linux-arm64.tar.gz | tar xz -C $(DESKTOP_OUT)/
+	curl -fL --retry 5 --retry-delay 5 --retry-all-errors $(CORE_URL)/$(CORE_NAME)-linux-arm64.tar.gz | tar xz -C $(DESKTOP_OUT)/
 
 linux-amd64-musl-libs:
 	mkdir -p $(DESKTOP_OUT)
-	curl -L $(CORE_URL)/$(CORE_NAME)-linux-amd64-musl.tar.gz | tar xz -C $(DESKTOP_OUT)/
+	curl -fL --retry 5 --retry-delay 5 --retry-all-errors $(CORE_URL)/$(CORE_NAME)-linux-amd64-musl.tar.gz | tar xz -C $(DESKTOP_OUT)/
 
 linux-arm64-musl-libs:
 	mkdir -p $(DESKTOP_OUT)
-	curl -L $(CORE_URL)/$(CORE_NAME)-linux-arm64-musl.tar.gz | tar xz -C $(DESKTOP_OUT)/
+	curl -fL --retry 5 --retry-delay 5 --retry-all-errors $(CORE_URL)/$(CORE_NAME)-linux-arm64-musl.tar.gz | tar xz -C $(DESKTOP_OUT)/
 
 
 macos-libs:
 	mkdir -p $(DESKTOP_OUT) macos/Frameworks
-	curl -L $(CORE_URL)/$(CORE_NAME)-macos.tar.gz | tar xz -C $(DESKTOP_OUT)
+	curl -fL --retry 5 --retry-delay 5 --retry-all-errors $(CORE_URL)/$(CORE_NAME)-macos.tar.gz | tar xz -C $(DESKTOP_OUT)
 	# Tunnel bind ships in the same tarball (built by hiddify-core `make macos`).
 	test -d $(DESKTOP_OUT)/HiddifyTunnelCore.xcframework
 	rm -rf macos/Frameworks/HiddifyTunnelCore.xcframework
 	mv $(DESKTOP_OUT)/HiddifyTunnelCore.xcframework macos/Frameworks/
 	touch macos/Frameworks/HiddifyTunnelCore.xcframework/.downloaded
+	# The core helper (macos/scripts/embed-core-helper.sh) is built from the shared C launcher. CI
+	# does not check out the submodule, so take that file from the commit the app pins.
+	test -f hiddify-core/cmd/launcher/main.c || { \
+		mkdir -p hiddify-core/cmd/launcher && \
+		curl -fL --retry 5 --retry-delay 5 --retry-all-errors -o hiddify-core/cmd/launcher/main.c \
+			https://raw.githubusercontent.com/hiddify/hiddify-core/$$(git rev-parse HEAD:hiddify-core)/cmd/launcher/main.c; }
 
 ios-libs: #not tested
 	mkdir -p $(IOS_OUT)
 	rm -rf $(IOS_OUT)/HiddifyCore.xcframework
-	curl -L $(CORE_URL)/$(CORE_NAME)-ios.tar.gz | tar xz -C "$(IOS_OUT)"
+	curl -fL --retry 5 --retry-delay 5 --retry-all-errors $(CORE_URL)/$(CORE_NAME)-ios.tar.gz | tar xz -C "$(IOS_OUT)"
 
 get-geo-assets:
 	echo ""

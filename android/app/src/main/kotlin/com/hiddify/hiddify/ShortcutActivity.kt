@@ -54,6 +54,7 @@ class ShortcutActivity : Activity(), ServiceConnection.Callback {
         when (status) {
             Status.Started -> BoxService.stop()
             Status.Stopped -> {
+                // No app UI starts the core over gRPC here, so the service must start it itself.
                 Settings.startCoreAfterStartingService = true
                 BoxService.start()
             }
