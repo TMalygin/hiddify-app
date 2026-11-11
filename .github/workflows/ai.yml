@@ -160,6 +160,26 @@ jobs:
           expected=$(python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["tar_sha256"])' "$lock")
           gzip -dc squashfs-root/lib/hiddify-weston-runtime.tar.gz | sha256sum | cut -d ' ' -f1 > digest
           test "$(cat digest)" = "$expected"
+      - name: Test isolated applications with the default VLESS settings
+        if: matrix.platform == 'linux'
+        run: |
+          test_dir="$RUNNER_TEMP/appimage-profile"
+          mkdir -m 700 "$test_dir"
+          # Jammy's bubblewrap predates --disable-userns. Use a non-setuid
+          # build on the disposable runner; it is not part of the AppImage.
+          sudo apt-get install -y libcap-dev meson ninja-build python3-pip
+          curl --fail --location --output "$test_dir/bubblewrap.tar.xz" \
+            https://github.com/containers/bubblewrap/releases/download/v0.11.0/bubblewrap-0.11.0.tar.xz
+          printf '%s  %s\n' 988fd6b232dafa04b8b8198723efeaccdb3c6aa9c1c7936219d5791a8b7a8646 "$test_dir/bubblewrap.tar.xz" | sha256sum --check
+          tar -xf "$test_dir/bubblewrap.tar.xz" -C "$test_dir"
+          meson setup "$test_dir/bwrap-build" "$test_dir/bubblewrap-0.11.0" \
+            -Dtests=false -Dman=disabled -Dbash_completion=disabled -Dzsh_completion=disabled -Dselinux=disabled
+          meson compile -C "$test_dir/bwrap-build" bwrap
+          sudo install -m 0755 "$test_dir/bwrap-build/bwrap" /usr/bin/bwrap
+          /usr/bin/python3 -m pip install --only-binary=:all: --target "$test_dir/python" grpcio-tools==1.85.1
+          (cd build/ai-core/hiddify-core && go build -tags with_utls -o "$test_dir/reality-echo" ./tests/fixtures/sandbox_reality_server)
+          bash test/packaging/verify_appimage_default_vless.sh "$(realpath dist/*/Hiddify.AppImage)" \
+            "$test_dir/python" "$test_dir/reality-echo"
       - name: Build Android APK
         if: matrix.platform == 'android'
         # Without a private keystore this is signed with the build's debug key.

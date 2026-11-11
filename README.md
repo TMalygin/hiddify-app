@@ -120,6 +120,8 @@ Vless, Vmess, Reality, TUIC, Hysteria, Wireguard, SSH etc.
 
 ## ⚙️ Installation and tutorials
 
+In the Linux AppImage built from this fork's `ai` branch, open **Home → Isolated applications** to launch an executable as your regular user. With an active profile that has one supported VLESS/Reality exit, its traffic and DNS use that proxy with the default settings. Disconnecting leaves the application running offline. Connecting another supported profile restores access in the same process. A DIRECT exit or an ambiguous external selector keeps the application offline.
+
 **Find tutorial information on our wiki page by clicking on image below.**
 
 <div align="center">
