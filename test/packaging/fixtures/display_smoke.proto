@@ -1,0 +1,10 @@
+syntax = "proto3";
+package appimage_display_smoke;
+
+message DisplayRequest {
+  repeated string command = 1;
+  string application_id = 2;
+  string executable_root = 3;
+  bool chromium_sandbox = 4;
+  bool private_wayland = 5;
+}

@@ -1,0 +1,1411 @@
+{
+  "format": 1,
+  "arch": "amd64",
+  "version": "16.0.2-1",
+  "base_url": "https://snapshot.debian.org/archive/debian/20261108T120000Z",
+  "tar_sha256": "40cafb2edb7d162bcccdbeb62a74c0e2634b482d0a32d36ae1171bcbb9be511c",
+  "tar_bytes": 30187520,
+  "directories": [
+    "dev",
+    "home",
+    "home/display",
+    "proc",
+    "run",
+    "tmp"
+  ],
+  "packages": {
+    "base-files": {
+      "version": "14.2",
+      "filename": "base-files_14.2_amd64.deb",
+      "path": "pool/main/b/base-files/base-files_14.2_amd64.deb",
+      "source": "base-files",
+      "bytes": 87960,
+      "sha256": "74b9726f2f2eb9be66d886d48bd6841e57f53d1acae1a1acdc29877aa3e29dc6",
+      "files": [
+        "usr/share/common-licenses/AGPL-3.0",
+        "usr/share/common-licenses/Apache-2.0",
+        "usr/share/common-licenses/Artistic",
+        "usr/share/common-licenses/Artistic-2.0",
+        "usr/share/common-licenses/BSL-1.0",
+        "usr/share/common-licenses/CC-BY-3.0",
+        "usr/share/common-licenses/CC-BY-4.0",
+        "usr/share/common-licenses/CC-BY-SA-3.0",
+        "usr/share/common-licenses/CC-BY-SA-4.0",
+        "usr/share/common-licenses/CC0-1.0",
+        "usr/share/common-licenses/GFDL-1.1",
+        "usr/share/common-licenses/GFDL-1.2",
+        "usr/share/common-licenses/GFDL-1.3",
+        "usr/share/common-licenses/GPL-1",
+        "usr/share/common-licenses/GPL-2",
+        "usr/share/common-licenses/GPL-3",
+        "usr/share/common-licenses/LGPL-2",
+        "usr/share/common-licenses/LGPL-2.1",
+        "usr/share/common-licenses/LGPL-3",
+        "usr/share/common-licenses/MPL-1.1",
+        "usr/share/common-licenses/MPL-2.0",
+        "usr/share/common-licenses/OFL-1.1"
+      ],
+      "aliases": {
+        "usr/share/common-licenses/GFDL": "usr/share/common-licenses/GFDL-1.3",
+        "usr/share/common-licenses/GPL": "usr/share/common-licenses/GPL-3",
+        "usr/share/common-licenses/LGPL": "usr/share/common-licenses/LGPL-3",
+        "usr/share/doc/hiddify-weston/base-files/copyright": "usr/share/doc/base-files/copyright"
+      }
+    },
+    "fontconfig-config": {
+      "version": "2.17.1-5",
+      "filename": "fontconfig-config_2.17.1-5_amd64.deb",
+      "path": "pool/main/f/fontconfig/fontconfig-config_2.17.1-5_amd64.deb",
+      "source": "fontconfig",
+      "bytes": 56056,
+      "sha256": "ebece3f57ea585f2c165486c50ed08efa5419a605c52cb7a19d05a5e31afda02",
+      "files": [
+        "etc/fonts/conf.d/README",
+        "etc/fonts/fonts.conf"
+      ],
+      "aliases": {
+        "etc/fonts/conf.d/10-scale-bitmap-fonts.conf": "usr/share/fontconfig/conf.avail/10-scale-bitmap-fonts.conf",
+        "etc/fonts/conf.d/10-sub-pixel-none.conf": "usr/share/fontconfig/conf.avail/10-sub-pixel-none.conf",
+        "etc/fonts/conf.d/10-yes-antialias.conf": "usr/share/fontconfig/conf.avail/10-yes-antialias.conf",
+        "etc/fonts/conf.d/11-lcdfilter-default.conf": "usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf",
+        "etc/fonts/conf.d/20-unhint-small-vera.conf": "usr/share/fontconfig/conf.avail/20-unhint-small-vera.conf",
+        "etc/fonts/conf.d/30-metric-aliases.conf": "usr/share/fontconfig/conf.avail/30-metric-aliases.conf",
+        "etc/fonts/conf.d/40-nonlatin.conf": "usr/share/fontconfig/conf.avail/40-nonlatin.conf",
+        "etc/fonts/conf.d/45-generic.conf": "usr/share/fontconfig/conf.avail/45-generic.conf",
+        "etc/fonts/conf.d/45-latin.conf": "usr/share/fontconfig/conf.avail/45-latin.conf",
+        "etc/fonts/conf.d/48-spacing.conf": "usr/share/fontconfig/conf.avail/48-spacing.conf",
+        "etc/fonts/conf.d/49-sansserif.conf": "usr/share/fontconfig/conf.avail/49-sansserif.conf",
+        "etc/fonts/conf.d/50-user.conf": "usr/share/fontconfig/conf.avail/50-user.conf",
+        "etc/fonts/conf.d/51-local.conf": "usr/share/fontconfig/conf.avail/51-local.conf",
+        "etc/fonts/conf.d/60-generic.conf": "usr/share/fontconfig/conf.avail/60-generic.conf",
+        "etc/fonts/conf.d/60-latin.conf": "usr/share/fontconfig/conf.avail/60-latin.conf",
+        "etc/fonts/conf.d/65-fonts-persian.conf": "usr/share/fontconfig/conf.avail/65-fonts-persian.conf",
+        "etc/fonts/conf.d/65-nonlatin.conf": "usr/share/fontconfig/conf.avail/65-nonlatin.conf",
+        "etc/fonts/conf.d/69-unifont.conf": "usr/share/fontconfig/conf.avail/69-unifont.conf",
+        "etc/fonts/conf.d/70-no-bitmaps-except-emoji.conf": "usr/share/fontconfig/conf.avail/70-no-bitmaps-except-emoji.conf",
+        "etc/fonts/conf.d/80-delicious.conf": "usr/share/fontconfig/conf.avail/80-delicious.conf",
+        "etc/fonts/conf.d/90-synthetic.conf": "usr/share/fontconfig/conf.avail/90-synthetic.conf",
+        "usr/share/doc/hiddify-weston/fontconfig-config/copyright": "usr/share/doc/fontconfig-config/copyright"
+      }
+    },
+    "fonts-dejavu-core": {
+      "version": "2.37-9",
+      "filename": "fonts-dejavu-core_2.37-9_all.deb",
+      "path": "pool/main/f/fonts-dejavu/fonts-dejavu-core_2.37-9_all.deb",
+      "source": "fonts-dejavu",
+      "bytes": 840032,
+      "sha256": "b86ec13576ccf766f7066e783cf06ebd7af955d22276ccceac41b7ffefdcf8eb",
+      "files": [
+        "usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+      ],
+      "aliases": {
+        "usr/share/doc/hiddify-weston/fonts-dejavu-core/copyright": "usr/share/doc/fonts-dejavu-core/copyright"
+      }
+    },
+    "gcc-16-base": {
+      "version": "16.2.0-4",
+      "filename": "gcc-16-base_16.2.0-4_amd64.deb",
+      "path": "pool/main/g/gcc-16/gcc-16-base_16.2.0-4_amd64.deb",
+      "source": "gcc-16",
+      "bytes": 39320,
+      "sha256": "b81ebc677d1e2c4c0db8b3968f29addc18839d173a35366958fa815f3c5d1184",
+      "files": [],
+      "aliases": {
+        "usr/share/doc/hiddify-weston/gcc-16-base/copyright": "usr/share/doc/gcc-16-base/copyright",
+        "usr/share/doc/hiddify-weston/libatomic1/copyright": "usr/share/doc/gcc-16-base/copyright"
+      }
+    },
+    "libatomic1": {
+      "version": "16.2.0-4",
+      "filename": "libatomic1_16.2.0-4_amd64.deb",
+      "path": "pool/main/g/gcc-16/libatomic1_16.2.0-4_amd64.deb",
+      "source": "gcc-16",
+      "bytes": 10416,
+      "sha256": "dbdb5dc514ef881926ff4958d2c312d4fd29f0cc68c8ecb763e9138de338030e",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libatomic.so.1": "usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0"
+      }
+    },
+    "libaudit1": {
+      "version": "1:4.2.1-1+b1",
+      "filename": "libaudit1_4.2.1-1+b1_amd64.deb",
+      "path": "pool/main/a/audit/libaudit1_4.2.1-1+b1_amd64.deb",
+      "source": "audit (1:4.2.1-1)",
+      "bytes": 59932,
+      "sha256": "9a05f7ecb2b323c744927ff5d2dd975d49b13a2ff01be3415d884aca0128bfce",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libaudit.so.1": "usr/lib/x86_64-linux-gnu/libaudit.so.1.0.0",
+        "usr/share/doc/hiddify-weston/libaudit1/copyright": "usr/share/doc/libaudit1/copyright"
+      }
+    },
+    "libblkid1": {
+      "version": "2.42.4-1",
+      "filename": "libblkid1_2.42.4-1_amd64.deb",
+      "path": "pool/main/u/util-linux/libblkid1_2.42.4-1_amd64.deb",
+      "source": "util-linux",
+      "bytes": 185476,
+      "sha256": "4b2bb042aec4edb75afd462c6e1b946a85fded738df063650394a4c0f9ede0ba",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libblkid.so.1": "usr/lib/x86_64-linux-gnu/libblkid.so.1.1.0",
+        "usr/share/doc/hiddify-weston/libblkid1/copyright": "usr/share/doc/libblkid1/copyright"
+      }
+    },
+    "libbrotli1": {
+      "version": "1.2.0-4.1",
+      "filename": "libbrotli1_1.2.0-4.1_amd64.deb",
+      "path": "pool/main/b/brotli/libbrotli1_1.2.0-4.1_amd64.deb",
+      "source": "brotli",
+      "bytes": 325284,
+      "sha256": "2d58db32250aa535e27c62e98451debd43b539aa026066806432e842d5b56c00",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1": "usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1.2.0",
+        "usr/lib/x86_64-linux-gnu/libbrotlidec.so.1": "usr/lib/x86_64-linux-gnu/libbrotlidec.so.1.2.0",
+        "usr/share/doc/hiddify-weston/libbrotli1/copyright": "usr/share/doc/libbrotli1/copyright"
+      }
+    },
+    "libbz2-1.0": {
+      "version": "1.0.8-6+b2",
+      "filename": "libbz2-1.0_1.0.8-6+b2_amd64.deb",
+      "path": "pool/main/b/bzip2/libbz2-1.0_1.0.8-6+b2_amd64.deb",
+      "source": "bzip2 (1.0.8-6)",
+      "bytes": 39948,
+      "sha256": "04c7528234a6a4a8a2c2470f1470a7a616d90904fe8cdccf4c2c655540cdc61f",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libbz2.so.1.0": "usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4",
+        "usr/share/doc/hiddify-weston/libbz2-1.0/copyright": "usr/share/doc/libbz2-1.0/copyright"
+      }
+    },
+    "libc6": {
+      "version": "2.43-7",
+      "filename": "libc6_2.43-7_amd64.deb",
+      "path": "pool/main/g/glibc/libc6_2.43-7_amd64.deb",
+      "source": "glibc",
+      "bytes": 1866392,
+      "sha256": "5c71715c51103beb4fbba9fe9f8dff604af6610dfa71c70bff342f54a7860803",
+      "files": [
+        "usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+        "usr/lib/x86_64-linux-gnu/libc.so.6",
+        "usr/lib/x86_64-linux-gnu/libm.so.6"
+      ],
+      "aliases": {
+        "lib64/ld-linux-x86-64.so.2": "usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+        "usr/share/doc/hiddify-weston/libc6/copyright": "usr/share/doc/libc6/copyright"
+      }
+    },
+    "libcairo2": {
+      "version": "1.18.4-3+b1",
+      "filename": "libcairo2_1.18.4-3+b1_amd64.deb",
+      "path": "pool/main/c/cairo/libcairo2_1.18.4-3+b1_amd64.deb",
+      "source": "cairo (1.18.4-3)",
+      "bytes": 542656,
+      "sha256": "c00c80b54d0157659e9de5a0f9573c8ec32b16f54b8b62d1b969c5dbc00c8874",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libcairo.so.2": "usr/lib/x86_64-linux-gnu/libcairo.so.2.11804.4",
+        "usr/share/doc/hiddify-weston/libcairo2/copyright": "usr/share/doc/libcairo2/copyright"
+      }
+    },
+    "libcap-ng0": {
+      "version": "0.9.6-1+b1",
+      "filename": "libcap-ng0_0.9.6-1+b1_amd64.deb",
+      "path": "pool/main/libc/libcap-ng/libcap-ng0_0.9.6-1+b1_amd64.deb",
+      "source": "libcap-ng (0.9.6-1)",
+      "bytes": 19244,
+      "sha256": "e9aa6dd94b6773fea96e405a0e2c7b7f29da33838901ec686935706d39a42e85",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libcap-ng.so.0": "usr/lib/x86_64-linux-gnu/libcap-ng.so.0.0.0",
+        "usr/share/doc/hiddify-weston/libcap-ng0/copyright": "usr/share/doc/libcap-ng0/copyright"
+      }
+    },
+    "libdatrie1": {
+      "version": "0.2.14-2",
+      "filename": "libdatrie1_0.2.14-2_amd64.deb",
+      "path": "pool/main/libd/libdatrie/libdatrie1_0.2.14-2_amd64.deb",
+      "source": "libdatrie",
+      "bytes": 39108,
+      "sha256": "5b11c892c3cd56fc6139e9d1b30e2d5a3019e668d823725b61d026d6ce1130a8",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libdatrie.so.1": "usr/lib/x86_64-linux-gnu/libdatrie.so.1.4.1",
+        "usr/share/doc/hiddify-weston/libdatrie1/copyright": "usr/share/doc/libdatrie1/copyright"
+      }
+    },
+    "libdisplay-info3": {
+      "version": "0.3.0-1+b1",
+      "filename": "libdisplay-info3_0.3.0-1+b1_amd64.deb",
+      "path": "pool/main/libd/libdisplay-info/libdisplay-info3_0.3.0-1+b1_amd64.deb",
+      "source": "libdisplay-info (0.3.0-1)",
+      "bytes": 78792,
+      "sha256": "dfc160ad29f280ec15fea4d3d61536d2b477b37288b53276bbd121a185d801d6",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libdisplay-info.so.3": "usr/lib/x86_64-linux-gnu/libdisplay-info.so.0.3.0",
+        "usr/share/doc/hiddify-weston/libdisplay-info3/copyright": "usr/share/doc/libdisplay-info3/copyright"
+      }
+    },
+    "libdrm2": {
+      "version": "2.4.134-3",
+      "filename": "libdrm2_2.4.134-3_amd64.deb",
+      "path": "pool/main/libd/libdrm/libdrm2_2.4.134-3_amd64.deb",
+      "source": "libdrm",
+      "bytes": 38528,
+      "sha256": "e1a841ed70c7b7bbd9a03f41c781101d668db0d35b4eee58d7705a6c32b88aaa",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libdrm.so.2": "usr/lib/x86_64-linux-gnu/libdrm.so.2.134.0",
+        "usr/share/doc/hiddify-weston/libdrm2/copyright": "usr/share/doc/libdrm2/copyright"
+      }
+    },
+    "libevdev2": {
+      "version": "1.14.0+dfsg-1",
+      "filename": "libevdev2_1.14.0+dfsg-1_amd64.deb",
+      "path": "pool/main/libe/libevdev/libevdev2_1.14.0+dfsg-1_amd64.deb",
+      "source": "libevdev",
+      "bytes": 33696,
+      "sha256": "7e0547e08aa3be04b9356cba9d4271c0c84d6f6647d00977f0fffc497e9f1710",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libevdev.so.2": "usr/lib/x86_64-linux-gnu/libevdev.so.2.3.0",
+        "usr/share/doc/hiddify-weston/libevdev2/copyright": "usr/share/doc/libevdev2/copyright"
+      }
+    },
+    "libexpat1": {
+      "version": "2.10.0-1",
+      "filename": "libexpat1_2.10.0-1_amd64.deb",
+      "path": "pool/main/e/expat/libexpat1_2.10.0-1_amd64.deb",
+      "source": "expat",
+      "bytes": 135244,
+      "sha256": "9a333cf590099569f577c1a1d47ac1f439eab14c1faff09b7e81ce3802938003",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libexpat.so.1": "usr/lib/x86_64-linux-gnu/libexpat.so.1.13.1",
+        "usr/share/doc/hiddify-weston/libexpat1/copyright": "usr/share/doc/libexpat1/copyright"
+      }
+    },
+    "libffi8": {
+      "version": "3.8.0-2",
+      "filename": "libffi8_3.8.0-2_amd64.deb",
+      "path": "pool/main/libf/libffi/libffi8_3.8.0-2_amd64.deb",
+      "source": "libffi",
+      "bytes": 32472,
+      "sha256": "8f52979b2f3831088c419aae858f10fd3ad7e42cc6c1d28967bae996a98223a4",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libffi.so.8": "usr/lib/x86_64-linux-gnu/libffi.so.8.5.0",
+        "usr/share/doc/hiddify-weston/libffi8/copyright": "usr/share/doc/libffi8/copyright"
+      }
+    },
+    "libfontconfig1": {
+      "version": "2.17.1-5",
+      "filename": "libfontconfig1_2.17.1-5_amd64.deb",
+      "path": "pool/main/f/fontconfig/libfontconfig1_2.17.1-5_amd64.deb",
+      "source": "fontconfig",
+      "bytes": 131892,
+      "sha256": "9834450b167c2bd57640de0b15bfea1bad8bc68598a7b45ec60f0c089fcfc458",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libfontconfig.so.1": "usr/lib/x86_64-linux-gnu/libfontconfig.so.1.16.1",
+        "usr/share/doc/hiddify-weston/libfontconfig1/copyright": "usr/share/doc/libfontconfig1/copyright"
+      }
+    },
+    "libfreetype6": {
+      "version": "2.14.3+dfsg-3",
+      "filename": "libfreetype6_2.14.3+dfsg-3_amd64.deb",
+      "path": "pool/main/f/freetype/libfreetype6_2.14.3+dfsg-3_amd64.deb",
+      "source": "freetype",
+      "bytes": 509888,
+      "sha256": "f6eaffc0ddbd5df88bf08c5a01ba85e3bc83bf36c8afcc0563213764b7cee445",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libfreetype.so.6": "usr/lib/x86_64-linux-gnu/libfreetype.so.6.20.6",
+        "usr/share/doc/hiddify-weston/libfreetype6/copyright": "usr/share/doc/libfreetype6/copyright"
+      }
+    },
+    "libfribidi0": {
+      "version": "1.0.16-5+b1",
+      "filename": "libfribidi0_1.0.16-5+b1_amd64.deb",
+      "path": "pool/main/f/fribidi/libfribidi0_1.0.16-5+b1_amd64.deb",
+      "source": "fribidi (1.0.16-5)",
+      "bytes": 26152,
+      "sha256": "e2f5eb2d3068e740c2a3a1ff6e83ac998a217b6ab4371421c7cd58202f6972b2",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libfribidi.so.0": "usr/lib/x86_64-linux-gnu/libfribidi.so.0.4.0",
+        "usr/share/doc/hiddify-weston/libfribidi0/copyright": "usr/share/doc/libfribidi0/copyright"
+      }
+    },
+    "libglib2.0-0t64": {
+      "version": "2.90.1-2",
+      "filename": "libglib2.0-0t64_2.90.1-2_amd64.deb",
+      "path": "pool/main/g/glib2.0/libglib2.0-0t64_2.90.1-2_amd64.deb",
+      "source": "glib2.0",
+      "bytes": 1619548,
+      "sha256": "2758906db9a6d6e2f93641c10c122c30d40935a24e965ee6ce5383c700e7cd98",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libgio-2.0.so.0": "usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.9000.1",
+        "usr/lib/x86_64-linux-gnu/libglib-2.0.so.0": "usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.9000.1",
+        "usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0": "usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.9000.1",
+        "usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0": "usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.9000.1",
+        "usr/share/doc/hiddify-weston/libglib2.0-0t64/copyright": "usr/share/doc/libglib2.0-0t64/copyright"
+      }
+    },
+    "libgraphite2-3": {
+      "version": "1.3.15-2",
+      "filename": "libgraphite2-3_1.3.15-2_amd64.deb",
+      "path": "pool/main/g/graphite2/libgraphite2-3_1.3.15-2_amd64.deb",
+      "source": "graphite2",
+      "bytes": 75844,
+      "sha256": "a2b5595412dd436a5430747f0945c580e7c97b70b9f1acbb36c938205937f1f5",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libgraphite2.so.3": "usr/lib/x86_64-linux-gnu/libgraphite2.so.3.3.1",
+        "usr/share/doc/hiddify-weston/libgraphite2-3/copyright": "usr/share/doc/libgraphite2-3/copyright"
+      }
+    },
+    "libgudev-1.0-0": {
+      "version": "238-7+b2",
+      "filename": "libgudev-1.0-0_238-7+b2_amd64.deb",
+      "path": "pool/main/libg/libgudev/libgudev-1.0-0_238-7+b2_amd64.deb",
+      "source": "libgudev (238-7)",
+      "bytes": 14368,
+      "sha256": "4645a8d63693aba2b16b2d8989f9bf9a245a9cc5c499e5e933dd1b78f54cb197",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libgudev-1.0.so.0": "usr/lib/x86_64-linux-gnu/libgudev-1.0.so.0.3.0",
+        "usr/share/doc/hiddify-weston/libgudev-1.0-0/copyright": "usr/share/doc/libgudev-1.0-0/copyright"
+      }
+    },
+    "libharfbuzz0b": {
+      "version": "14.4.0+ds-1",
+      "filename": "libharfbuzz0b_14.4.0+ds-1_amd64.deb",
+      "path": "pool/main/h/harfbuzz/libharfbuzz0b_14.4.0+ds-1_amd64.deb",
+      "source": "harfbuzz",
+      "bytes": 572264,
+      "sha256": "0c2a76a8c398d0a51775b7ceb72563eebb2083340616607411537527440cdd6b",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libharfbuzz.so.0": "usr/lib/x86_64-linux-gnu/libharfbuzz.so.0.61440.0",
+        "usr/share/doc/hiddify-weston/libharfbuzz0b/copyright": "usr/share/doc/libharfbuzz0b/copyright"
+      }
+    },
+    "libinput10": {
+      "version": "1.31.3-1",
+      "filename": "libinput10_1.31.3-1_amd64.deb",
+      "path": "pool/main/libi/libinput/libinput10_1.31.3-1_amd64.deb",
+      "source": "libinput",
+      "bytes": 160208,
+      "sha256": "0e2628eec17c8cd54470718afad92976678767231dfcfefb6f012503bf58321a",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libinput.so.10": "usr/lib/x86_64-linux-gnu/libinput.so.10.13.0",
+        "usr/share/doc/hiddify-weston/libinput10/copyright": "usr/share/doc/libinput10/copyright"
+      }
+    },
+    "libjpeg62-turbo": {
+      "version": "1:3.1.3-4",
+      "filename": "libjpeg62-turbo_3.1.3-4_amd64.deb",
+      "path": "pool/main/libj/libjpeg-turbo/libjpeg62-turbo_3.1.3-4_amd64.deb",
+      "source": "libjpeg-turbo",
+      "bytes": 212940,
+      "sha256": "402b02ea2f4aaf8922343e4c08c374cf07f26fb88323f87e1047ec475b3f12b5",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libjpeg.so.62": "usr/lib/x86_64-linux-gnu/libjpeg.so.62.4.0",
+        "usr/share/doc/hiddify-weston/libjpeg62-turbo/copyright": "usr/share/doc/libjpeg62-turbo/copyright"
+      }
+    },
+    "libmount1": {
+      "version": "2.42.4-1",
+      "filename": "libmount1_2.42.4-1_amd64.deb",
+      "path": "pool/main/u/util-linux/libmount1_2.42.4-1_amd64.deb",
+      "source": "util-linux",
+      "bytes": 231804,
+      "sha256": "2a5636da5631f655ed927f941698a9a0c0644a978c9a14ea3e2795cfe70b8a71",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libmount.so.1": "usr/lib/x86_64-linux-gnu/libmount.so.1.1.0",
+        "usr/share/doc/hiddify-weston/libmount1/copyright": "usr/share/doc/libmount1/copyright"
+      }
+    },
+    "libmtdev1t64": {
+      "version": "1.1.7-1+b2",
+      "filename": "libmtdev1t64_1.1.7-1+b2_amd64.deb",
+      "path": "pool/main/m/mtdev/libmtdev1t64_1.1.7-1+b2_amd64.deb",
+      "source": "mtdev (1.1.7-1)",
+      "bytes": 23176,
+      "sha256": "65c8542b22873aeec6167d1e4cf3227d7eacf85b8395cbaf0b762ab716a986f1",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libmtdev.so.1": "usr/lib/x86_64-linux-gnu/libmtdev.so.1.0.0",
+        "usr/share/doc/hiddify-weston/libmtdev1t64/copyright": "usr/share/doc/libmtdev1t64/copyright"
+      }
+    },
+    "libpam0g": {
+      "version": "1.7.0-8",
+      "filename": "libpam0g_1.7.0-8_amd64.deb",
+      "path": "pool/main/p/pam/libpam0g_1.7.0-8_amd64.deb",
+      "source": "pam",
+      "bytes": 66864,
+      "sha256": "ace6c4fc0a62bf09d837bfeb5f43a1069797fcb89938b6dc13ba1bdfd2bfbfa8",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libpam.so.0": "usr/lib/x86_64-linux-gnu/libpam.so.0.85.1",
+        "usr/share/doc/hiddify-weston/libpam0g/copyright": "usr/share/doc/libpam0g/copyright"
+      }
+    },
+    "libpango-1.0-0": {
+      "version": "1.58.2-1",
+      "filename": "libpango-1.0-0_1.58.2-1_amd64.deb",
+      "path": "pool/main/p/pango1.0/libpango-1.0-0_1.58.2-1_amd64.deb",
+      "source": "pango1.0",
+      "bytes": 232872,
+      "sha256": "64d732b72e09e2689767f44914b0ad29011e85994a21ac3f9308fb03e30373e8",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libpango-1.0.so.0": "usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.5800.2",
+        "usr/share/doc/hiddify-weston/libpango-1.0-0/copyright": "usr/share/doc/libpango-1.0-0/copyright"
+      }
+    },
+    "libpangocairo-1.0-0": {
+      "version": "1.58.2-1",
+      "filename": "libpangocairo-1.0-0_1.58.2-1_amd64.deb",
+      "path": "pool/main/p/pango1.0/libpangocairo-1.0-0_1.58.2-1_amd64.deb",
+      "source": "pango1.0",
+      "bytes": 35328,
+      "sha256": "8abbca9b8abde2657d971fdbba5778c2fcd934c7d9770b70aa6a439f3ace866f",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0": "usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0.5800.2",
+        "usr/share/doc/hiddify-weston/libpangocairo-1.0-0/copyright": "usr/share/doc/libpangocairo-1.0-0/copyright"
+      }
+    },
+    "libpangoft2-1.0-0": {
+      "version": "1.58.2-1",
+      "filename": "libpangoft2-1.0-0_1.58.2-1_amd64.deb",
+      "path": "pool/main/p/pango1.0/libpangoft2-1.0-0_1.58.2-1_amd64.deb",
+      "source": "pango1.0",
+      "bytes": 56036,
+      "sha256": "fa73c6a5e927b11642ffb28fcfd38973e29ec0bcaa8e613b4d7852464d2570fd",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0": "usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0.5800.2",
+        "usr/share/doc/hiddify-weston/libpangoft2-1.0-0/copyright": "usr/share/doc/libpangoft2-1.0-0/copyright"
+      }
+    },
+    "libpcre2-8-0": {
+      "version": "10.49-1",
+      "filename": "libpcre2-8-0_10.49-1_amd64.deb",
+      "path": "pool/main/p/pcre2/libpcre2-8-0_10.49-1_amd64.deb",
+      "source": "pcre2",
+      "bytes": 312644,
+      "sha256": "854da48a72f55b3f6f20389b58a3e94bddd06dc02b2a9fadd006ccd0048d14ab",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libpcre2-8.so.0": "usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.16.1",
+        "usr/share/doc/hiddify-weston/libpcre2-8-0/copyright": "usr/share/doc/libpcre2-8-0/copyright"
+      }
+    },
+    "libpixman-1-0": {
+      "version": "0.46.4-1+b2",
+      "filename": "libpixman-1-0_0.46.4-1+b2_amd64.deb",
+      "path": "pool/main/p/pixman/libpixman-1-0_0.46.4-1+b2_amd64.deb",
+      "source": "pixman (0.46.4-1)",
+      "bytes": 258776,
+      "sha256": "8e47613699da340db9f3ac5ff1d4554994506626e83f7cc87d9445d7d7a5f7d9",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libpixman-1.so.0": "usr/lib/x86_64-linux-gnu/libpixman-1.so.0.46.4",
+        "usr/share/doc/hiddify-weston/libpixman-1-0/copyright": "usr/share/doc/libpixman-1-0/copyright"
+      }
+    },
+    "libpng16-16t64": {
+      "version": "1.6.59-1",
+      "filename": "libpng16-16t64_1.6.59-1_amd64.deb",
+      "path": "pool/main/libp/libpng1.6/libpng16-16t64_1.6.59-1_amd64.deb",
+      "source": "libpng1.6",
+      "bytes": 293340,
+      "sha256": "fe67acf1d02f21062c0b75cfe3299191b38967d89cfd5cab3a831e2e4b695d05",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libpng16.so.16": "usr/lib/x86_64-linux-gnu/libpng16.so.16.59.0",
+        "usr/share/doc/hiddify-weston/libpng16-16t64/copyright": "usr/share/doc/libpng16-16t64/copyright"
+      }
+    },
+    "libselinux1": {
+      "version": "3.11-2.1+b1",
+      "filename": "libselinux1_3.11-2.1+b1_amd64.deb",
+      "path": "pool/main/libs/libselinux/libselinux1_3.11-2.1+b1_amd64.deb",
+      "source": "libselinux (3.11-2.1)",
+      "bytes": 92608,
+      "sha256": "12c9fc5222e3f4e727793da05f37a5981aaa9cb8e455a8654cb78a15db66ae22",
+      "files": [
+        "usr/lib/x86_64-linux-gnu/libselinux.so.1"
+      ],
+      "aliases": {
+        "usr/share/doc/hiddify-weston/libselinux1/copyright": "usr/share/doc/libselinux1/copyright"
+      }
+    },
+    "libsharpyuv0": {
+      "version": "1.6.0-0.1",
+      "filename": "libsharpyuv0_1.6.0-0.1_amd64.deb",
+      "path": "pool/main/libw/libwebp/libsharpyuv0_1.6.0-0.1_amd64.deb",
+      "source": "libwebp",
+      "bytes": 115904,
+      "sha256": "2052f8e885b4994073a3ed59def293de8797e127ac0de9bb5ef9d28ebe82ebd0",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libsharpyuv.so.0": "usr/lib/x86_64-linux-gnu/libsharpyuv.so.0.1.2",
+        "usr/share/doc/hiddify-weston/libsharpyuv0/copyright": "usr/share/doc/libsharpyuv0/copyright"
+      }
+    },
+    "libsystemd0": {
+      "version": "262.2-1",
+      "filename": "libsystemd0_262.2-1_amd64.deb",
+      "path": "pool/main/s/systemd/libsystemd0_262.2-1_amd64.deb",
+      "source": "systemd",
+      "bytes": 513268,
+      "sha256": "d71de921c953f2388fee29a28e788a4cb5a9dadcb9beff73bad145a427e26f03",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libsystemd.so.0": "usr/lib/x86_64-linux-gnu/libsystemd.so.0.45.0",
+        "usr/share/doc/hiddify-weston/libsystemd0/copyright": "usr/share/doc/libsystemd0/copyright"
+      }
+    },
+    "libthai0": {
+      "version": "0.1.30-3",
+      "filename": "libthai0_0.1.30-3_amd64.deb",
+      "path": "pool/main/libt/libthai/libthai0_0.1.30-3_amd64.deb",
+      "source": "libthai",
+      "bytes": 51736,
+      "sha256": "f96f56b227dea0cf78f464d2426c555b6abb37851a462af9a7d54e5656744e60",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libthai.so.0": "usr/lib/x86_64-linux-gnu/libthai.so.0.3.2",
+        "usr/share/doc/hiddify-weston/libthai0/copyright": "usr/share/doc/libthai0/copyright"
+      }
+    },
+    "libudev1": {
+      "version": "262.2-1",
+      "filename": "libudev1_262.2-1_amd64.deb",
+      "path": "pool/main/s/systemd/libudev1_262.2-1_amd64.deb",
+      "source": "systemd",
+      "bytes": 149408,
+      "sha256": "47897d79f7239894d7bdb3da98d59336b2f6a2b6d3bfa6911258db1ab00c6bcb",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libudev.so.1": "usr/lib/x86_64-linux-gnu/libudev.so.1.7.15",
+        "usr/share/doc/hiddify-weston/libudev1/copyright": "usr/share/doc/libudev1/copyright"
+      }
+    },
+    "libwacom9": {
+      "version": "2.20.0-1",
+      "filename": "libwacom9_2.20.0-1_amd64.deb",
+      "path": "pool/main/libw/libwacom/libwacom9_2.20.0-1_amd64.deb",
+      "source": "libwacom",
+      "bytes": 26520,
+      "sha256": "20542df020f98ddf199702b8a93ca922e0b28406af7f945cda9c188dca4bb1c3",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libwacom.so.9": "usr/lib/x86_64-linux-gnu/libwacom.so.9.0.0",
+        "usr/share/doc/hiddify-weston/libwacom9/copyright": "usr/share/doc/libwacom9/copyright"
+      }
+    },
+    "libwayland-client0": {
+      "version": "1.26.0-1",
+      "filename": "libwayland-client0_1.26.0-1_amd64.deb",
+      "path": "pool/main/w/wayland/libwayland-client0_1.26.0-1_amd64.deb",
+      "source": "wayland",
+      "bytes": 29364,
+      "sha256": "b432b1d30319f371efe776209e36143a23289285dd26d41751e89ad4a88b2c33",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libwayland-client.so.0": "usr/lib/x86_64-linux-gnu/libwayland-client.so.0.26.0",
+        "usr/share/doc/hiddify-weston/libwayland-client0/copyright": "usr/share/doc/libwayland-client0/copyright"
+      }
+    },
+    "libwayland-cursor0": {
+      "version": "1.26.0-1",
+      "filename": "libwayland-cursor0_1.26.0-1_amd64.deb",
+      "path": "pool/main/w/wayland/libwayland-cursor0_1.26.0-1_amd64.deb",
+      "source": "wayland",
+      "bytes": 11780,
+      "sha256": "4733e54a70867c427c42c416b310b6782297b99c9b52f68ebd25e52860e41032",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0": "usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0.26.0",
+        "usr/share/doc/hiddify-weston/libwayland-cursor0/copyright": "usr/share/doc/libwayland-cursor0/copyright"
+      }
+    },
+    "libwayland-egl1": {
+      "version": "1.26.0-1",
+      "filename": "libwayland-egl1_1.26.0-1_amd64.deb",
+      "path": "pool/main/w/wayland/libwayland-egl1_1.26.0-1_amd64.deb",
+      "source": "wayland",
+      "bytes": 5688,
+      "sha256": "c31c434c28f7a72ad6646427a37f2199a0c0d7ca24a467b4d8188402cda38bf0",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libwayland-egl.so.1": "usr/lib/x86_64-linux-gnu/libwayland-egl.so.1.26.0",
+        "usr/share/doc/hiddify-weston/libwayland-egl1/copyright": "usr/share/doc/libwayland-egl1/copyright"
+      }
+    },
+    "libwayland-server0": {
+      "version": "1.26.0-1",
+      "filename": "libwayland-server0_1.26.0-1_amd64.deb",
+      "path": "pool/main/w/wayland/libwayland-server0_1.26.0-1_amd64.deb",
+      "source": "wayland",
+      "bytes": 36460,
+      "sha256": "7ff27d84063f463baea5ee7687bcd8fde63ebba669c754b12aba1d2792327e48",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libwayland-server.so.0": "usr/lib/x86_64-linux-gnu/libwayland-server.so.0.26.0",
+        "usr/share/doc/hiddify-weston/libwayland-server0/copyright": "usr/share/doc/libwayland-server0/copyright"
+      }
+    },
+    "libwebp7": {
+      "version": "1.6.0-0.1",
+      "filename": "libwebp7_1.6.0-0.1_amd64.deb",
+      "path": "pool/main/libw/libwebp/libwebp7_1.6.0-0.1_amd64.deb",
+      "source": "libwebp",
+      "bytes": 349416,
+      "sha256": "2c4af958078fd59fdf11e3b1363be3f7a804bb93d20acabe05c55ed8a29e7594",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libwebp.so.7": "usr/lib/x86_64-linux-gnu/libwebp.so.7.2.0",
+        "usr/share/doc/hiddify-weston/libwebp7/copyright": "usr/share/doc/libwebp7/copyright"
+      }
+    },
+    "libweston-16-0": {
+      "version": "16.0.2-1",
+      "filename": "libweston-16-0_16.0.2-1_amd64.deb",
+      "path": "pool/main/w/weston/libweston-16-0_16.0.2-1_amd64.deb",
+      "source": "weston",
+      "bytes": 516764,
+      "sha256": "7e01c4a91668afe9d7ccae435f1e0ea951f07a05ac25aabd2f05dbd72df83168",
+      "files": [
+        "usr/lib/x86_64-linux-gnu/libweston-16/wayland-backend.so"
+      ],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libweston-16.so.0": "usr/lib/x86_64-linux-gnu/libweston-16.so.0.0.2",
+        "usr/share/doc/hiddify-weston/libweston-16-0/copyright": "usr/share/doc/libweston-16-0/copyright"
+      }
+    },
+    "libx11-6": {
+      "version": "2:1.8.14-1",
+      "filename": "libx11-6_1.8.14-1_amd64.deb",
+      "path": "pool/main/libx/libx11/libx11-6_1.8.14-1_amd64.deb",
+      "source": "libx11",
+      "bytes": 848696,
+      "sha256": "4db6a694864986c410275434c86bfb26f01ddfd471512cf7fa1eabdf09fc9312",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libX11.so.6": "usr/lib/x86_64-linux-gnu/libX11.so.6.4.0",
+        "usr/share/doc/hiddify-weston/libx11-6/copyright": "usr/share/doc/libx11-6/copyright"
+      }
+    },
+    "libxau6": {
+      "version": "1:1.0.11-1+b2",
+      "filename": "libxau6_1.0.11-1+b2_amd64.deb",
+      "path": "pool/main/libx/libxau/libxau6_1.0.11-1+b2_amd64.deb",
+      "source": "libxau (1:1.0.11-1)",
+      "bytes": 20720,
+      "sha256": "f3046e170bd21969a063e23c1f1be28b16d82d02d3a4ea30e61c8497c6a736c2",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libXau.so.6": "usr/lib/x86_64-linux-gnu/libXau.so.6.0.0",
+        "usr/share/doc/hiddify-weston/libxau6/copyright": "usr/share/doc/libxau6/copyright"
+      }
+    },
+    "libxcb-render0": {
+      "version": "1.17.0-2+b2",
+      "filename": "libxcb-render0_1.17.0-2+b2_amd64.deb",
+      "path": "pool/main/libx/libxcb/libxcb-render0_1.17.0-2+b2_amd64.deb",
+      "source": "libxcb (1.17.0-2)",
+      "bytes": 114904,
+      "sha256": "e5161747ff39d3b47129c9d34098f2df28cc206e8bc0849b0282a8e99c353177",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libxcb-render.so.0": "usr/lib/x86_64-linux-gnu/libxcb-render.so.0.0.0",
+        "usr/share/doc/hiddify-weston/libxcb-render0/copyright": "usr/share/doc/libxcb-render0/copyright"
+      }
+    },
+    "libxcb-shm0": {
+      "version": "1.17.0-2+b2",
+      "filename": "libxcb-shm0_1.17.0-2+b2_amd64.deb",
+      "path": "pool/main/libx/libxcb/libxcb-shm0_1.17.0-2+b2_amd64.deb",
+      "source": "libxcb (1.17.0-2)",
+      "bytes": 105284,
+      "sha256": "12299c866c4b5e7b9da3ca7f1b9fbba992b744e10684e8f19830def9bc18ce67",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libxcb-shm.so.0": "usr/lib/x86_64-linux-gnu/libxcb-shm.so.0.0.0",
+        "usr/share/doc/hiddify-weston/libxcb-shm0/copyright": "usr/share/doc/libxcb-shm0/copyright"
+      }
+    },
+    "libxcb1": {
+      "version": "1.17.0-2+b2",
+      "filename": "libxcb1_1.17.0-2+b2_amd64.deb",
+      "path": "pool/main/libx/libxcb/libxcb1_1.17.0-2+b2_amd64.deb",
+      "source": "libxcb (1.17.0-2)",
+      "bytes": 144420,
+      "sha256": "86d6a614fe7b663610b4d170c84ef6f4371b3ef8e2af5df7e1e4a82b2c290119",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libxcb.so.1": "usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0",
+        "usr/share/doc/hiddify-weston/libxcb1/copyright": "usr/share/doc/libxcb1/copyright"
+      }
+    },
+    "libxdmcp6": {
+      "version": "1:1.1.5-2+b1",
+      "filename": "libxdmcp6_1.1.5-2+b1_amd64.deb",
+      "path": "pool/main/libx/libxdmcp/libxdmcp6_1.1.5-2+b1_amd64.deb",
+      "source": "libxdmcp (1:1.1.5-2)",
+      "bytes": 28204,
+      "sha256": "3170f2aaf8e5ec69547c04cba0064dcb05ad08b37b9bf2c6775468dbc3b0e7ec",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libXdmcp.so.6": "usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0",
+        "usr/share/doc/hiddify-weston/libxdmcp6/copyright": "usr/share/doc/libxdmcp6/copyright"
+      }
+    },
+    "libxext6": {
+      "version": "2:1.3.4-1+b4",
+      "filename": "libxext6_1.3.4-1+b4_amd64.deb",
+      "path": "pool/main/libx/libxext/libxext6_1.3.4-1+b4_amd64.deb",
+      "source": "libxext (2:1.3.4-1)",
+      "bytes": 50724,
+      "sha256": "e2a3d3cb8d8a5ebf7750129f810a992c6682d5ddf2ab26e888039dfc1b01a537",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libXext.so.6": "usr/lib/x86_64-linux-gnu/libXext.so.6.4.0",
+        "usr/share/doc/hiddify-weston/libxext6/copyright": "usr/share/doc/libxext6/copyright"
+      }
+    },
+    "libxkbcommon0": {
+      "version": "1.13.1-1",
+      "filename": "libxkbcommon0_1.13.1-1_amd64.deb",
+      "path": "pool/main/libx/libxkbcommon/libxkbcommon0_1.13.1-1_amd64.deb",
+      "source": "libxkbcommon",
+      "bytes": 147596,
+      "sha256": "3d852b183c8f4e0ce0c97986c33872eb92e7c3363cb53d4807616d8666a7b697",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libxkbcommon.so.0": "usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.13.1",
+        "usr/share/doc/hiddify-weston/libxkbcommon0/copyright": "usr/share/doc/libxkbcommon0/copyright"
+      }
+    },
+    "libxrender1": {
+      "version": "1:0.9.13-1",
+      "filename": "libxrender1_0.9.13-1_amd64.deb",
+      "path": "pool/main/libx/libxrender/libxrender1_0.9.13-1_amd64.deb",
+      "source": "libxrender",
+      "bytes": 28952,
+      "sha256": "bacedb593c07f09acb107397968a09c00a64a0b42c40774b1d9fe67a893ae052",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libXrender.so.1": "usr/lib/x86_64-linux-gnu/libXrender.so.1.3.0",
+        "usr/share/doc/hiddify-weston/libxrender1/copyright": "usr/share/doc/libxrender1/copyright"
+      }
+    },
+    "weston": {
+      "version": "16.0.2-1",
+      "filename": "weston_16.0.2-1_amd64.deb",
+      "path": "pool/main/w/weston/weston_16.0.2-1_amd64.deb",
+      "source": "weston",
+      "bytes": 1034212,
+      "sha256": "eac8511d8c50c27f917465a40bb1bb1470c467f1394caf0e3f44bcc999a5fefe",
+      "files": [
+        "usr/bin/weston",
+        "usr/lib/x86_64-linux-gnu/weston/kiosk-shell.so",
+        "usr/share/weston/border.png",
+        "usr/share/weston/icon_window.png",
+        "usr/share/weston/sign_close.png",
+        "usr/share/weston/sign_maximize.png",
+        "usr/share/weston/sign_minimize.png",
+        "usr/share/weston/wayland.png"
+      ],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/weston/libexec_weston.so.0": "usr/lib/x86_64-linux-gnu/weston/libexec_weston.so.0.0.0",
+        "usr/share/doc/hiddify-weston/weston/copyright": "usr/share/doc/weston/copyright"
+      }
+    },
+    "xkb-data": {
+      "version": "2.48-1",
+      "filename": "xkb-data_2.48-1_all.deb",
+      "path": "pool/main/x/xkeyboard-config/xkb-data_2.48-1_all.deb",
+      "source": "xkeyboard-config",
+      "bytes": 840784,
+      "sha256": "b3b59c1c304c50739f3a8f9589e08d0e1427a0de98dd132d2607ed7a62d31cb9",
+      "files": [],
+      "aliases": {
+        "usr/share/X11/xkb/compat/README": "usr/share/xkeyboard-config-2/compat/README",
+        "usr/share/X11/xkb/compat/accessx": "usr/share/xkeyboard-config-2/compat/accessx",
+        "usr/share/X11/xkb/compat/basic": "usr/share/xkeyboard-config-2/compat/basic",
+        "usr/share/X11/xkb/compat/caps": "usr/share/xkeyboard-config-2/compat/caps",
+        "usr/share/X11/xkb/compat/complete": "usr/share/xkeyboard-config-2/compat/complete",
+        "usr/share/X11/xkb/compat/grab": "usr/share/xkeyboard-config-2/compat/grab",
+        "usr/share/X11/xkb/compat/grp_led": "usr/share/xkeyboard-config-2/compat/grp_led",
+        "usr/share/X11/xkb/compat/iso9995": "usr/share/xkeyboard-config-2/compat/iso9995",
+        "usr/share/X11/xkb/compat/japan": "usr/share/xkeyboard-config-2/compat/japan",
+        "usr/share/X11/xkb/compat/ledcaps": "usr/share/xkeyboard-config-2/compat/ledcaps",
+        "usr/share/X11/xkb/compat/ledcompose": "usr/share/xkeyboard-config-2/compat/ledcompose",
+        "usr/share/X11/xkb/compat/lednum": "usr/share/xkeyboard-config-2/compat/lednum",
+        "usr/share/X11/xkb/compat/ledscroll": "usr/share/xkeyboard-config-2/compat/ledscroll",
+        "usr/share/X11/xkb/compat/level5": "usr/share/xkeyboard-config-2/compat/level5",
+        "usr/share/X11/xkb/compat/misc": "usr/share/xkeyboard-config-2/compat/misc",
+        "usr/share/X11/xkb/compat/mod_led": "usr/share/xkeyboard-config-2/compat/mod_led",
+        "usr/share/X11/xkb/compat/mousekeys": "usr/share/xkeyboard-config-2/compat/mousekeys",
+        "usr/share/X11/xkb/compat/olpc": "usr/share/xkeyboard-config-2/compat/olpc",
+        "usr/share/X11/xkb/compat/pc": "usr/share/xkeyboard-config-2/compat/pc",
+        "usr/share/X11/xkb/compat/pc98": "usr/share/xkeyboard-config-2/compat/pc98",
+        "usr/share/X11/xkb/compat/xfree86": "usr/share/xkeyboard-config-2/compat/xfree86",
+        "usr/share/X11/xkb/compat/xtest": "usr/share/xkeyboard-config-2/compat/xtest",
+        "usr/share/X11/xkb/geometry/README": "usr/share/xkeyboard-config-2/geometry/README",
+        "usr/share/X11/xkb/geometry/amiga": "usr/share/xkeyboard-config-2/geometry/amiga",
+        "usr/share/X11/xkb/geometry/ataritt": "usr/share/xkeyboard-config-2/geometry/ataritt",
+        "usr/share/X11/xkb/geometry/chicony": "usr/share/xkeyboard-config-2/geometry/chicony",
+        "usr/share/X11/xkb/geometry/dell": "usr/share/xkeyboard-config-2/geometry/dell",
+        "usr/share/X11/xkb/geometry/digital_vndr/lk": "usr/share/xkeyboard-config-2/geometry/digital_vndr/lk",
+        "usr/share/X11/xkb/geometry/digital_vndr/pc": "usr/share/xkeyboard-config-2/geometry/digital_vndr/pc",
+        "usr/share/X11/xkb/geometry/digital_vndr/unix": "usr/share/xkeyboard-config-2/geometry/digital_vndr/unix",
+        "usr/share/X11/xkb/geometry/everex": "usr/share/xkeyboard-config-2/geometry/everex",
+        "usr/share/X11/xkb/geometry/fujitsu": "usr/share/xkeyboard-config-2/geometry/fujitsu",
+        "usr/share/X11/xkb/geometry/hhk": "usr/share/xkeyboard-config-2/geometry/hhk",
+        "usr/share/X11/xkb/geometry/hp": "usr/share/xkeyboard-config-2/geometry/hp",
+        "usr/share/X11/xkb/geometry/keytronic": "usr/share/xkeyboard-config-2/geometry/keytronic",
+        "usr/share/X11/xkb/geometry/kinesis": "usr/share/xkeyboard-config-2/geometry/kinesis",
+        "usr/share/X11/xkb/geometry/macintosh": "usr/share/xkeyboard-config-2/geometry/macintosh",
+        "usr/share/X11/xkb/geometry/microsoft": "usr/share/xkeyboard-config-2/geometry/microsoft",
+        "usr/share/X11/xkb/geometry/nec": "usr/share/xkeyboard-config-2/geometry/nec",
+        "usr/share/X11/xkb/geometry/northgate": "usr/share/xkeyboard-config-2/geometry/northgate",
+        "usr/share/X11/xkb/geometry/pc": "usr/share/xkeyboard-config-2/geometry/pc",
+        "usr/share/X11/xkb/geometry/sanwa": "usr/share/xkeyboard-config-2/geometry/sanwa",
+        "usr/share/X11/xkb/geometry/sgi_vndr/O2": "usr/share/xkeyboard-config-2/geometry/sgi_vndr/O2",
+        "usr/share/X11/xkb/geometry/sgi_vndr/indigo": "usr/share/xkeyboard-config-2/geometry/sgi_vndr/indigo",
+        "usr/share/X11/xkb/geometry/sgi_vndr/indy": "usr/share/xkeyboard-config-2/geometry/sgi_vndr/indy",
+        "usr/share/X11/xkb/geometry/sony": "usr/share/xkeyboard-config-2/geometry/sony",
+        "usr/share/X11/xkb/geometry/steelseries": "usr/share/xkeyboard-config-2/geometry/steelseries",
+        "usr/share/X11/xkb/geometry/sun": "usr/share/xkeyboard-config-2/geometry/sun",
+        "usr/share/X11/xkb/geometry/teck": "usr/share/xkeyboard-config-2/geometry/teck",
+        "usr/share/X11/xkb/geometry/thinkpad": "usr/share/xkeyboard-config-2/geometry/thinkpad",
+        "usr/share/X11/xkb/geometry/typematrix": "usr/share/xkeyboard-config-2/geometry/typematrix",
+        "usr/share/X11/xkb/geometry/winbook": "usr/share/xkeyboard-config-2/geometry/winbook",
+        "usr/share/X11/xkb/keycodes/README": "usr/share/xkeyboard-config-2/keycodes/README",
+        "usr/share/X11/xkb/keycodes/aliases": "usr/share/xkeyboard-config-2/keycodes/aliases",
+        "usr/share/X11/xkb/keycodes/amiga": "usr/share/xkeyboard-config-2/keycodes/amiga",
+        "usr/share/X11/xkb/keycodes/ataritt": "usr/share/xkeyboard-config-2/keycodes/ataritt",
+        "usr/share/X11/xkb/keycodes/digital_vndr/lk": "usr/share/xkeyboard-config-2/keycodes/digital_vndr/lk",
+        "usr/share/X11/xkb/keycodes/digital_vndr/pc": "usr/share/xkeyboard-config-2/keycodes/digital_vndr/pc",
+        "usr/share/X11/xkb/keycodes/empty": "usr/share/xkeyboard-config-2/keycodes/empty",
+        "usr/share/X11/xkb/keycodes/evdev": "usr/share/xkeyboard-config-2/keycodes/evdev",
+        "usr/share/X11/xkb/keycodes/fujitsu": "usr/share/xkeyboard-config-2/keycodes/fujitsu",
+        "usr/share/X11/xkb/keycodes/hp": "usr/share/xkeyboard-config-2/keycodes/hp",
+        "usr/share/X11/xkb/keycodes/ibm": "usr/share/xkeyboard-config-2/keycodes/ibm",
+        "usr/share/X11/xkb/keycodes/jolla": "usr/share/xkeyboard-config-2/keycodes/jolla",
+        "usr/share/X11/xkb/keycodes/macintosh": "usr/share/xkeyboard-config-2/keycodes/macintosh",
+        "usr/share/X11/xkb/keycodes/olpc": "usr/share/xkeyboard-config-2/keycodes/olpc",
+        "usr/share/X11/xkb/keycodes/sgi_vndr/indigo": "usr/share/xkeyboard-config-2/keycodes/sgi_vndr/indigo",
+        "usr/share/X11/xkb/keycodes/sgi_vndr/indy": "usr/share/xkeyboard-config-2/keycodes/sgi_vndr/indy",
+        "usr/share/X11/xkb/keycodes/sgi_vndr/iris": "usr/share/xkeyboard-config-2/keycodes/sgi_vndr/iris",
+        "usr/share/X11/xkb/keycodes/sony": "usr/share/xkeyboard-config-2/keycodes/sony",
+        "usr/share/X11/xkb/keycodes/sun": "usr/share/xkeyboard-config-2/keycodes/sun",
+        "usr/share/X11/xkb/keycodes/xfree86": "usr/share/xkeyboard-config-2/keycodes/xfree86",
+        "usr/share/X11/xkb/keycodes/xfree98": "usr/share/xkeyboard-config-2/keycodes/xfree98",
+        "usr/share/X11/xkb/rules/README": "usr/share/xkeyboard-config-2/rules/README",
+        "usr/share/X11/xkb/rules/base": "usr/share/xkeyboard-config-2/rules/base",
+        "usr/share/X11/xkb/rules/base.extras.xml": "usr/share/xkeyboard-config-2/rules/base.extras.xml",
+        "usr/share/X11/xkb/rules/base.lst": "usr/share/xkeyboard-config-2/rules/base.lst",
+        "usr/share/X11/xkb/rules/base.xml": "usr/share/xkeyboard-config-2/rules/base.xml",
+        "usr/share/X11/xkb/rules/evdev": "usr/share/xkeyboard-config-2/rules/evdev",
+        "usr/share/X11/xkb/rules/evdev.extras.xml": "usr/share/xkeyboard-config-2/rules/evdev.extras.xml",
+        "usr/share/X11/xkb/rules/evdev.lst": "usr/share/xkeyboard-config-2/rules/evdev.lst",
+        "usr/share/X11/xkb/rules/evdev.xml": "usr/share/xkeyboard-config-2/rules/evdev.xml",
+        "usr/share/X11/xkb/rules/xfree98": "usr/share/xkeyboard-config-2/rules/xfree98",
+        "usr/share/X11/xkb/rules/xkb.dtd": "usr/share/xkeyboard-config-2/rules/xkb.dtd",
+        "usr/share/X11/xkb/rules/xorg": "usr/share/xkeyboard-config-2/rules/base",
+        "usr/share/X11/xkb/rules/xorg.lst": "usr/share/xkeyboard-config-2/rules/base.lst",
+        "usr/share/X11/xkb/rules/xorg.xml": "usr/share/xkeyboard-config-2/rules/base.xml",
+        "usr/share/X11/xkb/symbols/af": "usr/share/xkeyboard-config-2/symbols/af",
+        "usr/share/X11/xkb/symbols/al": "usr/share/xkeyboard-config-2/symbols/al",
+        "usr/share/X11/xkb/symbols/altwin": "usr/share/xkeyboard-config-2/symbols/altwin",
+        "usr/share/X11/xkb/symbols/am": "usr/share/xkeyboard-config-2/symbols/am",
+        "usr/share/X11/xkb/symbols/ancient": "usr/share/xkeyboard-config-2/symbols/ancient",
+        "usr/share/X11/xkb/symbols/apl": "usr/share/xkeyboard-config-2/symbols/apl",
+        "usr/share/X11/xkb/symbols/ara": "usr/share/xkeyboard-config-2/symbols/ara",
+        "usr/share/X11/xkb/symbols/at": "usr/share/xkeyboard-config-2/symbols/at",
+        "usr/share/X11/xkb/symbols/au": "usr/share/xkeyboard-config-2/symbols/au",
+        "usr/share/X11/xkb/symbols/az": "usr/share/xkeyboard-config-2/symbols/az",
+        "usr/share/X11/xkb/symbols/ba": "usr/share/xkeyboard-config-2/symbols/ba",
+        "usr/share/X11/xkb/symbols/bd": "usr/share/xkeyboard-config-2/symbols/bd",
+        "usr/share/X11/xkb/symbols/be": "usr/share/xkeyboard-config-2/symbols/be",
+        "usr/share/X11/xkb/symbols/bg": "usr/share/xkeyboard-config-2/symbols/bg",
+        "usr/share/X11/xkb/symbols/bqn": "usr/share/xkeyboard-config-2/symbols/bqn",
+        "usr/share/X11/xkb/symbols/br": "usr/share/xkeyboard-config-2/symbols/br",
+        "usr/share/X11/xkb/symbols/brai": "usr/share/xkeyboard-config-2/symbols/brai",
+        "usr/share/X11/xkb/symbols/bt": "usr/share/xkeyboard-config-2/symbols/bt",
+        "usr/share/X11/xkb/symbols/bw": "usr/share/xkeyboard-config-2/symbols/bw",
+        "usr/share/X11/xkb/symbols/by": "usr/share/xkeyboard-config-2/symbols/by",
+        "usr/share/X11/xkb/symbols/ca": "usr/share/xkeyboard-config-2/symbols/ca",
+        "usr/share/X11/xkb/symbols/capslock": "usr/share/xkeyboard-config-2/symbols/capslock",
+        "usr/share/X11/xkb/symbols/cd": "usr/share/xkeyboard-config-2/symbols/cd",
+        "usr/share/X11/xkb/symbols/ch": "usr/share/xkeyboard-config-2/symbols/ch",
+        "usr/share/X11/xkb/symbols/cm": "usr/share/xkeyboard-config-2/symbols/cm",
+        "usr/share/X11/xkb/symbols/cn": "usr/share/xkeyboard-config-2/symbols/cn",
+        "usr/share/X11/xkb/symbols/compose": "usr/share/xkeyboard-config-2/symbols/compose",
+        "usr/share/X11/xkb/symbols/ctrl": "usr/share/xkeyboard-config-2/symbols/ctrl",
+        "usr/share/X11/xkb/symbols/cz": "usr/share/xkeyboard-config-2/symbols/cz",
+        "usr/share/X11/xkb/symbols/de": "usr/share/xkeyboard-config-2/symbols/de",
+        "usr/share/X11/xkb/symbols/digital_vndr/lk": "usr/share/xkeyboard-config-2/symbols/digital_vndr/lk",
+        "usr/share/X11/xkb/symbols/digital_vndr/pc": "usr/share/xkeyboard-config-2/symbols/digital_vndr/pc",
+        "usr/share/X11/xkb/symbols/digital_vndr/us": "usr/share/xkeyboard-config-2/symbols/digital_vndr/us",
+        "usr/share/X11/xkb/symbols/digital_vndr/vt": "usr/share/xkeyboard-config-2/symbols/digital_vndr/vt",
+        "usr/share/X11/xkb/symbols/dk": "usr/share/xkeyboard-config-2/symbols/dk",
+        "usr/share/X11/xkb/symbols/dz": "usr/share/xkeyboard-config-2/symbols/dz",
+        "usr/share/X11/xkb/symbols/ee": "usr/share/xkeyboard-config-2/symbols/ee",
+        "usr/share/X11/xkb/symbols/eg": "usr/share/xkeyboard-config-2/symbols/eg",
+        "usr/share/X11/xkb/symbols/empty": "usr/share/xkeyboard-config-2/symbols/empty",
+        "usr/share/X11/xkb/symbols/epo": "usr/share/xkeyboard-config-2/symbols/epo",
+        "usr/share/X11/xkb/symbols/es": "usr/share/xkeyboard-config-2/symbols/es",
+        "usr/share/X11/xkb/symbols/et": "usr/share/xkeyboard-config-2/symbols/et",
+        "usr/share/X11/xkb/symbols/eu": "usr/share/xkeyboard-config-2/symbols/eu",
+        "usr/share/X11/xkb/symbols/eurosign": "usr/share/xkeyboard-config-2/symbols/eurosign",
+        "usr/share/X11/xkb/symbols/fi": "usr/share/xkeyboard-config-2/symbols/fi",
+        "usr/share/X11/xkb/symbols/fkeys": "usr/share/xkeyboard-config-2/symbols/fkeys",
+        "usr/share/X11/xkb/symbols/fo": "usr/share/xkeyboard-config-2/symbols/fo",
+        "usr/share/X11/xkb/symbols/fr": "usr/share/xkeyboard-config-2/symbols/fr",
+        "usr/share/X11/xkb/symbols/fujitsu_vndr/jp": "usr/share/xkeyboard-config-2/symbols/fujitsu_vndr/jp",
+        "usr/share/X11/xkb/symbols/fujitsu_vndr/us": "usr/share/xkeyboard-config-2/symbols/fujitsu_vndr/us",
+        "usr/share/X11/xkb/symbols/gb": "usr/share/xkeyboard-config-2/symbols/gb",
+        "usr/share/X11/xkb/symbols/ge": "usr/share/xkeyboard-config-2/symbols/ge",
+        "usr/share/X11/xkb/symbols/gh": "usr/share/xkeyboard-config-2/symbols/gh",
+        "usr/share/X11/xkb/symbols/gn": "usr/share/xkeyboard-config-2/symbols/gn",
+        "usr/share/X11/xkb/symbols/gr": "usr/share/xkeyboard-config-2/symbols/gr",
+        "usr/share/X11/xkb/symbols/grab": "usr/share/xkeyboard-config-2/symbols/grab",
+        "usr/share/X11/xkb/symbols/group": "usr/share/xkeyboard-config-2/symbols/group",
+        "usr/share/X11/xkb/symbols/hp_vndr/us": "usr/share/xkeyboard-config-2/symbols/hp_vndr/us",
+        "usr/share/X11/xkb/symbols/hr": "usr/share/xkeyboard-config-2/symbols/hr",
+        "usr/share/X11/xkb/symbols/hu": "usr/share/xkeyboard-config-2/symbols/hu",
+        "usr/share/X11/xkb/symbols/hyper": "usr/share/xkeyboard-config-2/symbols/hyper",
+        "usr/share/X11/xkb/symbols/id": "usr/share/xkeyboard-config-2/symbols/id",
+        "usr/share/X11/xkb/symbols/ie": "usr/share/xkeyboard-config-2/symbols/ie",
+        "usr/share/X11/xkb/symbols/il": "usr/share/xkeyboard-config-2/symbols/il",
+        "usr/share/X11/xkb/symbols/in": "usr/share/xkeyboard-config-2/symbols/in",
+        "usr/share/X11/xkb/symbols/inet": "usr/share/xkeyboard-config-2/symbols/inet",
+        "usr/share/X11/xkb/symbols/iq": "usr/share/xkeyboard-config-2/symbols/iq",
+        "usr/share/X11/xkb/symbols/ir": "usr/share/xkeyboard-config-2/symbols/ir",
+        "usr/share/X11/xkb/symbols/is": "usr/share/xkeyboard-config-2/symbols/is",
+        "usr/share/X11/xkb/symbols/it": "usr/share/xkeyboard-config-2/symbols/it",
+        "usr/share/X11/xkb/symbols/jolla_vndr/sbj": "usr/share/xkeyboard-config-2/symbols/jolla_vndr/sbj",
+        "usr/share/X11/xkb/symbols/jp": "usr/share/xkeyboard-config-2/symbols/jp",
+        "usr/share/X11/xkb/symbols/ke": "usr/share/xkeyboard-config-2/symbols/ke",
+        "usr/share/X11/xkb/symbols/keypad": "usr/share/xkeyboard-config-2/symbols/keypad",
+        "usr/share/X11/xkb/symbols/kg": "usr/share/xkeyboard-config-2/symbols/kg",
+        "usr/share/X11/xkb/symbols/kh": "usr/share/xkeyboard-config-2/symbols/kh",
+        "usr/share/X11/xkb/symbols/kpdl": "usr/share/xkeyboard-config-2/symbols/kpdl",
+        "usr/share/X11/xkb/symbols/kr": "usr/share/xkeyboard-config-2/symbols/kr",
+        "usr/share/X11/xkb/symbols/kz": "usr/share/xkeyboard-config-2/symbols/kz",
+        "usr/share/X11/xkb/symbols/la": "usr/share/xkeyboard-config-2/symbols/la",
+        "usr/share/X11/xkb/symbols/latam": "usr/share/xkeyboard-config-2/symbols/latam",
+        "usr/share/X11/xkb/symbols/latin": "usr/share/xkeyboard-config-2/symbols/latin",
+        "usr/share/X11/xkb/symbols/level2": "usr/share/xkeyboard-config-2/symbols/level2",
+        "usr/share/X11/xkb/symbols/level3": "usr/share/xkeyboard-config-2/symbols/level3",
+        "usr/share/X11/xkb/symbols/level5": "usr/share/xkeyboard-config-2/symbols/level5",
+        "usr/share/X11/xkb/symbols/lk": "usr/share/xkeyboard-config-2/symbols/lk",
+        "usr/share/X11/xkb/symbols/lt": "usr/share/xkeyboard-config-2/symbols/lt",
+        "usr/share/X11/xkb/symbols/lv": "usr/share/xkeyboard-config-2/symbols/lv",
+        "usr/share/X11/xkb/symbols/ma": "usr/share/xkeyboard-config-2/symbols/ma",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/apple": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/apple",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/ch": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/ch",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/de": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/de",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/dk": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/dk",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/fi": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/fi",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/fr": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/fr",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/gb": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/gb",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/is": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/is",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/it": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/it",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/jp": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/jp",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/latam": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/latam",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/nl": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/nl",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/no": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/no",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/pt": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/pt",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/se": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/se",
+        "usr/share/X11/xkb/symbols/macintosh_vndr/us": "usr/share/xkeyboard-config-2/symbols/macintosh_vndr/us",
+        "usr/share/X11/xkb/symbols/md": "usr/share/xkeyboard-config-2/symbols/md",
+        "usr/share/X11/xkb/symbols/me": "usr/share/xkeyboard-config-2/symbols/me",
+        "usr/share/X11/xkb/symbols/mk": "usr/share/xkeyboard-config-2/symbols/mk",
+        "usr/share/X11/xkb/symbols/ml": "usr/share/xkeyboard-config-2/symbols/ml",
+        "usr/share/X11/xkb/symbols/mm": "usr/share/xkeyboard-config-2/symbols/mm",
+        "usr/share/X11/xkb/symbols/mn": "usr/share/xkeyboard-config-2/symbols/mn",
+        "usr/share/X11/xkb/symbols/mt": "usr/share/xkeyboard-config-2/symbols/mt",
+        "usr/share/X11/xkb/symbols/mv": "usr/share/xkeyboard-config-2/symbols/mv",
+        "usr/share/X11/xkb/symbols/my": "usr/share/xkeyboard-config-2/symbols/my",
+        "usr/share/X11/xkb/symbols/nbsp": "usr/share/xkeyboard-config-2/symbols/nbsp",
+        "usr/share/X11/xkb/symbols/nec_vndr/jp": "usr/share/xkeyboard-config-2/symbols/nec_vndr/jp",
+        "usr/share/X11/xkb/symbols/ng": "usr/share/xkeyboard-config-2/symbols/ng",
+        "usr/share/X11/xkb/symbols/nl": "usr/share/xkeyboard-config-2/symbols/nl",
+        "usr/share/X11/xkb/symbols/no": "usr/share/xkeyboard-config-2/symbols/no",
+        "usr/share/X11/xkb/symbols/np": "usr/share/xkeyboard-config-2/symbols/np",
+        "usr/share/X11/xkb/symbols/nz": "usr/share/xkeyboard-config-2/symbols/nz",
+        "usr/share/X11/xkb/symbols/olpc": "usr/share/xkeyboard-config-2/symbols/olpc",
+        "usr/share/X11/xkb/symbols/parens": "usr/share/xkeyboard-config-2/symbols/parens",
+        "usr/share/X11/xkb/symbols/pc": "usr/share/xkeyboard-config-2/symbols/pc",
+        "usr/share/X11/xkb/symbols/ph": "usr/share/xkeyboard-config-2/symbols/ph",
+        "usr/share/X11/xkb/symbols/pk": "usr/share/xkeyboard-config-2/symbols/pk",
+        "usr/share/X11/xkb/symbols/pl": "usr/share/xkeyboard-config-2/symbols/pl",
+        "usr/share/X11/xkb/symbols/pt": "usr/share/xkeyboard-config-2/symbols/pt",
+        "usr/share/X11/xkb/symbols/ro": "usr/share/xkeyboard-config-2/symbols/ro",
+        "usr/share/X11/xkb/symbols/rs": "usr/share/xkeyboard-config-2/symbols/rs",
+        "usr/share/X11/xkb/symbols/ru": "usr/share/xkeyboard-config-2/symbols/ru",
+        "usr/share/X11/xkb/symbols/rupeesign": "usr/share/xkeyboard-config-2/symbols/rupeesign",
+        "usr/share/X11/xkb/symbols/scrolllock": "usr/share/xkeyboard-config-2/symbols/scrolllock",
+        "usr/share/X11/xkb/symbols/se": "usr/share/xkeyboard-config-2/symbols/se",
+        "usr/share/X11/xkb/symbols/sgi_vndr/jp": "usr/share/xkeyboard-config-2/symbols/sgi_vndr/jp",
+        "usr/share/X11/xkb/symbols/sharp_vndr/sl-c3x00": "usr/share/xkeyboard-config-2/symbols/sharp_vndr/sl-c3x00",
+        "usr/share/X11/xkb/symbols/sharp_vndr/ws003sh": "usr/share/xkeyboard-config-2/symbols/sharp_vndr/ws003sh",
+        "usr/share/X11/xkb/symbols/sharp_vndr/ws007sh": "usr/share/xkeyboard-config-2/symbols/sharp_vndr/ws007sh",
+        "usr/share/X11/xkb/symbols/sharp_vndr/ws011sh": "usr/share/xkeyboard-config-2/symbols/sharp_vndr/ws011sh",
+        "usr/share/X11/xkb/symbols/sharp_vndr/ws020sh": "usr/share/xkeyboard-config-2/symbols/sharp_vndr/ws020sh",
+        "usr/share/X11/xkb/symbols/shift": "usr/share/xkeyboard-config-2/symbols/shift",
+        "usr/share/X11/xkb/symbols/si": "usr/share/xkeyboard-config-2/symbols/si",
+        "usr/share/X11/xkb/symbols/sk": "usr/share/xkeyboard-config-2/symbols/sk",
+        "usr/share/X11/xkb/symbols/sn": "usr/share/xkeyboard-config-2/symbols/sn",
+        "usr/share/X11/xkb/symbols/sony_vndr/us": "usr/share/xkeyboard-config-2/symbols/sony_vndr/us",
+        "usr/share/X11/xkb/symbols/srvr_ctrl": "usr/share/xkeyboard-config-2/symbols/srvr_ctrl",
+        "usr/share/X11/xkb/symbols/srvrkeys": "usr/share/xkeyboard-config-2/symbols/srvrkeys",
+        "usr/share/X11/xkb/symbols/sun_vndr/ara": "usr/share/xkeyboard-config-2/symbols/sun_vndr/ara",
+        "usr/share/X11/xkb/symbols/sun_vndr/be": "usr/share/xkeyboard-config-2/symbols/sun_vndr/be",
+        "usr/share/X11/xkb/symbols/sun_vndr/br": "usr/share/xkeyboard-config-2/symbols/sun_vndr/br",
+        "usr/share/X11/xkb/symbols/sun_vndr/ca": "usr/share/xkeyboard-config-2/symbols/sun_vndr/ca",
+        "usr/share/X11/xkb/symbols/sun_vndr/ch": "usr/share/xkeyboard-config-2/symbols/sun_vndr/ch",
+        "usr/share/X11/xkb/symbols/sun_vndr/cz": "usr/share/xkeyboard-config-2/symbols/sun_vndr/cz",
+        "usr/share/X11/xkb/symbols/sun_vndr/de": "usr/share/xkeyboard-config-2/symbols/sun_vndr/de",
+        "usr/share/X11/xkb/symbols/sun_vndr/dk": "usr/share/xkeyboard-config-2/symbols/sun_vndr/dk",
+        "usr/share/X11/xkb/symbols/sun_vndr/ee": "usr/share/xkeyboard-config-2/symbols/sun_vndr/ee",
+        "usr/share/X11/xkb/symbols/sun_vndr/es": "usr/share/xkeyboard-config-2/symbols/sun_vndr/es",
+        "usr/share/X11/xkb/symbols/sun_vndr/fi": "usr/share/xkeyboard-config-2/symbols/sun_vndr/fi",
+        "usr/share/X11/xkb/symbols/sun_vndr/fr": "usr/share/xkeyboard-config-2/symbols/sun_vndr/fr",
+        "usr/share/X11/xkb/symbols/sun_vndr/gb": "usr/share/xkeyboard-config-2/symbols/sun_vndr/gb",
+        "usr/share/X11/xkb/symbols/sun_vndr/gr": "usr/share/xkeyboard-config-2/symbols/sun_vndr/gr",
+        "usr/share/X11/xkb/symbols/sun_vndr/it": "usr/share/xkeyboard-config-2/symbols/sun_vndr/it",
+        "usr/share/X11/xkb/symbols/sun_vndr/jp": "usr/share/xkeyboard-config-2/symbols/sun_vndr/jp",
+        "usr/share/X11/xkb/symbols/sun_vndr/kr": "usr/share/xkeyboard-config-2/symbols/sun_vndr/kr",
+        "usr/share/X11/xkb/symbols/sun_vndr/lt": "usr/share/xkeyboard-config-2/symbols/sun_vndr/lt",
+        "usr/share/X11/xkb/symbols/sun_vndr/lv": "usr/share/xkeyboard-config-2/symbols/sun_vndr/lv",
+        "usr/share/X11/xkb/symbols/sun_vndr/nl": "usr/share/xkeyboard-config-2/symbols/sun_vndr/nl",
+        "usr/share/X11/xkb/symbols/sun_vndr/no": "usr/share/xkeyboard-config-2/symbols/sun_vndr/no",
+        "usr/share/X11/xkb/symbols/sun_vndr/pl": "usr/share/xkeyboard-config-2/symbols/sun_vndr/pl",
+        "usr/share/X11/xkb/symbols/sun_vndr/pt": "usr/share/xkeyboard-config-2/symbols/sun_vndr/pt",
+        "usr/share/X11/xkb/symbols/sun_vndr/ro": "usr/share/xkeyboard-config-2/symbols/sun_vndr/ro",
+        "usr/share/X11/xkb/symbols/sun_vndr/ru": "usr/share/xkeyboard-config-2/symbols/sun_vndr/ru",
+        "usr/share/X11/xkb/symbols/sun_vndr/se": "usr/share/xkeyboard-config-2/symbols/sun_vndr/se",
+        "usr/share/X11/xkb/symbols/sun_vndr/sk": "usr/share/xkeyboard-config-2/symbols/sun_vndr/sk",
+        "usr/share/X11/xkb/symbols/sun_vndr/solaris": "usr/share/xkeyboard-config-2/symbols/sun_vndr/solaris",
+        "usr/share/X11/xkb/symbols/sun_vndr/tr": "usr/share/xkeyboard-config-2/symbols/sun_vndr/tr",
+        "usr/share/X11/xkb/symbols/sun_vndr/tw": "usr/share/xkeyboard-config-2/symbols/sun_vndr/tw",
+        "usr/share/X11/xkb/symbols/sun_vndr/ua": "usr/share/xkeyboard-config-2/symbols/sun_vndr/ua",
+        "usr/share/X11/xkb/symbols/sun_vndr/us": "usr/share/xkeyboard-config-2/symbols/sun_vndr/us",
+        "usr/share/X11/xkb/symbols/sy": "usr/share/xkeyboard-config-2/symbols/sy",
+        "usr/share/X11/xkb/symbols/terminate": "usr/share/xkeyboard-config-2/symbols/terminate",
+        "usr/share/X11/xkb/symbols/tg": "usr/share/xkeyboard-config-2/symbols/tg",
+        "usr/share/X11/xkb/symbols/th": "usr/share/xkeyboard-config-2/symbols/th",
+        "usr/share/X11/xkb/symbols/tj": "usr/share/xkeyboard-config-2/symbols/tj",
+        "usr/share/X11/xkb/symbols/tm": "usr/share/xkeyboard-config-2/symbols/tm",
+        "usr/share/X11/xkb/symbols/tr": "usr/share/xkeyboard-config-2/symbols/tr",
+        "usr/share/X11/xkb/symbols/trans": "usr/share/xkeyboard-config-2/symbols/trans",
+        "usr/share/X11/xkb/symbols/tw": "usr/share/xkeyboard-config-2/symbols/tw",
+        "usr/share/X11/xkb/symbols/typo": "usr/share/xkeyboard-config-2/symbols/typo",
+        "usr/share/X11/xkb/symbols/tz": "usr/share/xkeyboard-config-2/symbols/tz",
+        "usr/share/X11/xkb/symbols/ua": "usr/share/xkeyboard-config-2/symbols/ua",
+        "usr/share/X11/xkb/symbols/us": "usr/share/xkeyboard-config-2/symbols/us",
+        "usr/share/X11/xkb/symbols/uz": "usr/share/xkeyboard-config-2/symbols/uz",
+        "usr/share/X11/xkb/symbols/vn": "usr/share/xkeyboard-config-2/symbols/vn",
+        "usr/share/X11/xkb/symbols/xfree68_vndr/amiga": "usr/share/xkeyboard-config-2/symbols/xfree68_vndr/amiga",
+        "usr/share/X11/xkb/symbols/xfree68_vndr/ataritt": "usr/share/xkeyboard-config-2/symbols/xfree68_vndr/ataritt",
+        "usr/share/X11/xkb/symbols/za": "usr/share/xkeyboard-config-2/symbols/za",
+        "usr/share/X11/xkb/types/README": "usr/share/xkeyboard-config-2/types/README",
+        "usr/share/X11/xkb/types/basic": "usr/share/xkeyboard-config-2/types/basic",
+        "usr/share/X11/xkb/types/cancel": "usr/share/xkeyboard-config-2/types/cancel",
+        "usr/share/X11/xkb/types/caps": "usr/share/xkeyboard-config-2/types/caps",
+        "usr/share/X11/xkb/types/complete": "usr/share/xkeyboard-config-2/types/complete",
+        "usr/share/X11/xkb/types/default": "usr/share/xkeyboard-config-2/types/default",
+        "usr/share/X11/xkb/types/extra": "usr/share/xkeyboard-config-2/types/extra",
+        "usr/share/X11/xkb/types/iso9995": "usr/share/xkeyboard-config-2/types/iso9995",
+        "usr/share/X11/xkb/types/level5": "usr/share/xkeyboard-config-2/types/level5",
+        "usr/share/X11/xkb/types/mousekeys": "usr/share/xkeyboard-config-2/types/mousekeys",
+        "usr/share/X11/xkb/types/numpad": "usr/share/xkeyboard-config-2/types/numpad",
+        "usr/share/X11/xkb/types/pc": "usr/share/xkeyboard-config-2/types/pc",
+        "usr/share/doc/hiddify-weston/xkb-data/copyright": "usr/share/doc/xkb-data/copyright"
+      }
+    },
+    "zlib1g": {
+      "version": "1:1.3.dfsg+really1.3.2-4",
+      "filename": "zlib1g_1.3.dfsg+really1.3.2-4_amd64.deb",
+      "path": "pool/main/z/zlib/zlib1g_1.3.dfsg+really1.3.2-4_amd64.deb",
+      "source": "zlib",
+      "bytes": 92424,
+      "sha256": "8506ce550a81ac14b047608e0df121037d9cbb10c3cc28446f68cf8c1d9d31ce",
+      "files": [],
+      "aliases": {
+        "usr/lib/x86_64-linux-gnu/libz.so.1": "usr/lib/x86_64-linux-gnu/libz.so.1.3.2",
+        "usr/share/doc/hiddify-weston/zlib1g/copyright": "usr/share/doc/zlib1g/copyright"
+      }
+    }
+  },
+  "provenance": {
+    "suite": "sid",
+    "index": "dists/sid/InRelease",
+    "index_sha256": "15dc8d843a92aeb3513cc9130d8ce60aaefb180c45ff34e3d419acdaf3c3e3e2",
+    "archive_signing_keys": [
+      "B8B80B5B623EAB6AD8775C45B7C5D7D6350947F8",
+      "04B54C3CDCA79751B16BC6B5225629DF75B188BD"
+    ],
+    "packages_index_sha256": "247b82cb56a8c0690800833a4f06ce19459800cb80107168bbc7a23db5237442",
+    "contents_index_sha256": "baedbfdd2b532708d6a07b1e58381f3cee4a5d711266b869bd7434dab4157714",
+    "notices": "usr/share/doc/hiddify-weston/<binary-package>/copyright and usr/share/common-licenses/",
+    "sources_index_sha256": "61f82604f5ac95ce4a1415178f9792bc89201e186abcd4d39acadeb95883edfe"
+  },
+  "source_packages": {
+    "audit": {
+      "version": "1:4.2.1-1",
+      "source_control": "pool/main/a/audit/audit_4.2.1-1.dsc",
+      "sha256": "775e511a60cceef4ad45c7ab5c2bd7cb44821d2184b33ea380690b7b87d8856e"
+    },
+    "base-files": {
+      "version": "14.2",
+      "source_control": "pool/main/b/base-files/base-files_14.2.dsc",
+      "sha256": "e66dac428bfca466d6d62694f0b6436c6d7cf86c193acc9cc1bb0b59991f17c3"
+    },
+    "brotli": {
+      "version": "1.2.0-4.1",
+      "source_control": "pool/main/b/brotli/brotli_1.2.0-4.1.dsc",
+      "sha256": "1fbe86d3679744118e4ef6e2a2d0856028ecffb47a71a7689f1545b78ecde570"
+    },
+    "bzip2": {
+      "version": "1.0.8-6",
+      "source_control": "pool/main/b/bzip2/bzip2_1.0.8-6.dsc",
+      "sha256": "cd3bfd77254a6b5ef1be144bdc90a0dd374bc8206afd98ba4abf828741b79820"
+    },
+    "cairo": {
+      "version": "1.18.4-3",
+      "source_control": "pool/main/c/cairo/cairo_1.18.4-3.dsc",
+      "sha256": "5dfb99f2896a2f23810cde3e80e930bd917079b143e4e984feb44ba018590d2a"
+    },
+    "expat": {
+      "version": "2.10.0-1",
+      "source_control": "pool/main/e/expat/expat_2.10.0-1.dsc",
+      "sha256": "8c4623c101959b8709a3f0a10c06a40d413dc7a6f5ffad3bc9d0cd010d850956"
+    },
+    "fontconfig": {
+      "version": "2.17.1-5",
+      "source_control": "pool/main/f/fontconfig/fontconfig_2.17.1-5.dsc",
+      "sha256": "a450cf5d81cacdcc9172386c0906489c22017ecfc53c918548ae7e5ebce7d799"
+    },
+    "fonts-dejavu": {
+      "version": "2.37-9",
+      "source_control": "pool/main/f/fonts-dejavu/fonts-dejavu_2.37-9.dsc",
+      "sha256": "889ab22c66e9b75da6508e6fb68d58dc57d37fcbdd75000e23968eaee502c481"
+    },
+    "freetype": {
+      "version": "2.14.3+dfsg-3",
+      "source_control": "pool/main/f/freetype/freetype_2.14.3+dfsg-3.dsc",
+      "sha256": "7cf37005c2db2768b8246508ad484338c0a9910b31ab6dc45a2078ebd7c84f50"
+    },
+    "fribidi": {
+      "version": "1.0.16-5",
+      "source_control": "pool/main/f/fribidi/fribidi_1.0.16-5.dsc",
+      "sha256": "bc60303e25c24c017928a8e19766a0d10c7196ddeb419a646b0781d746cba918"
+    },
+    "gcc-16": {
+      "version": "16.2.0-4",
+      "source_control": "pool/main/g/gcc-16/gcc-16_16.2.0-4.dsc",
+      "sha256": "a11ecbfc25faf255e3808ef3928008f6e3339eb8d999f43026d62636117dc63d"
+    },
+    "glib2.0": {
+      "version": "2.90.1-2",
+      "source_control": "pool/main/g/glib2.0/glib2.0_2.90.1-2.dsc",
+      "sha256": "899871dc1a0b96c0689d18cf87ceb096143e87da060c7ead318010566ce8f7fb"
+    },
+    "glibc": {
+      "version": "2.43-7",
+      "source_control": "pool/main/g/glibc/glibc_2.43-7.dsc",
+      "sha256": "a99e5beb8f568765d191f3d0d074cf6b60d2c89dec84f2f4bb70573e52e0a835"
+    },
+    "graphite2": {
+      "version": "1.3.15-2",
+      "source_control": "pool/main/g/graphite2/graphite2_1.3.15-2.dsc",
+      "sha256": "c7dd38d401e016a0214feec40727ed9762f72700985b99a61528bd865e0f7967"
+    },
+    "harfbuzz": {
+      "version": "14.4.0+ds-1",
+      "source_control": "pool/main/h/harfbuzz/harfbuzz_14.4.0+ds-1.dsc",
+      "sha256": "8c274afb7501d45ea84f6ae57a818fe92a51ac5b53119b6956f7c9d4d1c7e417"
+    },
+    "libcap-ng": {
+      "version": "0.9.6-1",
+      "source_control": "pool/main/libc/libcap-ng/libcap-ng_0.9.6-1.dsc",
+      "sha256": "7fcc605f1909881840cd4b8520ea7640e63ac4fe3861402259f257f00942f2c7"
+    },
+    "libdatrie": {
+      "version": "0.2.14-2",
+      "source_control": "pool/main/libd/libdatrie/libdatrie_0.2.14-2.dsc",
+      "sha256": "de9e104f3e5c956159d92bfda0794316bd614d9e3e0ebdbd1e694b7dbb5a740a"
+    },
+    "libdisplay-info": {
+      "version": "0.3.0-1",
+      "source_control": "pool/main/libd/libdisplay-info/libdisplay-info_0.3.0-1.dsc",
+      "sha256": "df30fdb92d6fdb186872a8d236f3f3ccb64b4fbcd154a00f1b5334ebd41478a5"
+    },
+    "libdrm": {
+      "version": "2.4.134-3",
+      "source_control": "pool/main/libd/libdrm/libdrm_2.4.134-3.dsc",
+      "sha256": "14a47b201d672e1c3a4c13b105fb4c70d7265aab84948310ee5d1a30374171d5"
+    },
+    "libevdev": {
+      "version": "1.14.0+dfsg-1",
+      "source_control": "pool/main/libe/libevdev/libevdev_1.14.0+dfsg-1.dsc",
+      "sha256": "982464b11ae47c49e425960713dfcdad6fb88c12e282e51f7fa7eec96c3d8ea5"
+    },
+    "libffi": {
+      "version": "3.8.0-2",
+      "source_control": "pool/main/libf/libffi/libffi_3.8.0-2.dsc",
+      "sha256": "7ceba1b0bd30f72b811ea59c8c20338efc7a7eaa708f1fba3111b7dc061bdffd"
+    },
+    "libgudev": {
+      "version": "238-7",
+      "source_control": "pool/main/libg/libgudev/libgudev_238-7.dsc",
+      "sha256": "529bca27357b43eedcc2e4e19f6e3516011670f677a733a23b9ef83a849731c2"
+    },
+    "libinput": {
+      "version": "1.31.3-1",
+      "source_control": "pool/main/libi/libinput/libinput_1.31.3-1.dsc",
+      "sha256": "a5a9a0757728b30093a97261cd59e51fe5b1464749b1bfc02e4431994fa9f926"
+    },
+    "libjpeg-turbo": {
+      "version": "1:3.1.3-4",
+      "source_control": "pool/main/libj/libjpeg-turbo/libjpeg-turbo_3.1.3-4.dsc",
+      "sha256": "f1c5c6f2e2f379a51c91dc456690c278e80d15081ab619c2c89255100d0cf54d"
+    },
+    "libpng1.6": {
+      "version": "1.6.59-1",
+      "source_control": "pool/main/libp/libpng1.6/libpng1.6_1.6.59-1.dsc",
+      "sha256": "695ab8dc9c70b335ea3fb3c8d7e7f18b05d6a9d73090a05b97785e03198eb201"
+    },
+    "libselinux": {
+      "version": "3.11-2.1",
+      "source_control": "pool/main/libs/libselinux/libselinux_3.11-2.1.dsc",
+      "sha256": "3b7b20e97e30be4dcdf62e3ec660ebf827d25566b46a7141859637d71fe6a5e4"
+    },
+    "libthai": {
+      "version": "0.1.30-3",
+      "source_control": "pool/main/libt/libthai/libthai_0.1.30-3.dsc",
+      "sha256": "b3e64811e16d21317cd255e7053b8e830e9c68717931a5e5bba8a898c9df6d26"
+    },
+    "libwacom": {
+      "version": "2.20.0-1",
+      "source_control": "pool/main/libw/libwacom/libwacom_2.20.0-1.dsc",
+      "sha256": "8979b0c4221fca6daafb0cbf73a19ed860fa4cedd72c9fefadf7e1b6b03094e5"
+    },
+    "libwebp": {
+      "version": "1.6.0-0.1",
+      "source_control": "pool/main/libw/libwebp/libwebp_1.6.0-0.1.dsc",
+      "sha256": "d8ee6905fbb6c44be12c13f47e7c48eb42be557c7e05e7ed466fb550615bb26d"
+    },
+    "libx11": {
+      "version": "2:1.8.14-1",
+      "source_control": "pool/main/libx/libx11/libx11_1.8.14-1.dsc",
+      "sha256": "caf77758cf76511d937b4f876d254f28ea05fd83a35f09fa09e597942094bbcc"
+    },
+    "libxau": {
+      "version": "1:1.0.11-1",
+      "source_control": "pool/main/libx/libxau/libxau_1.0.11-1.dsc",
+      "sha256": "6058ab58b243ae2b175eee067b868f37b74cd4e8cc40b90607ce6d9ee99c50f9"
+    },
+    "libxcb": {
+      "version": "1.17.0-2",
+      "source_control": "pool/main/libx/libxcb/libxcb_1.17.0-2.dsc",
+      "sha256": "b2728d156f79d2e757e7378cfcefca52bd570739d2efffa87e1aaeaf4f21de3a"
+    },
+    "libxdmcp": {
+      "version": "1:1.1.5-2",
+      "source_control": "pool/main/libx/libxdmcp/libxdmcp_1.1.5-2.dsc",
+      "sha256": "c69bdf96d80bdaa2759bf32131e6ec60a5d3e397963f3b13370789dfe8704cdc"
+    },
+    "libxext": {
+      "version": "2:1.3.4-1",
+      "source_control": "pool/main/libx/libxext/libxext_1.3.4-1.dsc",
+      "sha256": "25024f57d955739c6b858822bf93ec3c71400b56fc0d666826f440e3661fd7c0"
+    },
+    "libxkbcommon": {
+      "version": "1.13.1-1",
+      "source_control": "pool/main/libx/libxkbcommon/libxkbcommon_1.13.1-1.dsc",
+      "sha256": "c91012642eaa49c35e630be3be1cc56b96d25eeb20a06dbe4bdbf529c19e7913"
+    },
+    "libxrender": {
+      "version": "1:0.9.13-1",
+      "source_control": "pool/main/libx/libxrender/libxrender_0.9.13-1.dsc",
+      "sha256": "d1e0fa2d03ac3402e449e73bdee3a75be391634ab3cb0e5a44dd69701b8fdf0a"
+    },
+    "mtdev": {
+      "version": "1.1.7-1",
+      "source_control": "pool/main/m/mtdev/mtdev_1.1.7-1.dsc",
+      "sha256": "d32b72a4fdb9662ff84b4727a24f5adf8d2d00face15b7d1836e1adec137890a"
+    },
+    "pam": {
+      "version": "1.7.0-8",
+      "source_control": "pool/main/p/pam/pam_1.7.0-8.dsc",
+      "sha256": "4bc591c59c32411cc73ac9c1b62278a2bc1a8e960333fefae46f9c8a0ce365a9"
+    },
+    "pango1.0": {
+      "version": "1.58.2-1",
+      "source_control": "pool/main/p/pango1.0/pango1.0_1.58.2-1.dsc",
+      "sha256": "a7e9b54ef7ad1c2ffdaada58fd7bcd1f15b69651143e4727b27f0da169667664"
+    },
+    "pcre2": {
+      "version": "10.49-1",
+      "source_control": "pool/main/p/pcre2/pcre2_10.49-1.dsc",
+      "sha256": "ee0e710c30253d2d3a5e4bc62cc89870a42c6c4dbf3d18e4f63f09b7969535f4"
+    },
+    "pixman": {
+      "version": "0.46.4-1",
+      "source_control": "pool/main/p/pixman/pixman_0.46.4-1.dsc",
+      "sha256": "cb83e2f57bff31103db1d6248cacf07862cf060fcbd651b03bdd4cafb61df62c"
+    },
+    "systemd": {
+      "version": "262.2-1",
+      "source_control": "pool/main/s/systemd/systemd_262.2-1.dsc",
+      "sha256": "dbdf4c8a2592662c9505b0e0fa0364ed0391c0b0c3892098fbbf6b89212942c1"
+    },
+    "util-linux": {
+      "version": "2.42.4-1",
+      "source_control": "pool/main/u/util-linux/util-linux_2.42.4-1.dsc",
+      "sha256": "23501bc9fe62d130aaebc7d75eb9c3c8d0f7284075d1dae743a2889d15d8b692"
+    },
+    "wayland": {
+      "version": "1.26.0-1",
+      "source_control": "pool/main/w/wayland/wayland_1.26.0-1.dsc",
+      "sha256": "5e96448bc64599bc4d56b8718fa04c284df9ba88b0343b1669549303b68d42e6"
+    },
+    "weston": {
+      "version": "16.0.2-1",
+      "source_control": "pool/main/w/weston/weston_16.0.2-1.dsc",
+      "sha256": "b8d83ccd6ba23cfce7c4da8ba6aea93be2e48ffeb13c0a02012f2dccab9b21bb"
+    },
+    "xkeyboard-config": {
+      "version": "2.48-1",
+      "source_control": "pool/main/x/xkeyboard-config/xkeyboard-config_2.48-1.dsc",
+      "sha256": "027c798c744abf31bd1cf9215121acf6a42b703c25ef135dadfdafac98608090"
+    },
+    "zlib": {
+      "version": "1:1.3.dfsg+really1.3.2-4",
+      "source_control": "pool/main/z/zlib/zlib_1.3.dfsg+really1.3.2-4.dsc",
+      "sha256": "5735985df9244ebceb03e606342d3d0bf2fd76284f3ccc939a266b43b559a8e1"
+    }
+  }
+}
