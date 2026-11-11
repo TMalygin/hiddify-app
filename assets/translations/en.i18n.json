@@ -101,6 +101,32 @@
     "info(rich)": "Made with ❤️ by Hiddify. ${tap_source(Open source)} and ${tap_license(License)}"
   },
   "pages": {
+    "applicationLauncher": {
+      "title": "Isolated applications",
+      "hint": "Applications stay offline without a supported active profile.",
+      "executable": "Executable",
+      "choose": "Choose executable",
+      "absolutePath": "Enter an absolute path to the executable.",
+      "pickerFailed": "The file chooser could not open. Enter the path directly.",
+      "addArgument": "Add argument",
+      "argument": "Argument $number",
+      "removeArgument": "Remove argument $number",
+      "window": "Open a private window",
+      "launch": "Launch",
+      "sessions": "Sessions",
+      "stop": "Stop application",
+      "dismiss": "Dismiss session",
+      "starting": "Starting",
+      "offline": "Offline",
+      "online": "Connected through proxy",
+      "stopping": "Stopping",
+      "stopped": "Stopped",
+      "exited": "Exited with code $code",
+      "failed": "Launch failed",
+      "incompatible": "Update the Hiddify core to launch applications.",
+      "unavailable": "The Hiddify core is unavailable.",
+      "output": "Program output"
+    },
     "home": {
       "title": "Home",
       "quickSettings": "Quick settings"

@@ -1,9 +1,11 @@
 import 'package:dartx/dartx.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hiddify/core/app_info/app_info_provider.dart';
 import 'package:hiddify/core/localization/translations.dart';
 import 'package:hiddify/core/router/bottom_sheets/bottom_sheets_notifier.dart';
+import 'package:hiddify/features/application_launch/application_launcher_dialog.dart';
 import 'package:hiddify/features/home/widget/connection_button.dart';
 import 'package:hiddify/features/home/widget/local_proxy_hint.dart';
 import 'package:hiddify/features/profile/notifier/active_profile_notifier.dart';
@@ -49,6 +51,16 @@ class HomePage extends HookConsumerWidget {
           ],
         ),
         actions: [
+          if (!kIsWeb && defaultTargetPlatform == TargetPlatform.linux)
+            IconButton(
+              key: const ValueKey('application_launcher'),
+              tooltip: t.pages.applicationLauncher.title,
+              icon: const Icon(Icons.apps_rounded),
+              onPressed: () => showDialog<void>(
+                context: context,
+                builder: (context) => const ApplicationLauncherDialog(),
+              ),
+            ),
           // IconButton(
           //     onPressed: () => const QuickSettingsRoute().push(context),
           //     icon: const Icon(FluentIcons.options_24_filled),
