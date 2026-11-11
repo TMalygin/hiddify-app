@@ -33,7 +33,7 @@ if [[ -e "$app_dir/HiddifyCli" || -e "$app_dir/lib/hiddify-core.so" ]]; then
     project_dir=$(cd -- "$script_dir/../../.." && pwd)
     resources="$project_dir/scripts/linux"
     python3 "$resources/prepare_weston_runtime.py" \
-        --cache "$${HIDDIFY_WESTON_PACKAGE_CACHE:-$project_dir/build/weston-cache}" \
+        --cache "${HIDDIFY_WESTON_PACKAGE_CACHE:-$project_dir/build/weston-cache}" \
         --output "$app_dir/lib/hiddify-weston-runtime.tar.gz"
     cp -- "$resources/weston-runtime.lock.json" "$app_dir/lib/hiddify-weston-provenance.json"
 fi
