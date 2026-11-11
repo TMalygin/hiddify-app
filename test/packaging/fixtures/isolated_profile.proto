@@ -1,0 +1,19 @@
+syntax = "proto3";
+package appimage_profile_smoke;
+
+// Public fields used by the packaged client, independent of the core under test.
+message ChangeHiddifySettingsRequest { string hiddify_settings_json = 1; }
+message StartRequest {
+  string config_content = 2;
+  bool disable_memory_limit = 3;
+  bool enable_raw_config = 6;
+  string config_name = 7;
+}
+message CoreInfoResponse {
+  enum State {
+    STOPPED = 0; STARTING = 1; STARTED = 2; STOPPING = 3;
+    HOT_RELOADING = 4; WAITING = 5; NO_AVAILABLE_PROXIES = 6;
+  }
+  State core_state = 1;
+  int32 message_type = 2;
+}
