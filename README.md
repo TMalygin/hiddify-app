@@ -120,7 +120,9 @@ Vless, Vmess, Reality, TUIC, Hysteria, Wireguard, SSH etc.
 
 ## ⚙️ Installation and tutorials
 
-In the Linux AppImage built from this fork's `ai` branch, open **Home → Isolated applications** to launch an executable as your regular user. With an active profile that has one supported VLESS/Reality exit, its traffic and DNS use that proxy with the default settings. Disconnecting leaves the application running offline. Connecting another supported profile restores access in the same process. A DIRECT exit or an ambiguous external selector keeps the application offline.
+In the Linux AppImage built from this fork's `ai` branch, open **Home → Isolated applications** to launch an executable as your regular user. With an active profile that has one supported VLESS/Reality exit, the application's traffic and DNS use that proxy with the default settings. Disconnecting leaves the application running offline. A DIRECT exit or an ambiguous external selector also keeps it offline.
+
+If the VLESS/Reality server has a hostname, the application stays offline until Hiddify's ordinary connection to that server receives an authenticated VLESS response. The isolated application then uses the verified IP address and checks the profile's Reality identity on its own connections. Switching profiles revokes the old address immediately. The same application can regain access through the newly selected profile once its exit is ready.
 
 **Find tutorial information on our wiki page by clicking on image below.**
 

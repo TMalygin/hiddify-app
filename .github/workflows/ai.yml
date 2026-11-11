@@ -180,6 +180,8 @@ jobs:
           (cd build/ai-core/hiddify-core && go build -tags with_utls -o "$test_dir/reality-echo" ./tests/fixtures/sandbox_reality_server)
           bash test/packaging/verify_appimage_default_vless.sh "$(realpath dist/*/Hiddify.AppImage)" \
             "$test_dir/python" "$test_dir/reality-echo"
+          bash test/packaging/verify_appimage_hostname_vless.sh "$(realpath dist/*/Hiddify.AppImage)" \
+            "$test_dir/python" "$test_dir/reality-echo"
       - name: Build Android APK
         if: matrix.platform == 'android'
         # Without a private keystore this is signed with the build's debug key.
