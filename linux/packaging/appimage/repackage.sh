@@ -22,6 +22,21 @@ trap 'rm -rf -- "$stage"' EXIT
     "$input" --appimage-extract > /dev/null
 )
 app_dir="$stage/squashfs-root"
+# Fastforge passes every non-directory in the Flutter lib folder to ldd.
+# Install the display data in the final AppDir, after that ELF scan. A
+# bundle that ships the native core must include its matching runtime.
+if [[ -e "$app_dir/HiddifyCli" || -e "$app_dir/lib/hiddify-core.so" ]]; then
+    if [[ ! -x "$app_dir/HiddifyCli" || ! -s "$app_dir/lib/hiddify-core.so" ]]; then
+        printf 'Incomplete Hiddify core in the input AppImage.\n' >&2
+        exit 1
+    fi
+    project_dir=$(cd -- "$script_dir/../../.." && pwd)
+    resources="$project_dir/scripts/linux"
+    python3 "$resources/prepare_weston_runtime.py" \
+        --cache "$${HIDDIFY_WESTON_PACKAGE_CACHE:-$project_dir/build/weston-cache}" \
+        --output "$app_dir/lib/hiddify-weston-runtime.tar.gz"
+    cp -- "$resources/weston-runtime.lock.json" "$app_dir/lib/hiddify-weston-provenance.json"
+fi
 cp -- "$script_dir/AppRun" "$app_dir/AppRun"
 chmod -R a+rX "$app_dir"
 chmod a+rx "$app_dir/AppRun"

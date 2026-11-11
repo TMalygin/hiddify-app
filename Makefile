@@ -411,7 +411,6 @@ linux-appimage-release:
 	fastforge package \
 	--platform linux \
 	--targets appimage \
-	--hook-pre='python3 scripts/linux/prepare_weston_runtime.py --cache "$${HIDDIFY_WESTON_PACKAGE_CACHE:-build/weston-cache}" --output "$$BUILD_OUTPUT_DIRECTORY/lib/hiddify-weston-runtime.tar.gz" && cp scripts/linux/weston-runtime.lock.json "$$BUILD_OUTPUT_DIRECTORY/lib/hiddify-weston-provenance.json"' \
 	--skip-clean \
 	--build-target=$(TARGET) \
 	--build-dart-define=sentry_dsn=$(SENTRY_DSN) \
