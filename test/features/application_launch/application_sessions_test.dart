@@ -120,7 +120,7 @@ void main() {
     }
     registry.launch(executable: '/usr/bin/true', arguments: ['a\x00b'], privateWayland: false);
     expect(endpoint.requests, isEmpty);
-    expect(registry.sessions.every((dynamic row) => row.phase.name == 'failed' && row.diagnostic.isNotEmpty), true);
+    expect(registry.sessions.every((dynamic row) => row.phase.name == 'failed' && (row.diagnostic as String).isNotEmpty), true);
     expect(registry.sessions.length, 4);
   });
 }
