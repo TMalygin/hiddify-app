@@ -11,6 +11,7 @@ import 'package:hiddify/core/notification/in_app_notification_controller.dart';
 import 'package:hiddify/features/connection/model/connection_failure.dart';
 import 'package:hiddify/features/log/model/log_level.dart' as config_log_level;
 import 'package:hiddify/features/settings/data/config_option_repository.dart';
+import 'package:hiddify/hiddifycore/application_sessions.dart';
 import 'package:hiddify/hiddifycore/core_interface/core_interface_wrapper_stub.dart'
     if (dart.library.io) 'package:hiddify/hiddifycore/core_interface/core_interface_wrapper.dart';
 import 'package:hiddify/hiddifycore/generated/v2/hcommon/common.pb.dart';
@@ -33,6 +34,8 @@ class HiddifyCoreService with InfraLogger {
 
   // CoreHiddifyCoreService() {}
   final core = getCoreInterface();
+
+  ApplicationSessions createApplicationSessions() => ApplicationSessions(core.runApplication);
 
   CoreStatus currentState = const CoreStatus.stopped();
   final statusController = BehaviorSubject<CoreStatus>();

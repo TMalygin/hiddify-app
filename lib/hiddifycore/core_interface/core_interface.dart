@@ -1,4 +1,6 @@
+import 'package:grpc/grpc.dart';
 import 'package:hiddify/core/model/directories.dart';
+import 'package:hiddify/hiddifycore/application_launch.dart';
 import 'package:hiddify/hiddifycore/generated/v2/hcore/hcore.pb.dart';
 import 'package:hiddify/hiddifycore/generated/v2/hcore/hcore_service.pbgrpc.dart';
 import 'package:hiddify/singbox/model/core_status.dart';
@@ -30,6 +32,14 @@ class CoreInterface {
   bool get persistsAfterAppExit => false;
   Stream<CoreStatus>? get managedStatus => null;
   Stream<void>? get clientChanges => null;
+
+  /// Runs an application in the user's isolated Linux core until it exits or the listener cancels.
+  Stream<ApplicationEvent> runApplication({
+    required List<String> command,
+    required String applicationId,
+    required bool privateWayland,
+    String executableRoot = '',
+  }) => Stream.error(const GrpcError.unimplemented('Isolated application launch requires Linux.'));
 
   Future<void> setOptions(SingboxConfigOption options) async {}
   Future<void> dispose() async {}

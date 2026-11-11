@@ -10,6 +10,7 @@ import 'package:ffi/ffi.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hiddify/core/model/directories.dart';
 import 'package:hiddify/gen/hiddify_core_generated_bindings.dart';
+import 'package:hiddify/hiddifycore/application_launch.dart';
 import 'package:hiddify/hiddifycore/core_interface/core_interface.dart';
 import 'package:hiddify/hiddifycore/core_interface/core_process.dart';
 import 'package:hiddify/hiddifycore/core_interface/grpc_client_identity.dart';
@@ -117,6 +118,24 @@ class CoreInterfaceDesktop extends CoreInterface with InfraLogger {
 
   ClientChannel? _channel;
   ChannelCredentials _credentials = const ChannelCredentials.insecure();
+
+  @protected
+  ClientChannel? get foregroundChannel => _channel;
+
+  @override
+  Stream<ApplicationEvent> runApplication({
+    required List<String> command,
+    required String applicationId,
+    required bool privateWayland,
+    String executableRoot = '',
+  }) => launchOnForegroundCore(
+    // bgClient may target the privileged VPN service. Launch only on the foreground user core.
+    foregroundChannel,
+    command: command,
+    applicationId: applicationId,
+    privateWayland: privateWayland,
+    executableRoot: executableRoot,
+  );
 
   bool _isMtlsMode(int mode) => mode == 1 || mode == 2;
 
