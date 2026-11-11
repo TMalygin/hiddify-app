@@ -148,6 +148,18 @@ jobs:
         env:
           APPIMAGE_EXTRACT_AND_RUN: '1'
         run: make linux-appimage-release
+      - name: Verify the private display shipped inside the AppImage
+        if: matrix.platform == 'linux'
+        run: |
+          image=$(realpath dist/*/Hiddify.AppImage)
+          lock="$GITHUB_WORKSPACE/scripts/linux/weston-runtime.lock.json"
+          stage=$(mktemp -d)
+          cd "$stage"
+          "$image" --appimage-extract 'lib/hiddify-weston-*'
+          cmp "$lock" squashfs-root/lib/hiddify-weston-provenance.json
+          expected=$(python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["tar_sha256"])' "$lock")
+          gzip -dc squashfs-root/lib/hiddify-weston-runtime.tar.gz | sha256sum | cut -d ' ' -f1 > digest
+          test "$(cat digest)" = "$expected"
       - name: Build Android APK
         if: matrix.platform == 'android'
         # Without a private keystore this is signed with the build's debug key.
