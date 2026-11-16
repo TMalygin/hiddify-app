@@ -48,7 +48,9 @@ class PlatformSettingsHandler : FlutterPlugin, MethodChannel.MethodCallHandler, 
             GetPackagesIcon("get_package_icon"),
             IsTelevision("is_television"),
             SupportedAbis("supported_abis"),
+            OsVersion("os_version"),
             InstallApk("install_apk"),
+            CanInstallApks("can_install_apks"),
         }
     }
 
@@ -203,12 +205,33 @@ class PlatformSettingsHandler : FlutterPlugin, MethodChannel.MethodCallHandler, 
                 result.runCatching { success(Build.SUPPORTED_ABIS.toList()) }
             }
 
+            // the release a person knows ("14"): Dart's operatingSystemVersion is the build id
+            Trigger.OsVersion.method -> {
+                result.runCatching { success(Build.VERSION.RELEASE) }
+            }
+
+            // Whether this app may start the system installer, without opening its settings page.
+            Trigger.CanInstallApks.method -> {
+                result.runCatching {
+                    val context = activity ?: Application.application
+                    success(
+                        Build.VERSION.SDK_INT < Build.VERSION_CODES.O ||
+                            context.packageManager.canRequestPackageInstalls()
+                    )
+                }.onFailure { result.error("can_install_apks", it.message, null) }
+            }
+
             // An update the app downloaded: the system installer asks the user to confirm it. Until
             // the user allows this app to install apps, its settings page opens instead, and the
             // answer is "permission" so the app can say why and offer to try again.
             Trigger.InstallApk.method -> {
                 result.runCatching {
                     val context = activity ?: Application.application
+                    // a copy Google Play installed is updated by Google Play only
+                    if (installedFromPlay(context)) {
+                        success("store")
+                        return@runCatching
+                    }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                         !context.packageManager.canRequestPackageInstalls()
                     ) {
@@ -233,10 +256,22 @@ class PlatformSettingsHandler : FlutterPlugin, MethodChannel.MethodCallHandler, 
                             .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
                     )
                     success("started")
-                }
+                    // a failure is answered too: unanswered, the update stayed on "Starting the
+                    // installer..." for good (no installer on the ROM, a file it could not share)
+                }.onFailure { result.error("install_apk", it.message ?: it.toString(), null) }
             }
 
             else -> result.notImplemented()
         }
     }
+
+    private fun installedFromPlay(context: Context): Boolean = runCatching {
+        val installer = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            context.packageManager.getInstallSourceInfo(context.packageName).installingPackageName
+        } else {
+            @Suppress("DEPRECATION")
+            context.packageManager.getInstallerPackageName(context.packageName)
+        }
+        installer == "com.android.vending"
+    }.getOrDefault(false)
 }

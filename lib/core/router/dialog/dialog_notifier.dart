@@ -19,6 +19,7 @@ import 'package:hiddify/core/router/dialog/widgets/setting_radio_dialog.dart';
 import 'package:hiddify/core/router/dialog/widgets/setting_slider_dialog.dart';
 import 'package:hiddify/core/router/dialog/widgets/setting_text_dialog.dart';
 import 'package:hiddify/core/router/dialog/widgets/sort_profiles_dialog.dart';
+import 'package:hiddify/core/router/dialog/widgets/telegram_channel_dialog.dart';
 import 'package:hiddify/core/router/dialog/widgets/unknown_domains_warning_dialog.dart';
 import 'package:hiddify/core/router/dialog/widgets/window_closing_dialog.dart';
 import 'package:hiddify/core/router/go_router/go_router_notifier.dart';
@@ -58,12 +59,17 @@ class DialogNotifier extends _$DialogNotifier {
     });
   }
 
-  Future<String?> showQrScanner() async {
-    return await _show<String?>(const QrCodeScannerDialog());
+  /// [hint] says which code to scan.
+  Future<String?> showQrScanner({String? hint}) async {
+    return await _show<String?>(QrCodeScannerDialog(hint: hint));
   }
 
   Future<void> showCrashReport() async {
     return await _show<void>(const CrashReportDialog());
+  }
+
+  Future<void> showReportProblem() async {
+    return await _show<void>(const ReportProblemDialog());
   }
 
   Future<void> showSortProfiles() async {
@@ -152,6 +158,10 @@ class DialogNotifier extends _$DialogNotifier {
     return await _show<void>(NewVersionDialog(currentVersion, newVersion, canIgnore: canIgnore));
   }
 
+  Future<void> showTelegramChannel() async {
+    return await _show<void>(const TelegramChannelDialog());
+  }
+
   Future<bool> showConfirmation({
     required String title,
     required String message,
@@ -217,7 +227,7 @@ class DialogNotifier extends _$DialogNotifier {
   /// The speed test of the proxy picker: of the [shown] proxies or the [chosen] ones; which, once
   /// saved and to start, or null when dismissed.
   Future<SpeedTestTarget?> showPickerSpeedTest({required int shown, required int chosen}) async {
-    return await _show<SpeedTestTarget?>(SpeedTestDialog(count: shown, chosen: chosen));
+    return await _show<SpeedTestTarget?>(SpeedTestDialog(count: shown, chosen: chosen, limited: false));
   }
 
   Future<void> showProxyInfo({required OutboundInfo outboundInfo}) async {

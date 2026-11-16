@@ -183,7 +183,7 @@ jobs:
       - name: Build Android APK
         if: matrix.platform == 'android'
         # Without a private keystore this is signed with the build's debug key.
-        run: flutter build apk --release --target lib/main_prod.dart --target-platform android-arm64 --dart-define=update_repository="$UPDATE_REPOSITORY"
+        run: flutter build apk --release --target lib/main_prod.dart --target-platform android-arm64 --dart-define=update_repository="$UPDATE_REPOSITORY" --dart-define=commit="$(git rev-parse --short=7 HEAD)"
       - name: Android native regression tests (API 36)
         if: matrix.platform == 'android'
         working-directory: android
