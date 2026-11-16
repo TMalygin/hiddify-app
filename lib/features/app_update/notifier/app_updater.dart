@@ -74,22 +74,20 @@ class AppUpdater extends _$AppUpdater with AppLogger {
   /// Updates to [release]; false when this install can not, and the release page should open.
   Future<bool> update(RemoteVersionEntity release) async {
     if (state is AppUpdaterDownloading || state is AppUpdaterInstalling) return true;
-    // the APK is already here: only the installer has to start again
-    if (state case AppUpdaterNeedsPermission(:final file) when file.existsSync()) {
-      await _retryInstall(file);
-      return true;
-    }
     final kind = ref.read(installKindProvider);
-    final abis = kind == InstallKind.androidApk ? await _supportedAbis() : const <String>[];
-    final asset = kind.installsItself
-        ? kind.assetIn(release, abis: abis, arm64: Abi.current() == Abi.linuxArm64)
-        : null;
-    if (asset == null) return false;
+    if (!kind.installsItself) return false;
+    _stopWaitingForPermission();
     try {
       state = const AppUpdaterDownloading(null);
+      final abis = kind == InstallKind.androidApk ? await _supportedAbis() : const <String>[];
+      final asset = kind.assetIn(release, abis: abis, arm64: Abi.current() == Abi.linuxArm64);
+      if (asset == null) {
+        state = const AppUpdaterIdle();
+        return false;
+      }
       final file = await _download(asset);
       state = const AppUpdaterInstalling();
-      await _install(kind, file);
+      await _install(kind, file, release);
       return true;
     } catch (error, stackTrace) {
       if (error is DioException && CancelToken.isCancel(error)) {
@@ -109,28 +107,17 @@ class AppUpdater extends _$AppUpdater with AppLogger {
     state = const AppUpdaterIdle();
   }
 
-  Future<void> _retryInstall(File file) async {
-    try {
-      state = const AppUpdaterInstalling();
-      await _install(InstallKind.androidApk, file);
-    } catch (error, stackTrace) {
-      loggy.warning("could not start the installer", error, stackTrace);
-      state = AppUpdaterFailed(error);
-    }
-  }
-
-  /// Back from the settings page with the permission given, the installer starts by itself.
-  void _waitForPermission(File file) {
+  /// Check the cached APK against its release again when the user returns from settings.
+  void _waitForPermission(RemoteVersionEntity release) {
     _stopWaitingForPermission();
-    _resumeListener = AppLifecycleListener(
+    late final AppLifecycleListener listener;
+    listener = AppLifecycleListener(
       onResume: () async {
-        if (state is! AppUpdaterNeedsPermission) return _stopWaitingForPermission();
         final allowed = await _platform.invokeMethod<bool>('can_install_apks').catchError((_) => false);
-        if (allowed != true || state is! AppUpdaterNeedsPermission) return;
-        _stopWaitingForPermission();
-        await _retryInstall(file);
+        if (allowed == true && identical(_resumeListener, listener)) await update(release);
       },
     );
+    _resumeListener = listener;
   }
 
   void _stopWaitingForPermission() {
@@ -188,14 +175,14 @@ class AppUpdater extends _$AppUpdater with AppLogger {
     }
   }
 
-  Future<void> _install(InstallKind kind, File file) async {
+  Future<void> _install(InstallKind kind, File file, RemoteVersionEntity release) async {
     switch (kind) {
       case InstallKind.androidApk:
         final started = await _platform.invokeMethod<String>('install_apk', file.path);
         if (started == 'store') throw StateError("Google Play installed this copy; it updates it.");
         if (started == 'permission') {
           state = AppUpdaterNeedsPermission(file);
-          _waitForPermission(file);
+          _waitForPermission(release);
         } else {
           state = const AppUpdaterIdle();
         }
