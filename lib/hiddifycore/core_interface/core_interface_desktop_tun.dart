@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:grpc/grpc.dart';
 import 'package:hiddify/core/model/directories.dart';
+import 'package:hiddify/hiddifycore/core_interface/admin_permission_refused.dart';
 import 'package:hiddify/hiddifycore/core_interface/appimage_service.dart';
 import 'package:hiddify/hiddifycore/core_interface/core_interface.dart';
 import 'package:hiddify/hiddifycore/core_interface/core_interface_desktop.dart';
@@ -55,12 +56,18 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
   /// When true, start via admin_bgservice even in proxy mode (Mode C prefer-admin).
   bool useAdminBgService = false;
 
-  /// Optional UI wrapper around elevation (waiting dialog). Returns false if the user stops.
+  /// Optional UI wrapper around elevation (waiting dialog). Returns false if the user stops; the start
+  /// then fails with [AdminPermissionRefused], as when the prompt is refused.
   Future<bool> Function(Future<void> work)? wrapAdminElevation;
 
   /// AppImage payload lives under a user FUSE mount, so no system service can run it: its VPN runs
   /// in a root copy of the same AppImage instead (see [AppImageService]).
   bool get _isAppImage => Platform.isLinux && (Platform.environment['APPIMAGE'] ?? '').isNotEmpty;
+
+  // The Linux launcher and the profile's engine share one unprivileged core:
+  // its application sessions stay alive when the profile disconnects.
+  @override
+  bool get libraryForFrontend => !Platform.isLinux;
 
   @override
   bool get managesLifecycle => true;
@@ -73,7 +80,11 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
 
   String get _cliPath {
     final dir = p.dirname(Platform.resolvedExecutable);
-    return p.join(dir, Platform.isWindows ? 'HiddifyCli.exe' : 'HiddifyCli');
+    if (!Platform.isWindows) return p.join(dir, 'HiddifyCli');
+    // Windows' console launcher is HiddifyCore.exe; cores before it shipped HiddifyCli.exe.
+    final cli = p.join(dir, 'HiddifyCore.exe');
+    if (File(cli).existsSync()) return cli;
+    return p.join(dir, 'HiddifyCli.exe');
   }
 
   String get _dataDir {
@@ -100,7 +111,12 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
   @override
   void onCoreProcessExited(String message) {
     // In VPN mode the engine runs in the service; only a proxy-mode connection went with the core.
-    if (_usingAdminBg || _status.value is CoreStopped) return;
+    if (_usingAdminBg) return;
+    // A surviving foreground library can restore the system proxy. A foreground
+    // process that crashed cleans up its leftovers during its next core setup.
+    if (libraryForFrontend) unawaited(_clearEngineLeftovers());
+    if (_status.value is CoreStopped) return;
+    _useBgClient(fgClient);
     _status.add(CoreStatus.stopped(alert: CoreAlert.startFailed, message: message));
   }
 
@@ -110,10 +126,11 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
     // When admin_bgservice will own TUN, fg must not enable TUN; full settings go in Ensure.
     final adminOwnsTun = useAdminBgService || (options.enableTun && !await _isPrivileged());
     final forFg = adminOwnsTun ? options.copyWith(enableTun: false) : options;
-    final response = await fgClient.changeHiddifySettings(
-      ChangeHiddifySettingsRequest(hiddifySettingsJson: jsonEncode(forFg.toJson())),
-    );
-    _checkResponse(response);
+    final request = ChangeHiddifySettingsRequest(hiddifySettingsJson: jsonEncode(forFg.toJson()));
+    _checkResponse(await fgClient.changeHiddifySettings(request));
+    // a connection in the engine's process hot reloads there, with these settings
+    final engine = engineClient;
+    if (engine != null && !_usingAdminBg) _checkResponse(await engine.changeHiddifySettings(request));
   }
 
   Future<NeedAdminBgServiceResponse> needAdminBgService({
@@ -136,16 +153,22 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
   Future<void> startManaged(String path, String name, bool disableMemoryLimit) async {
     final options = _options;
     if (options == null) throw StateError('Apply connection options before starting the core.');
+    // this connect's choices, made just before it, outlive the stop of the last connection: without
+    // them the waiting dialog never showed while the system asked for the password (hiddify-app#2582)
+    final adminBgChosen = useAdminBgService;
+    final wrap = wrapAdminElevation;
     await stop();
+    useAdminBgService = adminBgChosen;
 
     final wantAdminBg = useAdminBgService || options.enableTun;
     if (!wantAdminBg) {
       _usingAdminBg = false;
-      _useBgClient(fgClient);
+      final engine = await _engineWith(options);
+      _useBgClient(engine);
       // the stop above may still be under way in the core
       _checkResponse(
         await startOnceStopped(
-          fgClient,
+          engine,
           StartRequest(configPath: path, configName: name, disableMemoryLimit: disableMemoryLimit),
         ),
       );
@@ -158,15 +181,11 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
       _status.add(const CoreStatus.starting());
       try {
         _usingAdminBg = false;
-        _useBgClient(fgClient);
-        _checkResponse(
-          await fgClient.changeHiddifySettings(
-            ChangeHiddifySettingsRequest(hiddifySettingsJson: jsonEncode(options.toJson())),
-          ),
-        );
+        final engine = await _engineWith(options);
+        _useBgClient(engine);
         _checkResponse(
           await startOnceStopped(
-            fgClient,
+            engine,
             StartRequest(configPath: path, configName: name, disableMemoryLimit: disableMemoryLimit),
           ),
         );
@@ -188,22 +207,30 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
               disableMemoryLimit: disableMemoryLimit,
             )
           : _ensureAdminBgAndAttach(path: path, name: name, options: options, disableMemoryLimit: disableMemoryLimit);
-      final wrap = wrapAdminElevation;
       if (wrap != null) {
         final ok = await wrap(ensure);
-        wrapAdminElevation = null;
-        if (!ok) {
-          throw StateError('Administrator permission was not given, so VPN mode could not connect.');
-        }
+        if (!ok) throw const AdminPermissionRefused();
       } else {
         await ensure;
       }
       _status.add(const CoreStatus.started());
     } catch (error) {
-      wrapAdminElevation = null;
       await _abandonVpnStart(error);
       rethrow;
     }
+  }
+
+  /// The core a connection outside the VPN service runs in: the engine's own process, which has
+  /// the app's rights (an elevated app's, for a TUN), given the connection's settings. Without a
+  /// launcher, the core this app set up.
+  Future<CoreClient> _engineWith(SingboxConfigOption options) async {
+    final engine = await startEngine() ?? fgClient;
+    _checkResponse(
+      await engine.changeHiddifySettings(
+        ChangeHiddifySettingsRequest(hiddifySettingsJson: jsonEncode(options.toJson())),
+      ),
+    );
+    return engine;
   }
 
   Future<void> _ensureAdminBgAndAttach({
@@ -238,9 +265,11 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
     )) {
       last = event.progress;
       lastMessage = event.message;
-      if (event.progress == EnsureAdminBgServiceProgress.ENSURE_ADMIN_BG_FAILED_PERMISSION_DENIED ||
-          event.progress == EnsureAdminBgServiceProgress.ENSURE_ADMIN_BG_FAILED_OTHER) {
-        throw StateError(
+      if (event.progress == EnsureAdminBgServiceProgress.ENSURE_ADMIN_BG_FAILED_PERMISSION_DENIED) {
+        throw const AdminPermissionRefused();
+      }
+      if (event.progress == EnsureAdminBgServiceProgress.ENSURE_ADMIN_BG_FAILED_OTHER) {
+        throw VpnServiceFailure(
           (event.message.isNotEmpty)
               ? event.message
               : 'Could not start the VPN service. Allow the administrator prompt and try again.',
@@ -460,6 +489,19 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
     return true;
   }
 
+  /// Asks the library in this process to undo what the engine's process left (the system proxy its
+  /// inbound set) once that process has ended: a disable without an address does it (hiddify-core
+  /// cleanupStoppedEngine). The library runs as the user, as the engine did.
+  Future<void> _clearEngineLeftovers() async {
+    try {
+      await fgClient
+          .setSystemProxyEnabled(SetSystemProxyEnabledRequest(isEnabled: false))
+          .timeout(const Duration(seconds: 5));
+    } catch (error) {
+      loggy.warning('clearing what the engine left failed: $error');
+    }
+  }
+
   Future<void> _restoreServiceSystemProxy() async {
     if (!_serviceSystemProxy) return;
     _serviceSystemProxy = false;
@@ -545,7 +587,12 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
     }
     // Retain the active client and ownership until both stops are confirmed.
     // A failed RPC or timeout must reach the caller, not become a stopped state.
-    _checkResponse(await fgClient.stop(Empty()).timeout(const Duration(seconds: 5)), allowStopped: true);
+    final engine = engineClient;
+    _checkResponse(await (engine ?? fgClient).stop(Empty()).timeout(const Duration(seconds: 5)), allowStopped: true);
+    if (engine != null) {
+      await stopEngine();
+      await _clearEngineLeftovers();
+    }
     await _restoreServiceSystemProxy();
     _serviceChannel = null;
     _usingAdminBg = false;
@@ -567,7 +614,7 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
 
   @override
   Future<bool> isBgClientAvailable() async {
-    if (!_usingAdminBg) return true;
+    if (!_usingAdminBg) return identical(bgClient, fgClient) || engineClient != null;
     if (_isAppImage) return _appImageService?.running ?? false;
     try {
       final socket = await Socket.connect('127.0.0.1', _servicePortInUse, timeout: const Duration(milliseconds: 200));
@@ -591,7 +638,10 @@ class CoreInterfaceDesktopTun extends CoreInterfaceDesktop {
     final service = _appImageService;
     _appImageService = null;
     await service?.stop();
+    // the library in this process set it for the VPN service; it goes with this process
+    await _restoreServiceSystemProxy();
     await super.shutdown();
+    if (libraryForFrontend) await _clearEngineLeftovers();
   }
 
   @override

@@ -1,0 +1,34 @@
+# Shows the build number the next TestFlight upload of the iOS app gets, from the
+# ios-build/<version>/<build> tags the TestFlight upload records, without building anything.
+name: iOS next build number
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to check (empty = pubspec's, without a pre-release suffix)
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  next-build-number:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Find the next build number
+        id: next
+        uses: ./.github/actions/ios-next-build-number
+        with:
+          version: ${{ inputs.version }}
+
+      - name: Summary
+        env:
+          VERSION: ${{ steps.next.outputs.version }}
+          BUILD: ${{ steps.next.outputs.build }}
+        run: |
+          echo "### iOS $VERSION: next build number $BUILD" >> "$GITHUB_STEP_SUMMARY"

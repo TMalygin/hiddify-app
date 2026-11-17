@@ -169,12 +169,13 @@
         "failed": "Failed",
         "ready": "Ready",
         "searching": "Searching",
-        "reconnecting": "Reconnecting"
+        "reconnecting": "Reconnecting",
+        "resting": "Asleep"
       },
       "signalStyle": "Signal style",
       "keepTop": {
         "picking": "Finding the $keep fastest of $count…",
-        "pickingBody": "All the proxies are tested once; then only the fastest keep running.",
+        "pickingBody": "All the proxies are tested once; then only the fastest stay awake.",
         "thenFastest": "After the test, only the $keep fastest$where keep running.",
         "thenWorking": "After the test, only the working ones$where keep running.",
         "thenAll": "After the test, only the ones$where keep running.",
@@ -183,14 +184,30 @@
         "keptAnswering": "$n working proxies$where run",
         "kept": "The $n fastest are running",
         "keptFastest": "The $n fastest$where are running",
-        "keptBody": "$paused other proxies are paused, to save battery and data.",
+        "keptBody": "The other $paused are asleep, to save memory, battery and data.",
         "showAll": "Show all $count",
         "big": "$count proxies are running",
         "bigBody": "Keep only the $keep fastest running, to save battery and data.",
         "keep": "Keep the $keep fastest",
-        "change": "Change how many",
+        "change": "Change",
         "chosen": "Your $n chosen proxies are running",
-        "choose": "Choose"
+        "choose": "Choose",
+        "restingShow": "Show the $n sleeping proxies",
+        "restingHide": "Hide the sleeping proxies",
+        "restingHint": "A sleeping proxy is not loaded. Tap one to wake it: it is loaded and tested. Long press it to pin it.",
+        "restingTitle": "$n proxies are taking a nap",
+        "restingWhy": "Only the fastest stay awake, so your device stays quick and saves battery and data. Tap any of them to wake it up.",
+        "fasterElsewhere": "$n proxies in other regions are faster",
+        "anyRegion": "Show all regions",
+        "running": "running",
+        "testing": "testing…",
+        "untested": "left to test…",
+        "modeTop": "Top $keep",
+        "modeWorking": "Working only",
+        "modeChosen": "Your picks",
+        "onlyAnswer": "Top $keep · only $n answer",
+        "working": "working",
+        "failing": "not working"
       },
       "upload": {
         "test": "Test upload speed",
@@ -294,7 +311,16 @@
         "copy": "Copy",
         "shareFile": "Share",
         "saveFile": "Save",
-        "tooLargeToCopy": "Too large for the clipboard: share or save it as a file"
+        "tooLargeToCopy": "Too large for the clipboard: share or save it as a file",
+        "toTv": {
+          "button": "Send to TV",
+          "scanHint": "On the TV, open Hiddify and tap + to add a profile, then scan the code it shows. Both devices must be on the same Wi-Fi.",
+          "sent": "Sent. Press Import on the TV to add it.",
+          "notTvCode": "That is not a Hiddify TV code. On the TV, tap + to add a profile to show it.",
+          "expired": "The TV no longer takes links at this code. Open the add profile screen on the TV again and scan the new code.",
+          "busy": "The TV has too many links waiting. Import or discard them on the TV, then try again.",
+          "unreachable": "Couldn't reach the TV. Make sure the phone and TV are on the same Wi-Fi network."
+        }
       },
       "msg": {
         "save": {
@@ -379,17 +405,22 @@
       "coreLogLevelMsg": "Takes effect after reconnecting",
       "buffer": "Buffer",
       "diagnostics": "Diagnostics report",
-      "diagnosticsMsg": "Crash reports, logs and your settings without servers or passwords, as one zip"
+      "diagnosticsMsg": "Send or save crash reports, logs, connection state and your settings without servers or passwords",
+      "fullReport": "Full report"
     },
     "about": {
       "title": "About",
       "notAvailableMsg": "You’re using the latest version",
       "checkForUpdate": "Check for update",
+      "betaUpdates": "Beta updates",
+      "betaUpdatesMsg": "Get new versions before they are released to everyone",
       "openWorkingDir": "Open working directory",
       "sourceCode": "Source code",
       "telegramChannel": "Telegram channel",
       "termsAndConditions": "Terms and conditions",
-      "privacyPolicy": "Privacy policy"
+      "privacyPolicy": "Privacy policy",
+      "reportProblem": "Report a problem",
+      "reportProblemMsg": "Send the logs and app state to the developers"
     },
     "settings": {
       "title": "Settings",
@@ -421,7 +452,7 @@
         "enableAnalyticsMsg": "Send analytics and crash reports from your device to help improve the app",
         "autoIpCheck": "Automatically check connection IP",
         "reduceAnimations": "Reduce animations",
-        "reduceAnimationsMsg": "Keep the connect button still and stop looping effects, to save battery",
+        "reduceAnimationsMsg": "Keep the light around the connect button still while connected, to save battery",
         "dynamicNotification": "Display speed in notification",
         "hapticFeedback": "Haptic feedback",
         "alwaysOnVpn": "Always-on VPN",
@@ -944,6 +975,7 @@
       "msg": "A new version of @:common.appTitle is available. Update now?",
       "currentVersion": "Current version",
       "newVersion": "New version",
+      "changelog": "What's new",
       "updateNow": "Update now",
       "downloading": "Downloading…",
       "installing": "Starting the installer…",
@@ -986,13 +1018,54 @@
     },
     "adminBgService": {
       "vpnNeedsAdmin": {
-        "title": "Administrator permission needed",
-        "msg": "VPN mode needs a one-time administrator permission to install the Hiddify background service. After that, you can connect without another prompt.",
-        "msgAppImage": "VPN mode needs administrator permission. The AppImage runs its VPN as a copy of itself with administrator rights, so it asks once each time Hiddify starts.",
-        "connectWithAdmin": "Connect with administrator permission",
+        "title": "Send all apps through the VPN?",
+        "vpnMode": "VPN mode",
+        "allApps": "All apps",
+        "recommended": "Recommended",
+        "systemProxyMode": "System proxy",
+        "someApps": "Browsers and most apps",
+        "switched": "Switched to system proxy mode. You can change it in Settings.",
         "waitingTitle": "Waiting for administrator permission",
-        "waitingMsg": "To continue, allow the administrator prompt. You can stop and try again later.",
-        "stop": "Stop"
+        "waitingMsg": "Hiddify is waiting for you to allow VPN mode.",
+        "waitingWhere": "In the window that opened:",
+        "waitingWindows": "Click “Yes”.",
+        "waitingMac": "Enter your Mac password and confirm.",
+        "waitingLinux": "Enter your password and confirm.",
+        "back": "Back",
+        "needsAdmin": "Needs admin, once",
+        "needsAdminAppImage": "Needs admin at each start",
+        "noAdmin": "No admin needed",
+        "someAppsExcept": "Telegram and a few apps are left out",
+        "useVpn": "Use VPN mode",
+        "useSystemProxy": "Use system proxy",
+        "helpTooltip": "What is this?",
+        "helpWhatTitle": "How it works",
+        "helpProsTitle": "Good points",
+        "helpConsTitle": "Keep in mind",
+        "helpVpn": {
+          "what": "Hiddify adds a virtual network to your computer, and every app's internet traffic goes through it on its own: browsers, Telegram, games, updates and the rest. Nothing has to be set up in each app.",
+          "pros": [
+            "Every app goes through Hiddify, with no settings in each app.",
+            "Apps that ignore proxy settings, such as Telegram and games, work too.",
+            "Name lookups (DNS) go through Hiddify as well, so sites blocked that way open too."
+          ],
+          "cons": [
+            "The first time, your computer asks for administrator permission, to install Hiddify's background service. After that it connects without asking.",
+            "Turn off other VPN apps while you use it: two at once get in each other's way."
+          ]
+        },
+        "helpSystemProxy": {
+          "what": "Hiddify changes your computer's proxy setting. Apps that follow that setting, such as web browsers, send their traffic through Hiddify; the rest connect directly, as if Hiddify were off.",
+          "pros": [
+            "No administrator permission needed.",
+            "Quick to turn on and off, and Hiddify puts the setting back when you disconnect.",
+            "Works next to other network tools on your computer."
+          ],
+          "cons": [
+            "Apps that ignore the system proxy, such as Telegram, many games and some update tools, are not protected.",
+            "If they stop working, choose VPN mode instead."
+          ]
+        }
       },
       "proxyNeedsAdmin": {
         "title": "Administrator permission recommended",
@@ -1054,7 +1127,9 @@
       "server": "Server",
       "country": "Country",
       "tapToTest": "Tap to test",
-      "error": "Why it failed"
+      "error": "Why it failed",
+      "keepLoaded": "Pin proxy",
+      "keepLoadedBody": "It stays loaded and tested beside the fastest ones, whatever its ping."
     },
     "windowClosing": {
       "askEachTime": "Ask each time",
@@ -1077,15 +1152,58 @@
       "notFound": "No QR code found in this image"
     },
     "crashReport": {
+      "recommended": "Recommended",
+      "email": "Email",
+      "localOnly": "Local only",
+      "localOnlyMsg": "Nothing is sent: keep it, look inside, or send it yourself later.",
+      "scrubSecrets": "Removing IPs, domains and keys",
+      "encryptingLogs": "Encrypting logs",
+      "notEncrypted": "Logs are not encrypted",
       "title": "Hiddify crashed last time",
-      "msg": "Send a report to the developers so this gets fixed? It holds the crash details, the logs and your configuration with servers, keys and passwords removed, as one zip file you can look at before sending.",
-      "send": "Send report"
+      "msg": "Send a report so we can fix it. The logs come along.",
+      "sendHiddify": "Send to Hiddify",
+      "sendHiddifyMsg": "The app uploads the report itself",
+      "sent": "Report sent. Thank you!",
+      "sendFailed": "Could not send the report. Try email or Telegram instead.",
+      "subject": "Hiddify crash report",
+      "problemTitle": "Report a problem",
+      "problemMsg": "Tell us what went wrong. The logs come along.",
+      "description": "What happened? (optional)",
+      "descriptionHint": "What you did, what you expected, what you saw instead",
+      "problemSubject": "Hiddify problem report",
+      "back": "Back",
+      "chooseHow": "How do you want to send it?",
+      "steps": {
+        "preparing": "Collecting logs and settings…",
+        "prepareFailed": "Could not prepare the report. Go back and try again.",
+        "uploading": "Uploading…",
+        "save": "Save the report",
+        "saveDesktopMsg": "Choose where to keep it",
+        "saveMobileMsg": "In the menu, pick Save to Files or Downloads",
+        "openBot": "Open the support bot and tap Start",
+        "openBotButton": "Open bot",
+        "openMail": "Open your mail app",
+        "openMailMsg": "A new message to $address with the subject filled in",
+        "openMailButton": "Open mail",
+        "attachSend": "Attach the report to the new message and send it",
+        "openGithub": "Open a new GitHub issue",
+        "openGithubMsg": "Sign in to GitHub. Your description, platform, version and system are filled in.",
+        "openGithubButton": "Open GitHub",
+        "dropInIssue": "Attach the report and press Create",
+        "telegramPrivate": "Private: only the Hiddify support team sees the report.",
+        "emailPrivate": "Private: only the Hiddify team reads the report.",
+        "attachInChat": "Attach the report in the bot chat and send it",
+        "attachHow": "Drag the file in, or use the paperclip",
+        "dropInIssueHow": "Drag the file into Additional Context, or tap the bar under that box",
+        "ready": "Report ready",
+        "saveUnencryptedCopy": "Save an unencrypted copy"
+      }
     },
     "keepTop": {
       "title": "A big subscription",
       "subtitle": "$count proxies · running them all costs battery, data and memory",
       "hint": "Undo any time from the end of the list.",
-      "keeping": "The $keep fastest run, the others pause",
+      "keeping": "The $keep fastest stay awake, the others sleep",
       "all": "All $count run",
       "keep": "Keep the $keep fastest",
       "useAll": "Use all $count",
@@ -1119,9 +1237,9 @@
       "selectFastest": "$n fastest",
       "statusChosen": "Chosen",
       "statusAnswering": "Answering",
-      "statusPaused": "Paused",
-      "paused": "$n proxies are paused: they have no ping and can't be tested.",
-      "wake": "Run all to test",
+      "statusPaused": "Asleep",
+      "paused": "$n proxies are asleep: they have no ping and can't be tested until woken.",
+      "wake": "Wake all to test",
       "offline": "Connect to see their ping and test them.",
       "offlineTitle": "Not connected",
       "shown": "$n shown",
@@ -1161,9 +1279,21 @@
     "dbNewerThanApp": {
       "title": "Saved data is from a newer version",
       "msg": "Your profiles and settings were saved by a newer version of Hiddify, and this older version cannot read them. Install the latest version to keep them, or delete them to use this version.",
-      "deleteData": "Delete data",
-      "deleteConfirm": "All profiles will be deleted. This cannot be undone.",
+      "deleteData": "Wipe data",
+      "deleteConfirm": "The saved data is wiped. Your subscriptions and local profiles are added back where possible; anything else saved by the newer version is lost.",
       "downloadLatest": "Download latest version"
+    },
+    "dbBroken": {
+      "title": "Saved data can't be opened",
+      "msg": "Hiddify couldn't open its saved profiles. Wipe the saved data to start again: your subscriptions and local profiles are added back where possible, and your settings are kept.",
+      "wipeData": "Wipe data",
+      "wipeConfirm": "The saved data is wiped and Hiddify starts again. Profiles that can still be read are added back; the rest can't be recovered.",
+      "copyError": "Copy error"
+    },
+    "telegramChannel": {
+      "title": "Join Hiddify on Telegram",
+      "msg": "Follow the official Hiddify channel for news, new releases and tips to stay connected.",
+      "join": "Join channel"
     }
   },
   "connection": {
@@ -1234,7 +1364,8 @@
       "tunAddressInUse": "Another VPN is active",
       "tunAddressInUseMsg": "VPN mode can’t start. Turn off the other VPN or change service mode.",
       "invalidConfigOptions": "Invalid configuration options",
-      "invalidConfig": "Invalid configuration"
+      "invalidConfig": "Invalid configuration",
+      "missingConfig": "This profile's configuration is missing. Update the profile, or add it again."
     },
     "warp": {
       "missingLicense": "WARP license required",

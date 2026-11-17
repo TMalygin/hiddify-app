@@ -91,16 +91,20 @@ COMPONENT Runtime RENAME hiddify-core.dll)
 install(FILES "../hiddify-core/bin/libcronet.dll" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
 COMPONENT Runtime RENAME libcronet.dll)
 
+# The console launcher (hiddify-core's command line): HiddifyCore.exe, HiddifyCli.exe in cores before
+# it. Each is installed under its own name, because the core's DLL looks for it by that name.
+install(FILES "../hiddify-core/bin/HiddifyCore.exe" DESTINATION "${CMAKE_INSTALL_PREFIX}"
+COMPONENT Runtime OPTIONAL)
 install(FILES "../hiddify-core/bin/HiddifyCli.exe" DESTINATION "${CMAKE_INSTALL_PREFIX}"
-COMPONENT Runtime RENAME HiddifyCli.exe)
+COMPONENT Runtime OPTIONAL)
 
 # Elevation helper (requireAdministrator manifest) used to install the VPN service.
 install(FILES "../hiddify-core/bin/HiddifyAdmin.exe" DESTINATION "${CMAKE_INSTALL_PREFIX}"
 COMPONENT Runtime RENAME HiddifyAdmin.exe)
 
-# The app's core runs in a process of its own: core\Hiddify.exe, named Hiddify with the core icon.
-# Optional: without it (a core built before it existed) the app loads the core in its own process.
-install(FILES "../hiddify-core/bin/core/Hiddify.exe" DESTINATION "${CMAKE_INSTALL_PREFIX}/core"
+# A proxy-mode connection runs in a process of its own: HiddifyCoreEngine.exe, shown as Hiddify Core Engine.
+# Optional: without it (a core built before it existed) the app runs it in its own process.
+install(FILES "../hiddify-core/bin/HiddifyCoreEngine.exe" DESTINATION "${CMAKE_INSTALL_PREFIX}"
 COMPONENT Runtime OPTIONAL)
 
 

@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hiddify/core/preferences/general_preferences.dart';
+import 'package:hiddify/core/widget/ambient_motion.dart';
 import 'package:hiddify/features/connection/notifier/connection_notifier.dart';
 import 'package:hiddify/hiddifycore/hiddify_core_service_provider.dart';
 import 'package:hiddify/utils/utils.dart';
@@ -31,6 +31,15 @@ class WindowNotifier extends _$WindowNotifier with AppLogger {
     // }
 
     await windowManager.ensureInitialized();
+    if (Platform.isWindows) {
+      // Windows ends the session, or a setup closes the app to update it (hiddify-app#2573): the
+      // window is often hidden in the tray, and the setup waits for the app to exit.
+      const MethodChannel('com.hiddify.app/session').setMethodCallHandler((call) async {
+        if (call.method != 'endSession') return;
+        loggy.info("windows ends the session, exiting");
+        await exit();
+      });
+    }
     await initWindowState();
   }
 
@@ -81,6 +90,7 @@ class WindowNotifier extends _$WindowNotifier with AppLogger {
       await ref.read(windowNotifierProvider.notifier).show(focus: false);
       loggy.debug("showing app window on start");
     } else {
+      seeWindow(hidden: true);
       loggy.debug("silent start, remain hidden accessible via tray");
     }
   }
@@ -106,6 +116,7 @@ class WindowNotifier extends _$WindowNotifier with AppLogger {
   }
 
   Future<void> show({bool focus = true}) async {
+    seeWindow(hidden: false);
     await windowManager.show();
     if (_maximizeOnShow) {
       _maximizeOnShow = false;
@@ -118,6 +129,8 @@ class WindowNotifier extends _$WindowNotifier with AppLogger {
   }
 
   Future<void> hide() async {
+    // nothing moves from now on, without waiting for the engine to report the window hidden
+    seeWindow(hidden: true);
     await windowManager.hide();
     if (Platform.isMacOS) {
       await windowManager.setSkipTaskbar(true);

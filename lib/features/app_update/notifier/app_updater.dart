@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hiddify/core/app_info/app_info_provider.dart';
 import 'package:hiddify/core/http_client/http_client_provider.dart';
 import 'package:hiddify/features/app_update/data/appimage_installer.dart';
@@ -42,9 +43,11 @@ class AppUpdaterInstalling extends AppUpdaterState {
   const AppUpdaterInstalling();
 }
 
-/// Android asks the user to let this app install apps first; the settings page is open.
+/// Android asks the user to let this app install apps first; the settings page is open. [file] is
+/// the verified download, installed as soon as the user comes back with the permission.
 class AppUpdaterNeedsPermission extends AppUpdaterState {
-  const AppUpdaterNeedsPermission();
+  const AppUpdaterNeedsPermission(this.file);
+  final File file;
 }
 
 class AppUpdaterFailed extends AppUpdaterState {
@@ -60,24 +63,31 @@ class AppUpdater extends _$AppUpdater with AppLogger {
   static const _platform = MethodChannel('com.hiddify.app/platform');
 
   CancelToken? _cancel;
+  AppLifecycleListener? _resumeListener;
 
   @override
-  AppUpdaterState build() => const AppUpdaterIdle();
+  AppUpdaterState build() {
+    ref.onDispose(_stopWaitingForPermission);
+    return const AppUpdaterIdle();
+  }
 
   /// Updates to [release]; false when this install can not, and the release page should open.
   Future<bool> update(RemoteVersionEntity release) async {
-    if (state is AppUpdaterDownloading) return true;
+    if (state is AppUpdaterDownloading || state is AppUpdaterInstalling) return true;
     final kind = ref.read(installKindProvider);
-    final abis = kind == InstallKind.androidApk ? await _supportedAbis() : const <String>[];
-    final asset = kind.installsItself
-        ? kind.assetIn(release, abis: abis, arm64: Abi.current() == Abi.linuxArm64)
-        : null;
-    if (asset == null) return false;
+    if (!kind.installsItself) return false;
+    _stopWaitingForPermission();
     try {
       state = const AppUpdaterDownloading(null);
+      final abis = kind == InstallKind.androidApk ? await _supportedAbis() : const <String>[];
+      final asset = kind.assetIn(release, abis: abis, arm64: Abi.current() == Abi.linuxArm64);
+      if (asset == null) {
+        state = const AppUpdaterIdle();
+        return false;
+      }
       final file = await _download(asset);
       state = const AppUpdaterInstalling();
-      await _install(kind, file);
+      await _install(kind, file, release);
       return true;
     } catch (error, stackTrace) {
       if (error is DioException && CancelToken.isCancel(error)) {
@@ -92,7 +102,28 @@ class AppUpdater extends _$AppUpdater with AppLogger {
 
   void cancel() => _cancel?.cancel();
 
-  void reset() => state = const AppUpdaterIdle();
+  void reset() {
+    _stopWaitingForPermission();
+    state = const AppUpdaterIdle();
+  }
+
+  /// Check the cached APK against its release again when the user returns from settings.
+  void _waitForPermission(RemoteVersionEntity release) {
+    _stopWaitingForPermission();
+    late final AppLifecycleListener listener;
+    listener = AppLifecycleListener(
+      onResume: () async {
+        final allowed = await _platform.invokeMethod<bool>('can_install_apks').catchError((_) => false);
+        if (allowed == true && identical(_resumeListener, listener)) await update(release);
+      },
+    );
+    _resumeListener = listener;
+  }
+
+  void _stopWaitingForPermission() {
+    _resumeListener?.dispose();
+    _resumeListener = null;
+  }
 
   Future<File> _download(ReleaseAsset asset) async {
     final digest = asset.digest;
@@ -103,7 +134,11 @@ class AppUpdater extends _$AppUpdater with AppLogger {
     final directory = Directory(p.join((await getTemporaryDirectory()).path, 'updates'));
     await directory.create(recursive: true);
     final file = File(p.join(directory.path, asset.name));
-    if (file.existsSync()) await file.delete();
+    if (file.existsSync()) {
+      // a download the installer did not take yet, e.g. while the user gave the permission
+      if (await _matches(file, asset.size, digest)) return file;
+      await file.delete();
+    }
     _cancel = CancelToken();
     await ref
         .read(httpClientProvider)
@@ -130,11 +165,27 @@ class AppUpdater extends _$AppUpdater with AppLogger {
     return file;
   }
 
-  Future<void> _install(InstallKind kind, File file) async {
+  static Future<bool> _matches(File file, int size, String digest) async {
+    try {
+      if (size > 0 && await file.length() != size) return false;
+      final actual = await sha256.bind(file.openRead()).first;
+      return actual.toString() == digest.substring(7).toLowerCase();
+    } on FileSystemException {
+      return false;
+    }
+  }
+
+  Future<void> _install(InstallKind kind, File file, RemoteVersionEntity release) async {
     switch (kind) {
       case InstallKind.androidApk:
         final started = await _platform.invokeMethod<String>('install_apk', file.path);
-        if (started == 'permission') state = const AppUpdaterNeedsPermission();
+        if (started == 'store') throw StateError("Google Play installed this copy; it updates it.");
+        if (started == 'permission') {
+          state = AppUpdaterNeedsPermission(file);
+          _waitForPermission(release);
+        } else {
+          state = const AppUpdaterIdle();
+        }
       case InstallKind.windowsSetup:
         // the setup closes the app itself (CloseApplications=force) and installs over it
         await Process.start(file.path, const [], mode: ProcessStartMode.detached);
