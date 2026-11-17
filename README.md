@@ -103,6 +103,9 @@ In the Linux AppImage built from this fork's `ai` branch, open **Home → Isolat
 
 Choose **Bash** or **sh** to enter a command such as `date -u | cut -d ' ' -f 1`. The shell runs noninteractively inside the sandbox, resolves program names in `/usr/bin:/bin`, and accepts multiline scripts. Each exact command has its own private home for the selected shell. For an application packaged under `/opt`, choose **Executable** and select its file to include the application's directory.
 
+Enable **Nested sandbox** when launching a browser or Electron application that creates its own renderer sandbox inside the isolated session.
+Its private display starts at 1280×900. Support for arbitrary minimum window sizes and resizing is tracked in [#75](https://github.com/TMalygin/hiddify-app/issues/75).
+
 Step-by-step guides for every device, with pictures, are on our website:
 
 - [How to install the Hiddify app](https://hiddify.com/app/How-to-install-Hiddify-app/) (Android, iPhone, Windows, macOS, Linux)

@@ -37,6 +37,7 @@ class _ApplicationLauncherDialogState extends ConsumerState<ApplicationLauncherD
   _LaunchMode mode = _LaunchMode.executable;
   int nextArgument = 0;
   bool privateWayland = true;
+  bool rendererSandbox = false;
   bool choosingFile = false;
   String? pathError;
 
@@ -93,9 +94,15 @@ class _ApplicationLauncherDialogState extends ConsumerState<ApplicationLauncherD
         executable: selected,
         arguments: [for (final item in arguments) item.text],
         privateWayland: privateWayland,
+        rendererSandbox: rendererSandbox,
       );
     } else {
-      manager.launchShell(interpreter: interpreter, source: shellCommand.text, privateWayland: privateWayland);
+      manager.launchShell(
+        interpreter: interpreter,
+        source: shellCommand.text,
+        privateWayland: privateWayland,
+        rendererSandbox: rendererSandbox,
+      );
     }
     FocusScope.of(context).unfocus();
     if (scroll.hasClients) scroll.jumpTo(0);
@@ -249,6 +256,14 @@ class _ApplicationLauncherDialogState extends ConsumerState<ApplicationLauncherD
                       title: Text(t.window),
                       value: privateWayland,
                       onChanged: (value) => setState(() => privateWayland = value),
+                    ),
+                    SwitchListTile(
+                      key: const ValueKey('application_renderer_sandbox'),
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(t.rendererSandbox),
+                      subtitle: Text(t.rendererSandboxHint),
+                      value: rendererSandbox,
+                      onChanged: (value) => setState(() => rendererSandbox = value),
                     ),
                   ],
                 ),

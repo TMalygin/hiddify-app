@@ -39,12 +39,20 @@ final _runApplication = ClientMethod<CodedBufferWriter, ApplicationEvent>(
   _decodeEvent,
 );
 
+// A distinct RPC makes older cores reject this capability before starting a child.
+final _runRendererApplication = ClientMethod<CodedBufferWriter, ApplicationEvent>(
+  '/hcore.Core/RunRendererApplication',
+  (request) => request.toBuffer(),
+  _decodeEvent,
+);
+
 Stream<ApplicationEvent> launchOnForegroundCore(
   ClientChannel? channel, {
   required List<String> command,
   required String applicationId,
   required bool privateWayland,
   required String executableRoot,
+  bool rendererSandbox = false,
 }) async* {
   if (!Platform.isLinux) throw const GrpcError.unimplemented('Isolated application launch requires Linux.');
   if (channel == null) throw const GrpcError.unavailable('The foreground core is not ready.');
@@ -56,7 +64,8 @@ Stream<ApplicationEvent> launchOnForegroundCore(
     ..writeField(2, PbFieldType.OS, applicationId);
   if (executableRoot.isNotEmpty) request.writeField(3, PbFieldType.OS, executableRoot);
   if (privateWayland) request.writeField(5, PbFieldType.OB, true);
-  yield* Client(channel).$createStreamingCall(_runApplication, Stream.value(request)).cancelOnUnsubscribe;
+  final method = rendererSandbox ? _runRendererApplication : _runApplication;
+  yield* Client(channel).$createStreamingCall(method, Stream.value(request)).cancelOnUnsubscribe;
 }
 
 ApplicationEvent _decodeEvent(List<int> bytes) {

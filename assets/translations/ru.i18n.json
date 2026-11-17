@@ -118,6 +118,8 @@
       "argument": "Аргумент $number",
       "removeArgument": "Удалить аргумент $number",
       "window": "Открыть отдельное окно",
+      "rendererSandbox": "Вложенная песочница",
+      "rendererSandboxHint": "Для браузеров и приложений на Electron.",
       "launch": "Запустить",
       "sessions": "Сеансы",
       "stop": "Остановить приложение",
