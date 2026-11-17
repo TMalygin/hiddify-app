@@ -114,6 +114,8 @@
       "argument": "آرگومان $number",
       "removeArgument": "حذف آرگومان $number",
       "window": "باز کردن پنجرهٔ جداگانه",
+      "rendererSandbox": "محیط امن تو‌در‌تو",
+      "rendererSandboxHint": "برای مرورگرها و برنامه‌های Electron.",
       "launch": "اجرا",
       "sessions": "نشست‌ها",
       "stop": "توقف برنامه",

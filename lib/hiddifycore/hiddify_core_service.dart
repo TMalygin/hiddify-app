@@ -35,7 +35,8 @@ class HiddifyCoreService with InfraLogger {
   // CoreHiddifyCoreService() {}
   final core = getCoreInterface();
 
-  ApplicationSessions createApplicationSessions() => ApplicationSessions(core.runApplication);
+  ApplicationSessions createApplicationSessions() =>
+      ApplicationSessions(core.runApplication, rendererRunner: core.runApplicationWithRendererSandbox);
 
   CoreStatus currentState = const CoreStatus.stopped();
   final statusController = BehaviorSubject<CoreStatus>();

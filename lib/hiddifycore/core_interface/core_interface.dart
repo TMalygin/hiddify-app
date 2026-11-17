@@ -41,6 +41,14 @@ class CoreInterface {
     String executableRoot = '',
   }) => Stream.error(const GrpcError.unimplemented('Isolated application launch requires Linux.'));
 
+  /// Explicitly permits the child to create its own renderer sandbox inside the isolated Linux core.
+  Stream<ApplicationEvent> runApplicationWithRendererSandbox({
+    required List<String> command,
+    required String applicationId,
+    required bool privateWayland,
+    String executableRoot = '',
+  }) => Stream.error(const GrpcError.unimplemented('Nested renderer sandboxes require a compatible Linux core.'));
+
   /// An event each time a core process the app started crashed while the app runs (desktop), once
   /// its crash output can be listed: the crash report is offered then, not only at the next start.
   Stream<void> get coreCrashes => const Stream.empty();

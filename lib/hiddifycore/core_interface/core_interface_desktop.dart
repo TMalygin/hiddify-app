@@ -137,6 +137,21 @@ class CoreInterfaceDesktop extends CoreInterface with InfraLogger {
     executableRoot: executableRoot,
   );
 
+  @override
+  Stream<ApplicationEvent> runApplicationWithRendererSandbox({
+    required List<String> command,
+    required String applicationId,
+    required bool privateWayland,
+    String executableRoot = '',
+  }) => launchOnForegroundCore(
+    foregroundChannel,
+    command: command,
+    applicationId: applicationId,
+    privateWayland: privateWayland,
+    executableRoot: executableRoot,
+    rendererSandbox: true,
+  );
+
   bool _isMtlsMode(int mode) => mode == 1 || mode == 2;
 
   // The core's process (see [CoreProcess]), when this build has its launcher. Without one the core

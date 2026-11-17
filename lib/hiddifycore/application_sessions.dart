@@ -69,17 +69,35 @@ class _Lease {
 /// A subscription is the core's process lease. The application owns these,
 /// not the dialog or the currently selected profile. Nothing here starts a host process.
 class ApplicationSessions extends StateNotifier<List<ApplicationSession>> {
-  ApplicationSessions(this._run) : super(const []);
+  ApplicationSessions(this._run, {ApplicationRunner? rendererRunner})
+    : _rendererRunner = rendererRunner,
+      super(const []);
   final ApplicationRunner _run;
+  final ApplicationRunner? _rendererRunner;
   final _leases = <String, _Lease>{};
   int _sequence = 0;
   List<ApplicationSession> get sessions => state;
 
-  void launch({required String executable, required List<String> arguments, required bool privateWayland}) {
-    _launch([executable, ...arguments], homeKey: executable, privateWayland: privateWayland);
+  void launch({
+    required String executable,
+    required List<String> arguments,
+    required bool privateWayland,
+    bool rendererSandbox = false,
+  }) {
+    _launch(
+      [executable, ...arguments],
+      homeKey: executable,
+      privateWayland: privateWayland,
+      rendererSandbox: rendererSandbox,
+    );
   }
 
-  void launchShell({required String interpreter, required String source, required bool privateWayland}) {
+  void launchShell({
+    required String interpreter,
+    required String source,
+    required bool privateWayland,
+    bool rendererSandbox = false,
+  }) {
     if (source.trim().isEmpty) return;
     // A shell's home belongs to this command, including its choice of interpreter.
     // JSON keeps the two strings distinct and cannot collide with an absolute path.
@@ -87,10 +105,16 @@ class ApplicationSessions extends StateNotifier<List<ApplicationSession>> {
       [interpreter, '-c', '--', source],
       homeKey: jsonEncode([interpreter, source]),
       privateWayland: privateWayland,
+      rendererSandbox: rendererSandbox,
     );
   }
 
-  void _launch(List<String> command, {required String homeKey, required bool privateWayland}) {
+  void _launch(
+    List<String> command, {
+    required String homeKey,
+    required bool privateWayland,
+    required bool rendererSandbox,
+  }) {
     final executable = command.first;
     final id = (++_sequence).toString();
     // Keep only a bounded history of finished commands. Live sessions remain visible.
@@ -134,7 +158,11 @@ class ApplicationSessions extends StateNotifier<List<ApplicationSession>> {
     final parent = p.posix.dirname(executable);
     final lease = _leases[id] = _Lease();
     try {
-      final events = _run(
+      final runner = rendererSandbox ? _rendererRunner : _run;
+      if (runner == null) {
+        throw const GrpcError.unimplemented('The core does not support nested renderer sandboxes.');
+      }
+      final events = runner(
         command: List.unmodifiable(command),
         applicationId: home,
         privateWayland: privateWayland,

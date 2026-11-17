@@ -114,6 +114,8 @@
       "argument": "Argument $number",
       "removeArgument": "Remove argument $number",
       "window": "Open a private window",
+      "rendererSandbox": "Nested sandbox",
+      "rendererSandboxHint": "For browsers and Electron applications.",
       "launch": "Launch",
       "sessions": "Sessions",
       "stop": "Stop application",
