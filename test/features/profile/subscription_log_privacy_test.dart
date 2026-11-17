@@ -22,7 +22,12 @@ class _Repository implements ProfileRepository {
   String? imported;
 
   @override
-  TaskEither<ProfileFailure, Unit> upsertRemote(String url, {UserOverride? userOverride, CancelToken? cancelToken}) {
+  TaskEither<ProfileFailure, Unit> upsertRemote(
+    String url, {
+    UserOverride? userOverride,
+    CancelToken? cancelToken,
+    bool activate = false,
+  }) {
     imported = url;
     return TaskEither.right(unit);
   }
