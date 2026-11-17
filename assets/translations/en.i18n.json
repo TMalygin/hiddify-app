@@ -105,6 +105,8 @@
       "title": "Isolated applications",
       "hint": "Applications stay offline without a supported active profile.",
       "executable": "Executable",
+      "command": "Command",
+      "commandHint": "The shell looks for programs in /usr/bin and /bin inside the sandbox.",
       "choose": "Choose executable",
       "absolutePath": "Enter an absolute path to the executable.",
       "pickerFailed": "The file chooser could not open. Enter the path directly.",

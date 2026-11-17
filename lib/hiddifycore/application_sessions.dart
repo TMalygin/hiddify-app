@@ -76,6 +76,22 @@ class ApplicationSessions extends StateNotifier<List<ApplicationSession>> {
   List<ApplicationSession> get sessions => state;
 
   void launch({required String executable, required List<String> arguments, required bool privateWayland}) {
+    _launch([executable, ...arguments], homeKey: executable, privateWayland: privateWayland);
+  }
+
+  void launchShell({required String interpreter, required String source, required bool privateWayland}) {
+    if (source.trim().isEmpty) return;
+    // A shell's home belongs to this command, including its choice of interpreter.
+    // JSON keeps the two strings distinct and cannot collide with an absolute path.
+    _launch(
+      [interpreter, '-c', '--', source],
+      homeKey: jsonEncode([interpreter, source]),
+      privateWayland: privateWayland,
+    );
+  }
+
+  void _launch(List<String> command, {required String homeKey, required bool privateWayland}) {
+    final executable = command.first;
     final id = (++_sequence).toString();
     // Keep only a bounded history of finished commands. Live sessions remain visible.
     var history = 0;
@@ -83,7 +99,6 @@ class ApplicationSessions extends StateNotifier<List<ApplicationSession>> {
       ApplicationSession(id, executable, ApplicationPhase.starting),
       ...state.where((s) => !s.isTerminal || ++history < 32),
     ]);
-    final command = List<String>.unmodifiable([executable, ...arguments]);
     if (!p.posix.isAbsolute(executable) ||
         p.posix.normalize(executable) != executable ||
         executable == '/' ||
@@ -115,14 +130,12 @@ class ApplicationSessions extends StateNotifier<List<ApplicationSession>> {
       return;
     }
 
-    // Use the path, not a display name or the arguments, so relaunching the
-    // same executable retains its private home without sharing similarly named apps.
-    final home = sha256.convert(utf8.encode(executable)).toString();
+    final home = sha256.convert(utf8.encode(homeKey)).toString();
     final parent = p.posix.dirname(executable);
     final lease = _leases[id] = _Lease();
     try {
       final events = _run(
-        command: command,
+        command: List.unmodifiable(command),
         applicationId: home,
         privateWayland: privateWayland,
         executableRoot: parent.startsWith('/opt/') ? parent : '',

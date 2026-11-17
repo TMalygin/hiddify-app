@@ -19,11 +19,22 @@ class _Argument {
   String text = '';
 }
 
+enum _LaunchMode {
+  executable(null),
+  bash('/bin/bash'),
+  sh('/bin/sh');
+
+  const _LaunchMode(this.interpreter);
+  final String? interpreter;
+}
+
 class _ApplicationLauncherDialogState extends ConsumerState<ApplicationLauncherDialog> {
   final executable = TextEditingController();
+  final shellCommand = TextEditingController();
   final executableFocus = FocusNode();
   final scroll = ScrollController();
   final arguments = <_Argument>[];
+  _LaunchMode mode = _LaunchMode.executable;
   int nextArgument = 0;
   bool privateWayland = true;
   bool choosingFile = false;
@@ -41,6 +52,7 @@ class _ApplicationLauncherDialogState extends ConsumerState<ApplicationLauncherD
   void dispose() {
     executableFocus.dispose();
     executable.dispose();
+    shellCommand.dispose();
     scroll.dispose();
     super.dispose();
   }
@@ -69,18 +81,22 @@ class _ApplicationLauncherDialogState extends ConsumerState<ApplicationLauncherD
   }
 
   void launch() {
-    final selected = executable.text;
-    if (!path.posix.isAbsolute(selected)) {
-      setState(() => pathError = ref.read(translationsProvider).requireValue.pages.applicationLauncher.absolutePath);
-      return;
+    final manager = ref.read(applicationSessionsProvider.notifier);
+    final interpreter = mode.interpreter;
+    if (interpreter == null) {
+      final selected = executable.text;
+      if (!path.posix.isAbsolute(selected)) {
+        setState(() => pathError = ref.read(translationsProvider).requireValue.pages.applicationLauncher.absolutePath);
+        return;
+      }
+      manager.launch(
+        executable: selected,
+        arguments: [for (final item in arguments) item.text],
+        privateWayland: privateWayland,
+      );
+    } else {
+      manager.launchShell(interpreter: interpreter, source: shellCommand.text, privateWayland: privateWayland);
     }
-    ref
-        .read(applicationSessionsProvider.notifier)
-        .launch(
-          executable: selected,
-          arguments: [for (final item in arguments) item.text],
-          privateWayland: privateWayland,
-        );
     FocusScope.of(context).unfocus();
     if (scroll.hasClients) scroll.jumpTo(0);
   }
@@ -91,6 +107,9 @@ class _ApplicationLauncherDialogState extends ConsumerState<ApplicationLauncherD
     final t = translations.pages.applicationLauncher;
     final sessions = ref.watch(applicationSessionsProvider);
     final theme = Theme.of(context);
+    final canLaunch = mode == _LaunchMode.executable
+        ? executable.text.isNotEmpty || executableFocus.hasFocus
+        : shellCommand.text.trim().isNotEmpty;
     return Dialog(
       key: const ValueKey('application_launcher_dialog'),
       insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -128,60 +147,102 @@ class _ApplicationLauncherDialogState extends ConsumerState<ApplicationLauncherD
                     ],
                     Text(t.hint, style: theme.textTheme.bodyMedium),
                     const SizedBox(height: 16),
-                    TextField(
-                      key: const ValueKey('application_executable'),
-                      controller: executable,
-                      focusNode: executableFocus,
-                      autofocus: true,
-                      textDirection: TextDirection.ltr,
-                      autocorrect: false,
-                      enableSuggestions: false,
-                      decoration: InputDecoration(
-                        labelText: t.executable,
-                        errorText: pathError,
-                        errorMaxLines: 3,
-                        border: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          key: const ValueKey('application_choose_file'),
-                          tooltip: t.choose,
-                          onPressed: choosingFile ? null : chooseFile,
-                          icon: const Icon(Icons.folder_open_rounded),
+                    SegmentedButton<_LaunchMode>(
+                      segments: [
+                        ButtonSegment(
+                          value: _LaunchMode.executable,
+                          label: Text(t.executable, key: const ValueKey('application_mode_executable')),
                         ),
-                      ),
-                      onChanged: (_) => setState(() => pathError = null),
-                      onSubmitted: (_) => launch(),
+                        const ButtonSegment(
+                          value: _LaunchMode.bash,
+                          label: Text('Bash', key: ValueKey('application_mode_bash')),
+                        ),
+                        const ButtonSegment(
+                          value: _LaunchMode.sh,
+                          label: Text('sh', key: ValueKey('application_mode_sh')),
+                        ),
+                      ],
+                      selected: {mode},
+                      showSelectedIcon: false,
+                      onSelectionChanged: choosingFile ? null : (selection) => setState(() => mode = selection.single),
                     ),
-                    for (final (index, item) in arguments.indexed)
-                      Padding(
-                        key: ValueKey(item.id),
-                        padding: const EdgeInsets.only(top: 12),
-                        child: TextFormField(
-                          key: ValueKey('application_argument_${item.id}'),
-                          initialValue: item.text,
-                          textDirection: TextDirection.ltr,
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          decoration: InputDecoration(
-                            labelText: t.argument(number: index + 1),
-                            border: const OutlineInputBorder(),
-                            suffixIcon: IconButton(
-                              tooltip: t.removeArgument(number: index + 1),
-                              onPressed: () => setState(() => arguments.remove(item)),
-                              icon: const Icon(Icons.remove_circle_outline_rounded),
-                            ),
+                    const SizedBox(height: 12),
+                    if (mode == _LaunchMode.executable) ...[
+                      TextField(
+                        key: const ValueKey('application_executable'),
+                        controller: executable,
+                        focusNode: executableFocus,
+                        autofocus: true,
+                        textDirection: TextDirection.ltr,
+                        autocorrect: false,
+                        enableSuggestions: false,
+                        decoration: InputDecoration(
+                          labelText: t.executable,
+                          errorText: pathError,
+                          errorMaxLines: 3,
+                          border: const OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            key: const ValueKey('application_choose_file'),
+                            tooltip: t.choose,
+                            onPressed: choosingFile ? null : chooseFile,
+                            icon: const Icon(Icons.folder_open_rounded),
                           ),
-                          onChanged: (value) => item.text = value,
+                        ),
+                        onChanged: (_) => setState(() => pathError = null),
+                        onSubmitted: (_) => launch(),
+                      ),
+                      for (final (index, item) in arguments.indexed)
+                        Padding(
+                          key: ValueKey(item.id),
+                          padding: const EdgeInsets.only(top: 12),
+                          child: TextFormField(
+                            key: ValueKey('application_argument_${item.id}'),
+                            initialValue: item.text,
+                            textDirection: TextDirection.ltr,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            decoration: InputDecoration(
+                              labelText: t.argument(number: index + 1),
+                              border: const OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                tooltip: t.removeArgument(number: index + 1),
+                                onPressed: () => setState(() => arguments.remove(item)),
+                                icon: const Icon(Icons.remove_circle_outline_rounded),
+                              ),
+                            ),
+                            onChanged: (value) => item.text = value,
+                          ),
+                        ),
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: TextButton.icon(
+                          key: const ValueKey('application_add_argument'),
+                          icon: const Icon(Icons.add_rounded),
+                          label: Text(t.addArgument),
+                          onPressed: () => setState(() => arguments.add(_Argument(nextArgument++))),
                         ),
                       ),
-                    Align(
-                      alignment: AlignmentDirectional.centerStart,
-                      child: TextButton.icon(
-                        key: const ValueKey('application_add_argument'),
-                        icon: const Icon(Icons.add_rounded),
-                        label: Text(t.addArgument),
-                        onPressed: () => setState(() => arguments.add(_Argument(nextArgument++))),
+                    ] else
+                      TextField(
+                        key: const ValueKey('application_shell_command'),
+                        controller: shellCommand,
+                        autofocus: true,
+                        minLines: 2,
+                        maxLines: 5,
+                        textDirection: TextDirection.ltr,
+                        autocorrect: false,
+                        enableSuggestions: false,
+                        smartDashesType: SmartDashesType.disabled,
+                        smartQuotesType: SmartQuotesType.disabled,
+                        decoration: InputDecoration(
+                          labelText: t.command,
+                          helperText: t.commandHint,
+                          helperMaxLines: 3,
+                          alignLabelWithHint: true,
+                          border: const OutlineInputBorder(),
+                        ),
+                        onChanged: (_) => setState(() {}),
                       ),
-                    ),
                     SwitchListTile(
                       key: const ValueKey('application_private_wayland'),
                       contentPadding: EdgeInsets.zero,
@@ -199,7 +260,7 @@ class _ApplicationLauncherDialogState extends ConsumerState<ApplicationLauncherD
                 alignment: AlignmentDirectional.centerEnd,
                 child: FilledButton.icon(
                   key: const ValueKey('application_launch'),
-                  onPressed: choosingFile || (executable.text.isEmpty && !executableFocus.hasFocus) ? null : launch,
+                  onPressed: canLaunch && !choosingFile ? launch : null,
                   icon: const Icon(Icons.play_arrow_rounded),
                   label: Text(t.launch),
                 ),
